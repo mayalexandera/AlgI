@@ -1,28 +1,56 @@
 import Canvas from "./Canvas";
 
 class BFS {
-  constructor(val) { // how to set position to unique value?
+<<<<<<< HEAD  constructor(val) { // how to set position to unique value?
     this.val = val;
     this.neighbors = [];
-  }
-  //addNeighbor(node) {
-  //  this.neighbors.push(node);
 
-  static bfs(startPos, targetVal) {
-    let queue = [startPos];
-    visited = new Set();
+  getNeighbors(node, queue) {
+    let step = 5;
+    queue.push({x: node.x+step, y: node.y+step});
+    queue.push({x: node.x+step, y: node.y-step});
+    queue.push({x: node.x+step, y: node.y});
+
+    queue.push({x: node.x-step, y: node.y+step});
+    queue.push({x: node.x-step, y: node.y-step});
+    queue.push({x: node.x-step, y: node.y});
+
+    queue.push({x: node.x, y: node.y+step});
+    queue.push({x: node.x, y: node.y-step});
+
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+ }
+
+ visitedNode(targetNode, visited) {
+   for (const node of visited) {
+     if (node.x == targetNode.x && node.y == targetNode.y) {
+       return true;
+     }
+   }
+   return false;
+ }
+
+  async start(canvas, startPos, targetNode) {
+    let queue = [startPos]; // {x: 0, y: 0} Start Point
+    let visited = [];
 
     while (queue.length > 0) {
-      node = queue.shift();
-      while (!visited.has(node)) {
-        if (node.val === targetVal) {
-          return node.val;
+      let node = queue.shift();
+      while (!this.visitedNode(node, visited)) {
+        if (node.x == targetNode.x && node.y == targetNode.y) {
+          console.log("Finsihed");
+          return node;
         }
-        visited.add(node);
-        queue.push(node.neighbors);
+        await this.sleep(0);
+        canvas.visitCell(node)
+        visited.push(node);
+        this.getNeighbors(node, queue);
       }
     }
-    return nil;
+    return null;
   }
 }
 export default BFS;

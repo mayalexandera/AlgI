@@ -1,8 +1,15 @@
 import Canvas from './scripts/Canvas';
+import BFS from './scripts/BFS';
 import './styles/style.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = new Canvas();
-  canvas.loadGrid();
+  //canvas.loadGrid();
+
+
+  let targetNode = {x: 100, y: 100};
+  canvas.showTargetNode(targetNode);
+  const bfs = new BFS();
+  bfs.start(canvas, {x: 150, y: 80}, targetNode);
 
 })

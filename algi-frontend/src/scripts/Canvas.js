@@ -1,22 +1,33 @@
 class Canvas {
     constructor() {
         this.canvas = document.getElementById('canvas');
-        if (!this.canvas) {throw "Missing canvas";}
-
         this.context = this.canvas.getContext('2d');
-
-        console.log("Canvas loaded.");
+        this.size = 5;
+        this.nodes = [];
+    }
+    
+    node(x, y) {
+        return {x: x, y: y};
     }
 
     async loadGrid() {
-        this.context.fillStyle = "red";
-        for (let r = 0; r < this.width / 5; r++) {
-            for (let c = 0; c < this.height / 5; c++) {
-                this.context.rect(r * 6, c * 6, 5, 5);
-                
+        for (let r = 0; r < this.width / this.size; r++) {
+            for (let c = 0; c < this.height / this.size; c++) {
+                this.context.rect(r, c, this.size, this.size);
+                this.nodes.push(this.node(r, c));
             }
         }
         this.context.fill();
+    }
+    
+    visitCell(node) {
+        this.context.fillStyle = 'red';
+        this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
+    }
+
+    showTargetNode(node) {
+        this.context.fillStyle = 'purple';
+        this.context.fillRect(node.x, node.y, this.size, this.size);
     }
 
     get width() {
