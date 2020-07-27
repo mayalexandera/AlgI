@@ -5,8 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <title>Algorithm Image</title>
+    <title>Algorithm Imager</title>
   </head>
   <body>
+    <nav>
+      <div class = "logo"><h1>Algorithm Imager</h1></div>
+      <ul>
+        <li class = "expandable">
+          Algorithms<i class="fa fa-arrow-down" aria-hidden="true"></i>
+          <div class = "dropdown">
+            <span>BFS</span>
+            <span>DFS</span>
+            <span>Dijkstra</span>
+          </div>
+        </li>
+        <li>Upload Image</li>
+        <li class = "run">Run<i class="fa fa-play" aria-hidden="true"></i></li>
+        <li>Clear Results</li>
+      </ul>
+    </nav>
+
+    <div id = "canvas-wrapper">
+      <canvas id="canvas"></canvas>
+    </div>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
   </body>
 </html>

@@ -1,6 +1,8 @@
-import Algorithm from './scripts/Algorithm';
+import Canvas from './scripts/Canvas';
 import './styles/style.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const bfs = new Algorithm();
+  const canvas = new Canvas();
+  canvas.loadGrid();
+
 })

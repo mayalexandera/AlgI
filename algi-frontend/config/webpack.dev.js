@@ -14,7 +14,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, "../build"),
     compress: true,
-    port: 3000,
+    port: 8080,
     overlay: true
   },
   devtool: "cheap-module-eval-source-map",
@@ -46,6 +46,18 @@ module.exports = {
               outputPath: "assets/"
             }
           },
+        ]
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            }
+          }
         ]
       },
       {

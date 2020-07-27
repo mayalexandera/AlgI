@@ -1,5 +1,101 @@
-body {
-  h2 {
-    color: red;
+* {margin: 0;}
+ul {
+  li {
+    list-style-type: none;
   }
 }
+
+a {
+  text-decoration: none;
+}
+
+// Fonts and Colors
+
+$main-color: #1E1F26;
+$secondary-color: #1ABC9C;
+
+@font-face {
+  font-family: "Lato";
+  src: url("../assets/fonts/Lato-Regular.ttf") format("ttf")
+}
+
+.hidden {
+  max-height: 0;
+}
+
+
+// Everything else
+#canvas-wrapper {
+  #canvas {
+    display: block;
+    border: 1px solid black;
+    width: 35rem;
+    height: 20rem;
+    margin: 0 auto;
+    margin-top: 2em;
+  }
+}
+.logo {
+  font-size: 90%;
+  font-family: 'Helvetica';
+  display: inline-block;
+}
+
+.run {
+  background-color: $secondary-color;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.dropdown {
+  position: absolute;
+  background: $main-color;
+  width: 7rem;
+  height: auto;
+  padding: 0 .2em 0 .2em;
+  top: 3rem; left: 0;
+  overflow: hidden;
+  transition: max-height .2s ease-in-out;
+  span {
+    color:white;
+    display: block;
+    margin: .5em 0;
+    margin-bottom: 1em;
+    padding: .5em;
+    &:hover {
+      background-color: lighten($main-color, $amount: 20%);
+    }
+  }
+}
+
+nav {
+  background-color: $main-color;
+  color: white;
+  padding: 1em;
+  font-family: "Lato";
+  ul{
+    display: inline-block;
+    margin-left: 2em;
+    
+    li {
+      padding: .5em;
+      text-align: center;
+      color: white;
+      font-family: 'Helvetica';
+      display: inline-block;
+      margin: 0 .5em 0 .5em;
+      transition: background-color .2s ease-in-out;
+      position: relative;
+      &:hover:not(.run) {
+        background-color: lighten($main-color, $amount: 20%);
+        cursor: pointer;
+      }
+      i {
+        margin-left: .5em;
+      }
+      
+    }
+  }
+}
+
