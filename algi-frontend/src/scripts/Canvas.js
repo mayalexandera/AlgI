@@ -2,27 +2,32 @@ class Canvas {
     constructor() {
         this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
-
-        this.grid = [];
+        this.size = 1;
+        this.nodes = [];
     }
     
-    point(x, y) {
+    node(x, y) {
         return {x: x, y: y};
     }
 
     async loadGrid() {
-        for (let r = 0; r < this.width / 5; r++) {
-            for (let c = 0; c < this.height / 5; c++) {
-                this.context.rect(r * 6, c * 6, 5, 5);
-                this.grid.push(this.point(r, c));
+        for (let r = 0; r < this.width / this.size; r++) {
+            for (let c = 0; c < this.height / this.size; c++) {
+                this.context.rect(r, c, this.size, this.size);
+                this.nodes.push(this.node(r, c));
             }
         }
         this.context.fill();
     }
-
-    visitedCell(x, y) {
+    
+    visitCell(node) {
         this.context.fillStyle = 'red';
-        this.context.fillRect(x, y, 5, 5);
+        this.context.fillRect(node.x, node.y, this.size, this.size);
+    }
+
+    showTargetNode(node) {
+        this.context.fillStyle = 'purple';
+        this.context.fillRect(node.x, node.y, this.size, this.size);
     }
 
     get width() {
