@@ -1,11 +1,6 @@
-
-import Algorithm from './modules/Algorithm.js';
+import Algorithm from './scripts/Algorithm';
+import './styles/style.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("Success.");
-
   const bfs = new Algorithm();
-
 })
-
-// http-server -c-1 to run the local server without caching
