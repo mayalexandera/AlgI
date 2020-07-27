@@ -1,8 +1,8 @@
 import Canvas from "./Canvas";
 
 class BFS {
-  constructor(val) {
-    this.val = val; //start position
+  constructor(val) { // how to set position to unique value?
+    this.val = val;
     this.neighbors = [];
   }
   //addNeighbor(node) {
