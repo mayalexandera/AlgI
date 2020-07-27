@@ -3,6 +3,6 @@ import './styles/style.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = new Canvas();
-  canvas.loadGrid();
+  //canvas.loadGrid();
 
 })
