@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_27_161946) do
+ActiveRecord::Schema.define(version: 2020_07_27_183113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,14 @@ ActiveRecord::Schema.define(version: 2020_07_27_161946) do
   create_table "images", force: :cascade do |t|
     t.integer "upvote_count"
     t.integer "downvote_count"
+  end
+
+  create_table "seeds", force: :cascade do |t|
+    t.bigint "image_id"
+    t.string "algo_name"
+    t.string "image_name"
+    t.string "seed_hash"
+    t.index ["image_id"], name: "index_seeds_on_image_id"
   end
 
 end
