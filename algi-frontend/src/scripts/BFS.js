@@ -2,7 +2,7 @@ import Canvas from "./Canvas";
 
 class BFS {
   getNeighbors(node, queue) {
-    let step = 1;
+    let step = 5;
     queue.push({x: node.x+step, y: node.y+step});
     queue.push({x: node.x+step, y: node.y-step});
     queue.push({x: node.x+step, y: node.y});

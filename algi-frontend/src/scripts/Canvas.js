@@ -2,7 +2,7 @@ class Canvas {
     constructor() {
         this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
-        this.size = 1;
+        this.size = 5;
         this.nodes = [];
     }
     
@@ -22,7 +22,7 @@ class Canvas {
     
     visitCell(node) {
         this.context.fillStyle = 'red';
-        this.context.fillRect(node.x, node.y, this.size, this.size);
+        this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
     }
 
     showTargetNode(node) {

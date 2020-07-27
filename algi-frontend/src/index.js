@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   //canvas.loadGrid();
 
 
-  let targetNode = {x: 100, y: 20};
+  let targetNode = {x: 100, y: 100};
   canvas.showTargetNode(targetNode);
   const bfs = new BFS();
-  bfs.start(canvas, {x: 205, y: 20}, targetNode);
+  bfs.start(canvas, {x: 150, y: 80}, targetNode);
 
 })
