@@ -2,8 +2,13 @@ class Canvas {
     constructor() {
         this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
-        this.size = 5;
+        this.size = Canvas.size;
         this.nodes = [];
+        this.colors = ['red', 'blue', 'pink', 'orange', 'yellow', 'green'];
+    }
+
+    getColor() {
+        return this.colors[Math.floor(Math.random() * this.colors.length)];
     }
     
     node(x, y) {
@@ -21,7 +26,7 @@ class Canvas {
     }
     
     visitCell(node) {
-        this.context.fillStyle = 'red';
+        this.context.fillStyle = this.getColor();
         this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
     }
 
@@ -30,11 +35,19 @@ class Canvas {
         this.context.fillRect(node.x, node.y, this.size, this.size);
     }
 
+    clear() {
+        this.context.clearRect(0, 0, this.width, this.height)
+    }
+
     get width() {
         return this.canvas.width;
     }
     get height() {
         return this.canvas.height;
+    }
+
+    static get size() {
+        return 5;
     }
 }
 

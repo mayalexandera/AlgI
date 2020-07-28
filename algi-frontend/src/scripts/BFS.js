@@ -2,7 +2,7 @@ import Canvas from "./Canvas";
 
 class BFS {
   getNeighbors(node, queue) {
-    let step = 5;
+    let step = Canvas.size;
     const MOVES = [
       [step, step],
       [step, -step],

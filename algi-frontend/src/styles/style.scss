@@ -29,8 +29,6 @@ $secondary-color: #1ABC9C;
   #canvas {
     display: block;
     border: 1px solid black;
-    width: 85rem;
-    height: 45rem;
     margin: 0 auto;
     margin-top: 2em;
   }
@@ -41,10 +39,11 @@ $secondary-color: #1ABC9C;
   display: inline-block;
 }
 
-.run {
+#run-button {
   background-color: $secondary-color;
   &:hover {
     cursor: pointer;
+    background-color: darken($color: $secondary-color, $amount: 5%);
   }
 }
 
@@ -56,7 +55,6 @@ $secondary-color: #1ABC9C;
   padding: 0 .2em 0 .2em;
   top: 3rem; left: 0;
   overflow: hidden;
-  transition: max-height .2s ease-in-out;
   span {
     color:white;
     display: block;
@@ -87,7 +85,7 @@ nav {
       margin: 0 .5em 0 .5em;
       transition: background-color .2s ease-in-out;
       position: relative;
-      &:hover:not(.run) {
+      &:hover:not(#run-button) {
         background-color: lighten($main-color, $amount: 20%);
         cursor: pointer;
       }
