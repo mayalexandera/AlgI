@@ -2,7 +2,7 @@ import Canvas from "./Canvas";
 
 class DFS {
 
-  getNeighbors(node, canvas) {
+  getNeighbors(node, canvas, visited) {
     const neighbors = [];
     const step = Canvas.size;
     const MOVES = [
@@ -35,19 +35,25 @@ class DFS {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  async start(canvas, startPos, targetNode) {
-    const neighbors = this.getNeighbors(startPos, canvas);
-  
+  async start(canvas, startPos, targetNode, visited=[]) {
+
+    const neighbors = this.getNeighbors(startPos, canvas, visited);
+    
     // Checks if we found the target node
     for (const node of neighbors) {
-      canvas.visitCell(node);
+      if(!visited.includes(node)){
+        canvas.visitCell(node);
+        visited.push(node);
+        console.log(visited);
+      }
       if (node.x == targetNode.x && node.y == targetNode.y) {
         console.log("Finished!");
         return node;
       }
     }
     await this.sleep(100);
-    this.start(canvas, neighbors[Math.floor(Math.random() * neighbors.length)], targetNode);
+    this.start(canvas, neighbors.indexOf(node), targetNode, visited)
+    //this.start(canvas, neighbors[Math.floor(Math.random() * neighbors.length)], targetNode, visited);
   }
 }
 
