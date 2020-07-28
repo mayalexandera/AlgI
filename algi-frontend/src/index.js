@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nodeCountElement = document.getElementById('node-count');
 
   runButton.addEventListener('click', startAlgorithm);
-  clearResults.addEventListener('click', clear);
+  clearResults.addEventListener('click', clearCanvas);
   expandable.addEventListener('click', showDropdown);
 
   // Load the sample images
@@ -23,19 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Run the selected algorithm and when you're done change the run button look
   function startAlgorithm(event) {
-    event.target.classList.toggle('warning');
-    const icon = event.target.querySelector('i');
-    if (icon.classList.contains('fa-stop')) {
-      icon.classList = 'fa fa-play';
-      algoHandler.stop();
-
-    } else {
-      icon.classList = 'fa fa-stop';
-      clear();
-      algoHandler.start('dfs').then((finished) => {
-        event.target.classList.toggle('warning');
+    if (event.target.matches('#run-button')) {
+      const icon = event.target.querySelector('i');
+      if (icon.classList.contains('fa-stop')) {
         icon.classList = 'fa fa-play';
-      })
+        event.target.classList.remove('warning');
+        algoHandler.stop();
+
+      } else {
+        icon.classList = 'fa fa-stop';
+        event.target.classList.add('warning');
+
+        clearCanvas();
+
+        // The algorithm finished, do stuff
+        algoHandler.start('bfs').then((finished) => {
+          event.target.classList.remove('warning');
+          icon.classList = 'fa fa-play';
+          algoHandler.running = false;
+        })
+      }
     }
   }
 
@@ -51,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Clear the canvas and reset everything
-  function clear() {
+  function clearCanvas() {
+    if (algoHandler.running) {return;}
     nodeCountElement.textContent = "0";
     canvas.clear();
   }

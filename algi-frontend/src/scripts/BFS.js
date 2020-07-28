@@ -4,27 +4,25 @@ class BFS {
   constructor() {
     this.nodeCountElement = document.getElementById('node-count');
   }
+
+  withinBounds(position) {
+    const canvas = Canvas.canvas;
+    return (position.x >= 0 && position.x <= canvas.width && position.y >= 0 && position.y <= canvas.height);
+  }
+
   getNeighbors(node, queue) {
-    let step = Canvas.size;
-    const MOVES = [
-      [step, step],
-      [step, -step],
-      [-step, step],
-      [-step, -step],
-      [step, 0],
-      [-step, 0],
-      [0, step],
-      [0, -step],
+    const step = Canvas.size;
+    const moves = [[step, step], [step, -step], [-step, step], [-step, -step],
+      [step, 0], [-step, 0], [0, step],[0, -step],
     ];
 
-    let currX = node.x;
-    let currY = node.y;
-
-    MOVES.forEach((pos) => {
-      let newX = pos[0];
-      let newY = pos[1];
-      let newPos = { x: currX + newX, y: currY + newY };
-       queue.push(newPos);
+    moves.forEach((pos) => {
+      const newX = pos[0];
+      const newY = pos[1];
+      const newNode = { x: node.x + newX, y: node.y + newY };
+      if (this.withinBounds(newNode)) {
+        queue.push(newNode);
+      } 
     });
     return queue;
   }

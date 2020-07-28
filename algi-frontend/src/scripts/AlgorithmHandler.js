@@ -4,13 +4,16 @@ import Canvas from './Canvas';
 
 class AlgorithmHandler {
     constructor(canvas) {
-        this.startNode = {x: 105, y: 20};
-        this.endNode = {x: 25, y: 100};
+        this.startNode = {x: 100, y: 150};
+        this.endNode = {x: 60, y: 150};
         this.canvas = canvas;
-        canvas.showStartNode(this.startNode);
-        canvas.showTargetNode(this.endNode);
+        this.running = false;
+
+        canvas.setTargets(this.startNode, this.endNode);
+        canvas.renderTargets();
     }
     start(name) {
+        this.running = true;
         switch(name) {
             case 'bfs':
                 this.currentAlgorithm = new BFS();

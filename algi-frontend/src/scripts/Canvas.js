@@ -18,7 +18,7 @@ class Canvas {
         return this.colors[Math.floor(Math.random() * this.colors.length)];
     }
     
-    node(x, y) {
+    getNode(x, y) {
         return {x: x, y: y};
     }
 
@@ -26,7 +26,7 @@ class Canvas {
         for (let r = 0; r < this.width / this.size; r++) {
             for (let c = 0; c < this.height / this.size; c++) {
                 this.context.rect(r, c, this.size, this.size);
-                this.nodes.push(this.node(r, c));
+                this.nodes.push(this.getNode(r, c));
             }
         }
         this.context.fill();
@@ -37,19 +37,30 @@ class Canvas {
         this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
     }
 
-    showTargetNode(node) {
-        this.endNodeIcon.onload = () => {
-            this.context.drawImage(this.endNodeIcon, node.x, node.y, 16, 16);
-        }
+    setTargets(startNode, endNode) {
+        this.startNode = startNode;
+        this.endNode = endNode;
     }
-    showStartNode(node) {
-        this.startIcon.onload = () => {
-            this.context.drawImage(this.startIcon, node.x, node.y, 8, 16);
+
+    renderTargets() {
+        // Make sure all the images are loaded before rendering
+        if (this.startIcon.complete && this.endNodeIcon.complete) {
+            this.context.drawImage(this.startIcon, this.startNode.x, this.startNode.y, 8, 16);
+            this.context.drawImage(this.endNodeIcon, this.endNode.x, this.endNode.y, 16, 16);
+        } else {
+            this.startIcon.onload = () => {
+                this.context.drawImage(this.startIcon, this.startNode.x, this.startNode.y, 8, 16);
+            }
+            this.endNodeIcon.onload = () => {
+                this.context.drawImage(this.endNodeIcon, this.endNode.x, this.endNode.y, 16, 16);
+            }
         }
     }
 
     clear() {
+        // Clear the canvas
         this.context.clearRect(0, 0, this.width, this.height)
+        this.renderTargets();
     }
 
     get width() {
