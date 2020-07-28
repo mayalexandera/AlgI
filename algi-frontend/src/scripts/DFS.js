@@ -41,10 +41,17 @@ class DFS {
     
     // Checks if we found the target node
     for (const node of neighbors) {
-      if(!visited.includes(node)){
-        canvas.visitCell(node);
-        visited.push(node);
-        console.log(visited);
+      let foundNode = false;
+      for (const cell of visited){
+        if(!(node.x != cell.x && node.y != cell.y)) {
+          foundNode = true;
+          break;
+        }
+        if (foundNode){
+          canvas.visitCell(node);
+          visited.push(node);
+          //console.log(visited);
+        }
       }
       if (node.x == targetNode.x && node.y == targetNode.y) {
         console.log("Finished!");
@@ -53,7 +60,7 @@ class DFS {
     }
     await this.sleep(100);
     this.start(canvas, neighbors.indexOf(node), targetNode, visited)
-    //this.start(canvas, neighbors[Math.floor(Math.random() * neighbors.length)], targetNode, visited);
+    this.start(canvas, neighbors[Math.floor(Math.random() * neighbors.length)], targetNode, visited);
   }
 }
 

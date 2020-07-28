@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       icon.classList = 'fa fa-stop';
       clear();
-      algoHandler.start('bfs').then((finished) => {
+      algoHandler.start('dfs').then((finished) => {
         event.target.classList.toggle('warning');
         icon.classList = 'fa fa-play';
       })
