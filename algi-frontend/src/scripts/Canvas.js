@@ -44,7 +44,7 @@ class Canvas {
     }
     showStartNode(node) {
         this.startIcon.onload = () => {
-            this.context.drawImage(this.startIcon, node.x, node.y, 10, 16);
+            this.context.drawImage(this.startIcon, node.x, node.y, 8, 16);
         }
     }
 
