@@ -19,6 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   carousel.loadImages();
 
+  // Set the start and end points
+  const startNode = {x: 105, y: 20};
+  const endNode = {x: 25, y: 100};
+  canvas.showStartNode(startNode);
+  canvas.showTargetNode(endNode);
+
 
   function startAlgorithm(event) {
     const playButton = event.target.querySelector('i');
@@ -27,13 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } else {
       playButton.classList = 'fa fa-stop';
-    
-      // Node x and y need to be divisible by nodeSize
-      const startNode = {x: 105, y: 20};
-      const endNode = {x: 25, y: 100};
       const bfs = new BFS();
-  
-      canvas.showTargetNode(endNode);
       bfs.start(canvas, startNode, endNode);
     }
   }
