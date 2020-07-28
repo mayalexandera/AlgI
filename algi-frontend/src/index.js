@@ -1,6 +1,7 @@
 import Canvas from './scripts/Canvas';
 import Carousel from './scripts/Carousel';
 import BFS from './scripts/BFS';
+import DFS from './scripts/DFS';
 
 import './styles/style.scss';
 
@@ -33,8 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } else {
       playButton.classList = 'fa fa-stop';
-      const bfs = new BFS();
-      bfs.start(canvas, startNode, endNode);
+
+      const dfs = new DFS();
+      dfs.start(canvas, startNode, endNode);
+
+     // const bfs = new BFS();
+      //bfs.start(canvas, startNode, endNode);
     }
   }
 

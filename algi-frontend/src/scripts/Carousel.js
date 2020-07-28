@@ -8,10 +8,34 @@ class Carousel {
         this.images = [vincentImage1, vincentImage2, vincentImage3, vincentImage4];
         this.imageCount = this.images.length;
         this.imageContainer = document.getElementById('image-container');
+        this.imageWrapper = document.getElementById('image-wrapper');
+
+        this.imageWrapper.querySelectorAll('button').forEach((button) => {
+            button.addEventListener('click', this.handleClick.bind(this));
+        })
+
+        this.currentRange = 0;
+    }
+
+    getCurrentImages() {
+        return this.images.slice(this.currentRange, this.currentRange + 3)
+    }
+
+    handleClick(event) {
+        const target = event.target;
+        if (target.matches('.right') || target.matches('.fa-angle-right')) {
+            this.currentRange+=1;
+            this.loadImages();
+        }
+        if (target.matches('.left') || target.matches('.fa-angle-left')) {
+            this.currentRange+=-1;
+            this.loadImages();
+        }
     }
 
     loadImages() {
-        for (const image of this.images) {
+        this.imageContainer.innerHTML = "";
+        for (const image of this.getCurrentImages()) {
             const imageElement = document.createElement('img');
             imageElement.classList.add('image-box');
             imageElement.src = image;

@@ -1,8 +1,10 @@
 import Canvas from "./Canvas";
 
 class DFS {
-  getNeighbors(node, canvas, queue) {
-    let step = Canvas.size;
+
+  getNeighbors(node, canvas) {
+    const neighbors = [];
+    const step = Canvas.size;
     const MOVES = [
       [step, step],
       [step, -step],
@@ -13,40 +15,39 @@ class DFS {
       [0, step],
       [0, -step],
     ];
-    let currX = node[0];
-    let currY = node[1];
+    
+    let currentX = node.x;
+    let currentY = node.y;
 
-    MOVES.forEach((pos) => {
-      let newX = pos[0];
-      let newY = pos[1];
-
-      let newPos = { x: currX + newX, y: currY + newY };
-
-      if (newPos.x < canvas.length && newPos.y < canvas[0].length)
-        queue.push(newPos);
-    });
-    return queue;
+    MOVES.forEach((position) => {
+      let newX = position[0];
+      let newY = position[1];
+      let newPosition = {x: currentX + newX, y: currentY + newY};
+      // Check if the position is within bounds of canvas
+      if (newPosition.x > 0 && newPosition.x < canvas.width && newPosition.y > 0 && newPosition.y < canvas.height) {
+        neighbors.push(newPosition);
+      }
+    })
+    return neighbors;
   }
 
-  dfs(canvas, startPos, targetNode) {
-    let queue = [startPos]
-    let visited = []
+  sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
-    const neighbors = getNeighbors(startPos, canvas);
-
-    for (const pos of neighbors) {
-      if (pos.x ==targetNode.x && pos.y ==targetNode.y) {
-        return pos;
+  async start(canvas, startPos, targetNode) {
+    const neighbors = this.getNeighbors(startPos, canvas);
+  
+    // Checks if we found the target node
+    for (const node of neighbors) {
+      canvas.visitCell(node);
+      if (node.x == targetNode.x && node.y == targetNode.y) {
+        console.log("Finished!");
+        return node;
       }
     }
-   
-    for (let i = 0; i < start.children.length; i++) {
-      let result = dfs(start.children[i], targetNode);
-      if (result != null) {
-        return result;
-      }
-    }
-    return null;
+    await this.sleep(100);
+    this.start(canvas, neighbors[Math.floor(Math.random() * neighbors.length)], targetNode);
   }
 }
 
