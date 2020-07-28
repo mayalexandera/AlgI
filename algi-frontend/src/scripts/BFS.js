@@ -21,8 +21,9 @@ class BFS {
       let newX = pos[0];
       let newY = pos[1];
       let newPos = { x: currX + newX, y: currY + newY };
-      queue.push(newPos);
+       queue.push(newPos);
     });
+    return queue;
   }
 
   sleep(ms) {
@@ -41,12 +42,11 @@ class BFS {
   async start(canvas, startPos, targetNode) {
     let queue = [startPos]; // {x: 0, y: 0} Start Point
     let visited = [];
-
     while (queue.length > 0) {
       let node = queue.shift();
       while (!this.visitedNode(node, visited)) {
         if (node.x == targetNode.x && node.y == targetNode.y) {
-          console.log("Finsihed");
+          console.log("Finished", node);
           return node;
         }
         await this.sleep(0);
