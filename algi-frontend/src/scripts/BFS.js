@@ -1,37 +1,43 @@
 import Canvas from "./Canvas";
 
 class BFS {
-<<<<<<< HEAD  constructor(val) { // how to set position to unique value?
-    this.val = val;
-    this.neighbors = [];
-
   getNeighbors(node, queue) {
     let step = 5;
-    queue.push({x: node.x+step, y: node.y+step});
-    queue.push({x: node.x+step, y: node.y-step});
-    queue.push({x: node.x+step, y: node.y});
+    MOVES = [
+      [step, step],
+      [step, -step],
+      [-step, step],
+      [-step, -step],
+      [step, 0],
+      [-step, 0],
+      [0, step],
+      [0, -step],
+    ];
+    let currentX = node[x];
+    let currentY = node[y];
 
-    queue.push({x: node.x-step, y: node.y+step});
-    queue.push({x: node.x-step, y: node.y-step});
-    queue.push({x: node.x-step, y: node.y});
+    MOVES.forEach((pos) => {
+      let newX = pos[0];
+      let newY = pos[1];
+      let newPos = { x: currentX + newX, y: currentY + newY };
 
-    queue.push({x: node.x, y: node.y+step});
-    queue.push({x: node.x, y: node.y-step});
-
+      queue.push(newPos);
+      console.log(newPos);
+    });
   }
 
   sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
- }
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
- visitedNode(targetNode, visited) {
-   for (const node of visited) {
-     if (node.x == targetNode.x && node.y == targetNode.y) {
-       return true;
-     }
-   }
-   return false;
- }
+  visitedNode(targetNode, visited) {
+    for (const node of visited) {
+      if (node.x == targetNode.x && node.y == targetNode.y) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   async start(canvas, startPos, targetNode) {
     let queue = [startPos]; // {x: 0, y: 0} Start Point
@@ -45,7 +51,7 @@ class BFS {
           return node;
         }
         await this.sleep(0);
-        canvas.visitCell(node)
+        canvas.visitCell(node);
         visited.push(node);
         this.getNeighbors(node, queue);
       }
