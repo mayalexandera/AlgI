@@ -3,7 +3,7 @@ import Canvas from "./Canvas";
 class BFS {
   getNeighbors(node, queue) {
     let step = 5;
-    MOVES = [
+    const MOVES = [
       [step, step],
       [step, -step],
       [-step, step],
@@ -13,16 +13,15 @@ class BFS {
       [0, step],
       [0, -step],
     ];
-    let currentX = node[x];
-    let currentY = node[y];
+
+    let currX = node.x;
+    let currY = node.y;
 
     MOVES.forEach((pos) => {
       let newX = pos[0];
       let newY = pos[1];
-      let newPos = { x: currentX + newX, y: currentY + newY };
-
+      let newPos = { x: currX + newX, y: currY + newY };
       queue.push(newPos);
-      console.log(newPos);
     });
   }
 
