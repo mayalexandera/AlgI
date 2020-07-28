@@ -12,6 +12,7 @@ a {
 
 $main-color: #1E1F26;
 $secondary-color: #1ABC9C;
+$warning-color: #ff1717;
 
 @font-face {
   font-family: "Lato";
@@ -47,9 +48,12 @@ $secondary-color: #1ABC9C;
   font-family: 'Lato';
   display: inline-block;
 }
-
+.warning {
+  background-color: $warning-color !important;
+}
 #run-button {
   background-color: $secondary-color;
+  
   &:hover {
     cursor: pointer;
     background-color: darken($color: $secondary-color, $amount: 5%);
@@ -179,7 +183,7 @@ h2 {
     span {
       margin-left: .5em;
       font-size: 90%;
-      color: #ff1717;
+      color: $warning-color;
     }
     i {
       margin-left: .2em;

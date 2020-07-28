@@ -8,7 +8,6 @@ class Canvas {
         this.size = Canvas.size;
         this.nodes = [];
         this.colors = ['red', 'blue', 'pink', 'orange', 'yellow', 'green'];
-
         this.startIcon = new Image();
         this.startIcon.src = startNodeIcon;
         this.endNodeIcon = new Image();
@@ -62,6 +61,10 @@ class Canvas {
 
     static get size() {
         return 5;
+    }
+
+    static get canvas() {
+        return document.getElementById('canvas');
     }
 }
 

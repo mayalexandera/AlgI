@@ -1,13 +1,13 @@
 import Canvas from './scripts/Canvas';
 import Carousel from './scripts/Carousel';
-import BFS from './scripts/BFS';
-import DFS from './scripts/DFS';
+import AlgorithmHandler from './scripts/AlgorithmHandler';
 
 import './styles/style.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = new Canvas();
   const carousel = new Carousel();
+  const algoHandler = new AlgorithmHandler(canvas);
 
   const runButton = document.getElementById('run-button');
   const clearResults = document.getElementById('clear-results');
@@ -18,31 +18,28 @@ document.addEventListener('DOMContentLoaded', () => {
   clearResults.addEventListener('click', clear);
   expandable.addEventListener('click', showDropdown);
 
+  // Load the sample images
   carousel.loadImages();
 
-  // Set the start and end points
-  const startNode = {x: 105, y: 20};
-  const endNode = {x: 25, y: 100};
-  canvas.showStartNode(startNode);
-  canvas.showTargetNode(endNode);
-
-
+  // Run the selected algorithm and when you're done change the run button look
   function startAlgorithm(event) {
-    const playButton = event.target.querySelector('i');
-    if (playButton.classList.contains('fa-stop')) {
-      playButton.classList = 'fa fa-play';
+    event.target.classList.toggle('warning');
+    const icon = event.target.querySelector('i');
+    if (icon.classList.contains('fa-stop')) {
+      icon.classList = 'fa fa-play';
+      algoHandler.stop();
 
     } else {
-      playButton.classList = 'fa fa-stop';
-
-      const dfs = new DFS();
-      dfs.start(canvas, startNode, endNode);
-
-     // const bfs = new BFS();
-      //bfs.start(canvas, startNode, endNode);
+      icon.classList = 'fa fa-stop';
+      clear();
+      algoHandler.start('bfs').then((finished) => {
+        event.target.classList.toggle('warning');
+        icon.classList = 'fa fa-play';
+      })
     }
   }
 
+  // Handle dropdown events
   function showDropdown(event) {
     const dropdown = event.target.querySelector('.dropdown');
     if (dropdown) {
@@ -53,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Clear the canvas and reset everything
   function clear() {
     nodeCountElement.textContent = "0";
     canvas.clear();
