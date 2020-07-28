@@ -1,6 +1,9 @@
 import Canvas from "./Canvas";
 
 class BFS {
+  constructor() {
+    this.nodeCountElement = document.getElementById('node-count');
+  }
   getNeighbors(node, queue) {
     let step = Canvas.size;
     const MOVES = [
@@ -53,6 +56,7 @@ class BFS {
         canvas.visitCell(node);
         visited.push(node);
         this.getNeighbors(node, queue);
+        this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
       }
     }
     return null;

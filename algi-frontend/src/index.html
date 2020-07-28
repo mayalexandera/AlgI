@@ -25,13 +25,31 @@
       </ul>
     </nav>
 
-    <div class = "tools-help">
-      
+    
+    <h2>Pick an Image</h2>
+    <div id = "image-wrapper">
+      <button class = "left"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+      <div id = "image-container">
+      </div>
+      <button class = "right"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
     </div>
-
-
     <div id = "canvas-wrapper">
-      <canvas id="canvas"></canvas>
+
+      <div id = "tools-help">
+        <p>Breadth-first <span>(Low Performance)</span></p>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        </div>
+        
+        <div class = 'help-icons'>
+          <p>Start <i class="fa fa-male"></i></p>
+          <p>Target <i class="fa fa-bullseye"></i></p>
+        </div>
+      </div>
+
+      <canvas id="canvas" width = "800" height = "400"></canvas>
+      <p class = "time">Time: <span id = "time-count">0:00</span></p>
+      <p class = "nodes">Nodes <span id = "node-count">0</span></p>
     </div>
 
 

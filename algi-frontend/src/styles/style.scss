@@ -4,7 +4,6 @@ ul {
     list-style-type: none;
   }
 }
-
 a {
   text-decoration: none;
 }
@@ -16,26 +15,36 @@ $secondary-color: #1ABC9C;
 
 @font-face {
   font-family: "Lato";
-  src: url("../assets/fonts/Lato-Regular.ttf") format("ttf")
+  src: url("../assets/fonts/Lato-Regular.ttf")
 }
 
 .hidden {
   max-height: 0;
 }
 
-
 // Everything else
 #canvas-wrapper {
+  width: 800px;
+  margin: auto;
+  p {
+    display: inline-block;
+    margin-top: 1em;
+    font-size: 90%;
+    font-family: 'Helvetica';
+  }
+  .nodes {
+    margin-left: 1em;
+  }
   #canvas {
     display: block;
-    border: 1px solid black;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
     margin: 0 auto;
-    margin-top: 2em;
   }
 }
 .logo {
   font-size: 90%;
-  font-family: 'Helvetica';
+  font-family: 'Lato';
   display: inline-block;
 }
 
@@ -96,8 +105,90 @@ nav {
     }
   }
 }
+#image-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+  button {
+    width: 3rem;
+    height: 3rem;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 200%;
+    margin-top: 3em;
+    border: none;
+    color: $secondary-color;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: white;
+    &:hover {
+      cursor: pointer;
+      color: black;
+    }
+    &:focus, &:active {
+      outline: none;
+    }
+  }
+}
+h2 {
+  font-weight: lighter;
+  font-family: 'Lato';
+  padding-top: 1em;
+  text-align: center;
+}
+#image-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin: 2em 0;
 
-.tools-help {
+  .image-box {
+    margin: 1em .5em 0 .5em;
+    width: 10rem; height: 10rem;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    transition: transform .2s;
+    &:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+  }
+}
+
+.slidecontainer {
+  margin-left: 2em;
+  input {
+    margin-top: 1.4em;
+  }
+}
+
+#tools-help {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   border: 1px solid rgba(0, 0, 0, 0.3);
-  height: 6rem;
+  height: 3rem;
+  background-color: $main-color;
+  color: white;
+  margin: 0 auto;
+  padding: .5em;
+  p {
+    margin-left: .5em;
+    font-size: 100%;
+    font-family: 'Lato';
+    span {
+      margin-left: .5em;
+      font-size: 90%;
+      color: #ff1717;
+    }
+    i {
+      margin-left: .2em;
+    }
+  }
+  .help-icons {
+    margin-left: 2em;
+    p {
+      margin-left: 1.5em;
+    }
+  }
 }
