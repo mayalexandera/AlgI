@@ -1,14 +1,12 @@
 import Canvas from './scripts/Canvas';
 import Carousel from './scripts/Carousel';
-import AlgoPreview from './scripts/AlgoPreview';
-
 import BFS from './scripts/BFS';
+
 import './styles/style.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = new Canvas();
   const carousel = new Carousel();
-  new AlgoPreview(); // Load the algorithm preview boxes
 
   const runButton = document.getElementById('run-button');
   const clearResults = document.getElementById('clear-results');

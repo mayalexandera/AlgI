@@ -33,23 +33,20 @@
       </div>
       <button class = "right"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
     </div>
-
-    <div class = "tools-help">
-      <div class = "color-picker">
-        <p>Change Colors</p>
-        <ul>
-          <li class = "red"></li>
-          <li class = "green"></li>
-          <li class = "blue"></li>
-        </ul>
-      </div>
-    </div>
-
-    <div id = "algorithm-preview-wrapper">
-    </div>
-
-
     <div id = "canvas-wrapper">
+
+      <div id = "tools-help">
+        <p>Breadth-first <span>(Low Performance)</span></p>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        </div>
+        
+        <div class = 'help-icons'>
+          <p>Start <i class="fa fa-male"></i></p>
+          <p>Target <i class="fa fa-bullseye"></i></p>
+        </div>
+      </div>
+
       <canvas id="canvas" width = "800" height = "400"></canvas>
       <p class = "time">Time: <span id = "time-count">0:00</span></p>
       <p class = "nodes">Nodes <span id = "node-count">0</span></p>
