@@ -1,8 +1,9 @@
 import BFS from './BFS';
 import DFS from './DFS';
-import quickSort from './quickSort'
-import mergeSort from './mergeSort'
+import Merge from './MergeSort';
+import quickSort from './QuickSort'
 import Canvas from './Canvas';
+import QuickSort from './QuickSort';
 
 class AlgorithmHandler {
     constructor(canvas) {
@@ -11,9 +12,24 @@ class AlgorithmHandler {
         this.canvas = canvas;
         this.running = false;
 
-        canvas.setTargets(this.startNode, this.endNode);
-        canvas.renderTargets();
+        this.merger = new Merge();
+        this.setCanvasTowers();
+
+        this.quickSort = new QuickSort;
+
+        //canvas.setTargets(this.startNode, this.endNode);
+        //canvas.renderTargets();
     }
+
+    setCanvasTowers() {
+        const towers = [];
+        for(let i = 0; i < this.canvas.width; i++) {
+            const height = Math.floor(Math.random() * (this.canvas.height - 10));
+            towers.push(height);
+        }
+        this.canvas.setTowers(this.merger._sort(towers));
+    }
+
     start(name) {
         this.running = true;
         switch(name) {
