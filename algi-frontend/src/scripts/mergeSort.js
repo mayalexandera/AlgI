@@ -21,4 +21,9 @@ class Merge {
 
 }
 
+//testing testing
+//let array = [4,5,22,35,6,8,1,0,87];
+//let sorted = mergeSort(array)
+//console.log(sorted)
+
 export default Merge;

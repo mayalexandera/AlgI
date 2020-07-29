@@ -1,4 +1,5 @@
-class quickSort{ 
+class quickSort {
+
   start(array) {
   // return array if it there is only one or zero elements
     if (array.length <= 1) {
@@ -25,5 +26,7 @@ class quickSort{
 
 export default quickSort
 
-let array = [23, 45, 16, 37, 3, 99, 22];
-let sorted = quicksort(array);
+//testing testing
+//let array = [4,5,22,35,6,8,1,0,87];
+//let sorted = quicksort(array);
+//console.log(sorted)
