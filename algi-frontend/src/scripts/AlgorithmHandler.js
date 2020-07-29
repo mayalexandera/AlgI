@@ -1,5 +1,7 @@
 import BFS from './BFS';
 import DFS from './DFS';
+import quickSort from './quickSort'
+import mergeSort from './mergeSort'
 import Canvas from './Canvas';
 
 class AlgorithmHandler {
