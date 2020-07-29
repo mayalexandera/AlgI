@@ -11,8 +11,8 @@ import picasoImage4 from '../assets/images/picaso-04.jpg';
 
 class Carousel {
     constructor() {
-        this.images = [vincentImage0, vincentImage1, vincentImage2, vincentImage3, vincentImage4, 
-            picasoImage1, picasoImage2, picasoImage3, picasoImage4
+        this.images = [vincentImage1, vincentImage2, vincentImage3, vincentImage4, 
+            picasoImage1, picasoImage2, picasoImage3, picasoImage4, vincentImage0
         ];
         this.imageContainer = document.getElementById('image-container');
         this.imageWrapper = document.getElementById('image-wrapper');

@@ -13,6 +13,8 @@ a {
 $main-color: #1E1F26;
 $secondary-color: #1ABC9C;
 $warning-color: #ff1717;
+$goldish: gold;
+$greenish: green;
 
 @font-face {
   font-family: "Lato";
@@ -22,6 +24,17 @@ $warning-color: #ff1717;
 .hidden {
   max-height: 0;
 }
+
+.slow-speed {
+  color: $warning-color;
+}
+.good-speed {
+  color: $greenish;
+}
+.medium-speed {
+  color: $goldish;
+}
+
 // Everything else
 #canvas-wrapper {
   width: 800px;
@@ -50,6 +63,7 @@ $warning-color: #ff1717;
 }
 .logo {
   font-size: 90%;
+  font-weight: lighter;
   font-family: 'Lato';
   display: inline-block;
 }
@@ -157,12 +171,14 @@ h2 {
   margin-bottom: 4em;
 
   .image-box {
+    border: 1px solid white;
     margin: 1em .5em 0 .5em;
     width: 10rem; height: 10rem;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-    transition: transform .2s;
+    transition: all .1s ease-in-out;
+    box-sizing: border-box;
     &:hover {
-      transform: scale(1.05);
+      border: 5px solid white;
       cursor: pointer;
     }
   }
@@ -185,11 +201,9 @@ h2 {
   p {
     margin-left: .5em;
     font-size: 100%;
-    font-family: 'Lato';
     span {
       margin-left: .5em;
       font-size: 90%;
-      color: $warning-color;
     }
     i {
       margin-left: .2em;

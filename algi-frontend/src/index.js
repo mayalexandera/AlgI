@@ -73,13 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
     event.target.classList.add('active');
     switch (event.target.textContent) {
       case 'BFS':
-        runButton.innerHTML = 'Run Breadth-first <i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Breadth-first <span>(Low Performance)</span>'
+        runButton.innerHTML = 'Run Breadth-first<i class="fa fa-play" aria-hidden="true"></i>'
+        algorithmTitleElement.innerHTML = 'Breadth-first<span class = "slow-speed">(Low Performance)</span>'
         currentAlgorithm = 'bfs';
         break;
       case 'DFS':
-        runButton.innerHTML = 'Run Depth-first <i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Depth-first <span>(Low Performance)</span>'
+        runButton.innerHTML = 'Run Depth-first<i class="fa fa-play" aria-hidden="true"></i>'
+        algorithmTitleElement.innerHTML = 'Depth-first<span class = "medium-speed">(Medium Performance)</span>'
         currentAlgorithm = 'dfs';
         break;
     }

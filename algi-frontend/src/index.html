@@ -14,9 +14,10 @@
         <li class = "expandable">
           Algorithms<i class="fa fa-arrow-down" aria-hidden="true"></i>
           <div class = "dropdown hidden">
-            <span>BFS</span>
+            <span class = "active">BFS</span>
             <span>DFS</span>
-            <span>Dijkstra</span>
+            <span>Merge Sort</span>
+            <span>Quick Sort</span>
           </div>
         </li>
         <li>Upload Image</li>
@@ -36,19 +37,17 @@
     <div id = "canvas-wrapper">
 
       <div id = "tools-help">
-        <p id = "algorithm-title">Breadth-first <span>(Low Performance)</span></p>
-
+        <p id = "algorithm-title">Breadth-first<span class = "slow-speed">(Low Performance)</span></p>
+        <p class = "time">Time: <span id = "time-count">0:00</span></p>
+        <p class = "nodes">Nodes <span id = "node-count">0</span></p>
         
         <div class = 'help-icons'>
           <p>Start <i class="fa fa-male"></i></p>
           <p>Target <i class="fa fa-bullseye"></i></p>
         </div>
       </div>
-
       <canvas id="canvas" width = "800" height = "400"></canvas>
       <canvas id="layered-canvas" width = "800" height = "400"></canvas>
-      <p class = "time">Time: <span id = "time-count">0:00</span></p>
-      <p class = "nodes">Nodes <span id = "node-count">0</span></p>
     </div>
 
 
