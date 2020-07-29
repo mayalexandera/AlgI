@@ -6,7 +6,6 @@ class DFS {
     const canvas = Canvas.canvas;
     return (position.x >= 0 && position.x <= canvas.width && position.y >= 0 && position.y <= canvas.height);
   }
-
   getNeighbors(node, queue) {
     const neighbors = [];
     const step = Canvas.size;
@@ -22,7 +21,7 @@ class DFS {
     ];
 
     if (!node) {
-      return queue.slice(0, 100);
+      return queue.slice(0, 3);
     }
     
     MOVES.forEach((position) => {
