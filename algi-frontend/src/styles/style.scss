@@ -22,11 +22,11 @@ $warning-color: #ff1717;
 .hidden {
   max-height: 0;
 }
-
 // Everything else
 #canvas-wrapper {
   width: 800px;
   margin: auto;
+  position: relative;
   p {
     display: inline-block;
     margin-top: 1em;
@@ -41,6 +41,11 @@ $warning-color: #ff1717;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     margin: 0 auto;
+  }
+  #layered-canvas {
+    position: absolute;
+    left: 0; top: 0;
+    z-index: -1;
   }
 }
 .logo {
@@ -159,12 +164,6 @@ h2 {
   }
 }
 
-.slidecontainer {
-  margin-left: 2em;
-  input {
-    margin-top: 1.4em;
-  }
-}
 #algorithm-title {
   min-width: 15rem;
 }

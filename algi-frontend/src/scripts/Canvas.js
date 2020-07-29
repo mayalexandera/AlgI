@@ -4,14 +4,18 @@ import startNodeIcon from '../assets/images/male-solid.png';
 class Canvas {
     constructor() {
         this.canvas = document.getElementById('canvas');
+        this.layeredCanvas = document.getElementById('layered-canvas');
+        this.layeredContext = this.layeredCanvas.getContext('2d');
         this.context = this.canvas.getContext('2d');
         this.size = Canvas.size;
         this.nodes = [];
         this.colors = ['red', 'blue', 'pink', 'orange', 'yellow', 'green'];
+        //this.colors = ['white'];
         this.startIcon = new Image();
         this.startIcon.src = startNodeIcon;
         this.endNodeIcon = new Image();
         this.endNodeIcon.src = endIcon;
+        this.targetImage = null;
         this.isDragging = false;
         this.draggingNode = null;
 
@@ -28,25 +32,24 @@ class Canvas {
     getNode(x, y) {
         return {x: x, y: y};
     }
-
-    async loadGrid() {
-        for (let r = 0; r < this.width / this.size; r++) {
-            for (let c = 0; c < this.height / this.size; c++) {
-                this.context.rect(r, c, this.size, this.size);
-                this.nodes.push(this.getNode(r, c));
-            }
-        }
-        this.context.fill();
-    }
     
     visitCell(node) {
-        this.context.fillStyle = this.getColor();
-        this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
+        this.context.clearRect(node.x, node.y, this.size, this.size);
     }
 
     setTargets(startNode, endNode) {
         this.startNode = startNode;
         this.endNode = endNode;
+    }
+
+    setImage(image) {
+        this.targetImage = image;
+    }
+
+    renderImage() {
+        if (this.targetImage) {
+            this.layeredContext.drawImage(this.targetImage, 0, 0, this.canvas.width, this.canvas.height);
+        }
     }
 
     renderTargets() {
@@ -66,6 +69,9 @@ class Canvas {
 
     clear() {
         this.context.clearRect(0, 0, this.width, this.height)
+        this.renderImage();
+        this.context.fillStyle = 'white';
+        this.context.fillRect(0, 0, this.width, this.height)
         this.renderTargets();
     }
 
@@ -109,7 +115,7 @@ class Canvas {
     }
 
     static get size() {
-        return 5;
+        return 3;
     }
 
     static get canvas() {

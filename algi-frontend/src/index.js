@@ -6,7 +6,7 @@ import './styles/style.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = new Canvas();
-  const carousel = new Carousel();
+  const carousel = new Carousel(canvas);
   const algoHandler = new AlgorithmHandler(canvas);
 
   const runButton = document.getElementById('run-button');

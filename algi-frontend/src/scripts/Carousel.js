@@ -10,17 +10,16 @@ import picasoImage4 from '../assets/images/picaso-04.jpg';
 
 
 class Carousel {
-    constructor() {
+    constructor(canvas) {
         this.images = [vincentImage1, vincentImage2, vincentImage3, vincentImage4, 
             picasoImage1, picasoImage2, picasoImage3, picasoImage4
         ];
+        this.canvas = canvas;
         this.imageCount = this.images.length;
         this.imageContainer = document.getElementById('image-container');
         this.imageWrapper = document.getElementById('image-wrapper');
 
-        this.imageWrapper.querySelectorAll('button').forEach((button) => {
-            button.addEventListener('click', this.handleClick.bind(this));
-        })
+        this.imageWrapper.addEventListener('click', this.handleClick.bind(this));
 
         this.currentRange = 0;
         this.maxRange = 4;
@@ -41,6 +40,11 @@ class Carousel {
             if (this.currentRange < 1) {return;}
             this.currentRange+=-1;
             this.loadImages();
+        }
+
+        if (event.target.nodeName == 'IMG') {
+            this.canvas.setImage(event.target);
+            this.canvas.clear();
         }
     }
 
