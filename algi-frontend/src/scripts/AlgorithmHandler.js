@@ -4,13 +4,16 @@ import Canvas from './Canvas';
 
 class AlgorithmHandler {
     constructor(canvas) {
-        this.startNode = {x: 105, y: 20};
-        this.endNode = {x: 25, y: 100};
+        this.startNode = {x: 100, y: 150};
+        this.endNode = {x: 60, y: 150};
         this.canvas = canvas;
-        canvas.showStartNode(this.startNode);
-        canvas.showTargetNode(this.endNode);
+        this.running = false;
+
+        canvas.setTargets(this.startNode, this.endNode);
+        canvas.renderTargets();
     }
     start(name) {
+        this.running = true;
         switch(name) {
             case 'bfs':
                 this.currentAlgorithm = new BFS();
@@ -21,7 +24,10 @@ class AlgorithmHandler {
             default:
                 throw "Algorithm not found!"
         }
-        return this.currentAlgorithm.init(this.canvas, this.startNode, this.endNode, []);
+        //i want a function that sets up the nodes, from which we can pull neighbors, and remove when visited.
+        //return this.currentAlgorithm.init(this.canvas, this.startNode, this.endNode, []);
+
+        return this.currentAlgorithm.start(this.canvas, this.canvas.startNode, this.canvas.endNode);
     }
 
     stop() {
