@@ -10,7 +10,6 @@ class Canvas {
         this.size = Canvas.size;
         this.nodes = [];
         this.colors = ['red', 'blue', 'pink', 'orange', 'yellow', 'green'];
-        //this.colors = ['white'];
         this.startIcon = new Image();
         this.startIcon.src = startNodeIcon;
         this.endNodeIcon = new Image();
@@ -34,7 +33,9 @@ class Canvas {
     }
     
     visitCell(node) {
-        this.context.clearRect(node.x, node.y, this.size, this.size);
+        this.context.fillStyle = this.getColor();
+        this.context.fillRect(node.x, node.y, this.size, this.size);
+        //this.context.clearRect(node.x, node.y, this.size, this.size);
     }
 
     setTargets(startNode, endNode) {
@@ -48,7 +49,7 @@ class Canvas {
 
     renderImage() {
         if (this.targetImage) {
-            this.layeredContext.drawImage(this.targetImage, 0, 0, this.canvas.width, this.canvas.height);
+            this.layeredContext.drawImage(this.targetImage, 0, 0, this.canvas.width, this.canvas.height);  
         }
     }
 

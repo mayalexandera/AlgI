@@ -1,3 +1,4 @@
+import vincentImage0 from '../assets/images/vincent.jpg';
 import vincentImage1 from '../assets/images/vincent-01.jpg';
 import vincentImage2 from '../assets/images/vincent-02.jpg';
 import vincentImage3 from '../assets/images/vincent-03.jpg';
@@ -8,10 +9,9 @@ import picasoImage2 from '../assets/images/picaso-02.jpg';
 import picasoImage3 from '../assets/images/picaso-03.jpg';
 import picasoImage4 from '../assets/images/picaso-04.jpg';
 
-
 class Carousel {
     constructor(canvas) {
-        this.images = [vincentImage1, vincentImage2, vincentImage3, vincentImage4, 
+        this.images = [vincentImage0, vincentImage1, vincentImage2, vincentImage3, vincentImage4, 
             picasoImage1, picasoImage2, picasoImage3, picasoImage4
         ];
         this.canvas = canvas;
