@@ -115,7 +115,7 @@ class Canvas {
     }
 
     static get size() {
-        return 3;
+        return 5;
     }
 
     static get canvas() {

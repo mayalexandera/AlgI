@@ -40,11 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
         clearCanvas();
 
         // The algorithm finished, do stuff
-        algoHandler.start(currentAlgorithm).then((finished) => {
-          event.target.classList.remove('warning');
-          icon.classList = 'fa fa-play';
-          algoHandler.running = false;
-        })
+        algoHandler.start(currentAlgorithm)
+        //.then((finished) => {
+        //  event.target.classList.remove('warning');
+        //  icon.classList = 'fa fa-play';
+        //  algoHandler.running = false;
+        //})
       }
     }
   }
