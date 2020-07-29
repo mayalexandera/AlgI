@@ -11,17 +11,10 @@ class AlgorithmHandler {
         this.canvas = canvas;
         this.running = false;
 
-<<<<<<< HEAD
-        this.merger = new Merge();
-        this.quickSort = new QuickSort();
-
-        this.setCanvasTowers();
-=======
         //this.merger = new Merge();
         //this.setCanvasTowers();
 
         //this.quickSort = new QuickSort;
->>>>>>> 9295c5158866e85ba879cc81b2b46943ae4f0fea
 
         canvas.setTargets(this.startNode, this.endNode);
         canvas.renderTargets();

@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   clearResults.addEventListener('click', clearCanvas);
   expandable.addEventListener('click', showDropdown);
   expandable.querySelector('.dropdown').addEventListener('click', changeAlgorithm);
+  expandable.addEventListener('mouseleave', hideDropDown);
 
   // Load the sample images
   carousel.loadImages();
@@ -66,7 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function changeAlgorithm(event) {
-    console.log("Depth-first search");
+    document.querySelectorAll('.active').forEach(element => {
+      element.classList.remove('active');
+    })
+    event.target.classList.add('active');
     switch (event.target.textContent) {
       case 'BFS':
         runButton.innerHTML = 'Run Breadth-first <i class="fa fa-play" aria-hidden="true"></i>'
@@ -79,6 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
         currentAlgorithm = 'dfs';
         break;
     }
+  }
+
+  function hideDropDown(event) {
+    const parent = event.target.parentNode;
+    if (!parent.matches('.dropdown') && !parent.matches('.expandable') && !parent.matches('ul')) {
+      expandable.querySelector('.dropdown').classList.add('hidden');
+      console.log("d");
+    }
+    
   }
 
 })

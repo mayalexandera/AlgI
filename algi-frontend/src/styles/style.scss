@@ -66,6 +66,9 @@ $warning-color: #ff1717;
 }
 
 .dropdown {
+  .active {
+    background-color: $secondary-color;
+  }
   position: absolute;
   background: $main-color;
   width: 7rem;
@@ -79,7 +82,7 @@ $warning-color: #ff1717;
     margin: .5em 0;
     margin-bottom: 1em;
     padding: .5em;
-    &:hover {
+    &:hover:not(.active) {
       background-color: lighten($main-color, $amount: 20%);
     }
   }
@@ -90,6 +93,7 @@ nav {
   color: white;
   padding: 1em;
   font-family: "Lato";
+  min-width: 55rem;
   ul{
     display: inline-block;
     margin-left: 2em;
@@ -125,7 +129,7 @@ nav {
     box-sizing: border-box;
     text-align: center;
     font-size: 200%;
-    margin-top: 3em;
+    margin-top: 2.5em;
     border: none;
     color: $secondary-color;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -140,9 +144,9 @@ nav {
   }
 }
 h2 {
+  margin-top: 4em;
   font-weight: lighter;
   font-family: 'Lato';
-  padding-top: 1em;
   text-align: center;
 }
 #image-container {
@@ -150,7 +154,7 @@ h2 {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  margin: 2em 0;
+  margin-bottom: 4em;
 
   .image-box {
     margin: 1em .5em 0 .5em;
@@ -158,7 +162,7 @@ h2 {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
     transition: transform .2s;
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       cursor: pointer;
     }
   }
