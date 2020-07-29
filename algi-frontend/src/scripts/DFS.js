@@ -4,6 +4,8 @@ import Canvas from "./Canvas";
 
 class DFS {
   createNodeTree(canvas) {
+    //rows = canvas.height
+    //cols = canvas.width
     let adjacencyList = [];
     const cols = canvas.width / canvas.size;
     const rows = canvas.height / canvas.size;
@@ -106,33 +108,39 @@ class DFS {
   }
 
   async start(canvas, startPos, targetNode, stack = []) {
-    console.log('hi', startPos)
-    let result = [];
-    let adjacencyList
-    if(!adjacencyList){
-      adjacencyList = this.createNodeTree(canvas);
-    }
+    let startNode, adjacencyList
+    if(!adjacencyList)adjacencyList = this.createNodeTree(canvas);
+    
+    let startX = startPos.x/canvas.size
+    let startY = startPos.y/canvas.size
     adjacencyList.forEach(pos => {
-      if(pos.x == startPos.x && pos.y == startPos.y){
-        console.log(pos, startPos)
+      if(pos.x === startX && pos.y === startY){
+        startNode = pos
+        //console.log('position:', pos, 'startPos:',startPos)
       }
     })
-    //console.log(startNode);
-   // function dfsHelper(pos){
-   //   console.log(pos)
-   //   if (pos.x == targetNode.x && pos.y == targetNode.y){
-   //     console.log('finished')
-   //     return pos
-   //   }
+ 
+    function dfsHelper(pos){
+      console.log('pos',pos)
+      let targX, targY
+      targX = targetNode.x/canvas.size
+      targY = targetNode.y/canvas.size
 
-   //   if(pos.visited == true) return false
-   //   adjacencyList[pos].visited = true
-   //   canvas.visitCell(pos)
-   //   adjacencyList[pos].forEach(neighbor => {
-   //    if (neighbor.visited == false)return dfsHelper(neighbor)
-   //  })
-   // }
-   // dfsHelper(adjacencyList[startPos])
+      if (pos.x == targX && pos.y == targY){
+        console.log('finished')
+        return pos
+      }
+      
+      if(pos.visited == true) return false
+      pos.visited = true
+      canvas.visitCell(pos)
+      pos.neighbors.forEach(neighbor => {
+        console.log('neighbor', neighbor)
+       if (neighbor.visited == false)return dfsHelper(neighbor)
+     })
+    }
+    console.log('startNode', startNode);
+    dfsHelper(startNode);
 
 
     // for (const node of neighbors) {
@@ -151,5 +159,6 @@ class DFS {
     // );
   }
 }
+
 
 export default DFS;
