@@ -1,4 +1,6 @@
-class QuickSort {
+import Algorithm from "./Algorithm";
+
+class QuickSort extends Algorithm{
   _sort(array) {
     if (array.length <= 1) {
       return array;
@@ -12,7 +14,7 @@ class QuickSort {
     }
     // recurssion
     return this._sort(left).concat(pivot)
-    .concat(_sort(right));
+    .concat(this._sort(right));
   }
 
 }

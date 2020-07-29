@@ -1,14 +1,7 @@
 import Canvas from "./Canvas";
+import Algorithm from "./Algorithm";
 
-class BFS {
-  constructor() {
-    this.nodeCountElement = document.getElementById('node-count');
-  }
-
-  withinBounds(position) {
-    const canvas = Canvas.canvas;
-    return (position.x >= 0 && position.x <= canvas.width && position.y >= 0 && position.y <= canvas.height);
-  }
+class BFS extends Algorithm {
 
   getNeighbors(node, queue) {
     const step = Canvas.size;
@@ -27,10 +20,6 @@ class BFS {
     return queue;
   }
 
-  sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
   visitedNode(targetNode, visited) {
     for (const node of visited) {
       if (node.x == targetNode.x && node.y == targetNode.y) {
@@ -41,8 +30,9 @@ class BFS {
   }
 
   async start(canvas, startPos, targetNode) {
-    let queue = [startPos]; // {x: 0, y: 0} Start Point
+    let queue = [startPos];
     let visited = [];
+    
     while (queue.length > 0 && !this.stop) {
       let node = queue.shift();
       while (!this.visitedNode(node, visited)) {
