@@ -2,25 +2,12 @@ import Canvas from "./Canvas";
 
 class DFS {
 
-  createNodeTree(canvas){
-    let nodes = []
-    const cols = canvas.width/5
-    const rows = canvas.height/5
-    for(let x = 0; x <= cols; x++){
-      for(let y = 0; y <= rows; y++){
-        let newPos = { x: x, y: y };
-        console.log(newPos)
-        nodes.push(newPos);
-      }
-    }
-    return nodes
+  withinBounds(position) {
+    const canvas = Canvas.canvas;
+    return (position.x >= 0 && position.x <= canvas.width && position.y >= 0 && position.y <= canvas.height);
   }
 
-  getNeighbors(node, canvas, visited) {
-    console.log("canvas", canvas.width, canvas.height)
-    if(!visited){
-      visited = []
-    }
+  getNeighbors(node, queue) {
     const neighbors = [];
     const step = Canvas.size;
     const MOVES = [
@@ -33,17 +20,26 @@ class DFS {
       [0, step],
       [0, -step],
     ];
-    
-    let currentX = node.x;
-    let currentY = node.y;
 
+    if (!node) {
+      return queue.slice(0, 100);
+    }
+    
     MOVES.forEach((position) => {
       let newX = position[0];
       let newY = position[1];
-      let newPosition = {x: currentX + newX, y: currentY + newY};
-      // Check if the position is within bounds of canvas
-      if (newPosition.x > 0 && newPosition.x < canvas.width && newPosition.y > 0 && newPosition.y < canvas.height) {
-        neighbors.push(newPosition);
+      let newPosition = {x: node.x + newX, y: node.y + newY};
+      
+      if (this.withinBounds(newPosition)) {
+        // Check if this new position is not already in neighbors
+        let foundNode = false;
+        for (const visitedNode of queue) {
+          if (visitedNode.x == newPosition.x && visitedNode.y == newPosition.y) {
+            foundNode = true;
+            break;
+          }
+        }
+        if (!foundNode) {neighbors.push(newPosition);}
       }
     })
     return neighbors;
@@ -53,51 +49,19 @@ class DFS {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  init(){
-    console.log('hi')
-    this.createNodeTree(canvas);
-  }
+  async start(canvas, startPos, targetNode, queue=[]) {
+    const neighbors = this.getNeighbors(startPos, queue);
+    queue = queue.concat(neighbors);
 
-  async start(canvas, startPos, targetNode, visited) {
-    const neighbors = this.getNeighbors(startPos, canvas, visited);
-    console.log("neighbors",neighbors)
-    if (visited.length == 0){
-      for(const node of neighbors) {
-         if (node.x == targetNode.x && node.y == targetNode.y) {
-           console.log("Finished!");
-           return node;
-         }
-         canvas.visitCell(node);
-         visited.push(node);
-         console.log("visited", visited)
+    for (const node of neighbors) {
+      if (node.x == targetNode.x && node.y == targetNode.y) {
+        return node;
       }
-    }else {
-      for (const node of neighbors) {
-        let foundNode = false;
-
-        for (const cell of visited) {
-          if (!(node.x != cell.x && node.y != cell.y)) {
-            foundNode = true;
-            break;
-          }
-          if (foundNode) {
-            canvas.visitCell(node);
-            neighbors.pop()
-            visited.push(node);
-            //console.log(visited);
-          }
-        }
-        if (node.x == targetNode.x && node.y == targetNode.y) {
-          console.log("Finished!");
-          return node;
-        }
-      }
+      canvas.visitCell(node);
     }
-      // Checks if we found the target node
-      
-    await this.sleep(500);
-    //this.start(canvas, neighbors.indexOf(node), targetNode, visited)
-    this.start(canvas, neighbors[Math.floor(Math.random() * neighbors.length)], targetNode, visited);
+
+    await this.sleep(1);
+    this.start(canvas, neighbors[Math.floor(Math.random() * neighbors.length)], targetNode, queue);
   }
 }
 
