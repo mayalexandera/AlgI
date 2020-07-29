@@ -13,13 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearResults = document.getElementById('clear-results');
   const expandable = document.querySelector('.expandable');
   const nodeCountElement = document.getElementById('node-count');
+  const algorithmTitleElement = document.getElementById('algorithm-title');
 
   runButton.addEventListener('click', startAlgorithm);
   clearResults.addEventListener('click', clearCanvas);
   expandable.addEventListener('click', showDropdown);
+  expandable.querySelector('.dropdown').addEventListener('click', changeAlgorithm);
 
   // Load the sample images
   carousel.loadImages();
+  var currentAlgorithm = 'bfs';
 
   // Run the selected algorithm and when you're done change the run button look
   function startAlgorithm(event) {
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearCanvas();
 
         // The algorithm finished, do stuff
-        algoHandler.start('bfs').then((finished) => {
+        algoHandler.start(currentAlgorithm).then((finished) => {
           event.target.classList.remove('warning');
           icon.classList = 'fa fa-play';
           algoHandler.running = false;
@@ -51,9 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdown = event.target.querySelector('.dropdown');
     if (dropdown) {
       dropdown.classList.toggle('hidden');
-    } else {
-      // Update the play button
-      console.log(event.target.textContent);
     }
   }
 
@@ -62,6 +62,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (algoHandler.running) {return;}
     nodeCountElement.textContent = "0";
     canvas.clear();
+  }
+
+  function changeAlgorithm(event) {
+    console.log("Depth-first search");
+    switch (event.target.textContent) {
+      case 'BFS':
+        runButton.innerHTML = 'Run Breadth-first <i class="fa fa-play" aria-hidden="true"></i>'
+        algorithmTitleElement.innerHTML = 'Breadth-first <span>(Low Performance)</span>'
+        currentAlgorithm = 'bfs';
+        break;
+      case 'DFS':
+        runButton.innerHTML = 'Run Depth-first <i class="fa fa-play" aria-hidden="true"></i>'
+        algorithmTitleElement.innerHTML = 'Depth-first <span>(Low Performance)</span>'
+        currentAlgorithm = 'dfs';
+        break;
+    }
   }
 
 })
