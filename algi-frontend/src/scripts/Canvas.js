@@ -78,12 +78,10 @@ class Canvas {
     }
 
     clear() {
-        this.context.clearRect(0, 0, this.width, this.height)
-        this.renderImage();
         this.context.fillStyle = 'white';
         this.context.fillRect(0, 0, this.width, this.height)
         this.renderTargets();
-        this.renderTowers();
+        //this.renderTowers();
     }
 
     handleMouseDown(event) {

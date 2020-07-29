@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   clearResults.addEventListener('click', clearCanvas);
   expandable.addEventListener('click', showDropdown);
   expandable.querySelector('.dropdown').addEventListener('click', changeAlgorithm);
-  expandable.addEventListener('mouseleave', hideDropDown);
 
   // Load the sample images
   carousel.loadImages();
@@ -40,13 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         clearCanvas();
 
-        // The algorithm finished, do stuff
+        // When the algorithm is done, reset the run button
         algoHandler.start(currentAlgorithm)
-        //.then((finished) => {
-        //  event.target.classList.remove('warning');
-        //  icon.classList = 'fa fa-play';
-        //  algoHandler.running = false;
-        //})
+        .then(() => {
+          event.target.classList.remove('warning');
+          icon.classList = 'fa fa-play';
+          algoHandler.running = false;
+        })
       }
     }
   }
@@ -84,16 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
     }
   }
-
-  function hideDropDown(event) {
-    const parent = event.target.parentNode;
-    if (!parent.matches('.dropdown') && !parent.matches('.expandable') && !parent.matches('ul')) {
-      expandable.querySelector('.dropdown').classList.add('hidden');
-      console.log("d");
-    }
-    
-  }
-
 })
 
 
