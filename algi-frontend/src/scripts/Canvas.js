@@ -17,6 +17,7 @@ class Canvas {
         this.targetImage = null;
         this.isDragging = false;
         this.draggingNode = null;
+        this.towers = [];
 
         // Event listeners
         this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
@@ -36,6 +37,19 @@ class Canvas {
         this.context.fillStyle = this.getColor();
         this.context.fillRect(node.x, node.y, this.size, this.size);
         //this.context.clearRect(node.x, node.y, this.size, this.size);
+    }
+
+    renderTowers() {
+        for (let i = 0; i < this.towers.length; i++) {
+            const height = this.towers[i];
+            this.context.fillStyle = 'red';
+            this.context.fillRect(i + this.size, this.canvas.height - height, this.size, height);
+        }
+    }
+
+    setTowers(newTowers) {
+        this.towers = newTowers;
+        this.renderTowers();
     }
 
     setTargets(startNode, endNode) {
@@ -74,6 +88,7 @@ class Canvas {
         this.context.fillStyle = 'white';
         this.context.fillRect(0, 0, this.width, this.height)
         this.renderTargets();
+        this.renderTowers();
     }
 
     handleMouseDown(event) {
