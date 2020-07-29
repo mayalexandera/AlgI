@@ -12,13 +12,13 @@ class AlgorithmHandler {
         this.canvas = canvas;
         this.running = false;
 
-        this.merger = new Merge();
-        this.setCanvasTowers();
+        //this.merger = new Merge();
+        //this.setCanvasTowers();
 
-        this.quickSort = new QuickSort;
+        //this.quickSort = new QuickSort;
 
-        //canvas.setTargets(this.startNode, this.endNode);
-        //canvas.renderTargets();
+        canvas.setTargets(this.startNode, this.endNode);
+        canvas.renderTargets();
     }
 
     setCanvasTowers() {
@@ -42,8 +42,6 @@ class AlgorithmHandler {
             default:
                 throw "Algorithm not found!"
         }
-        //i want a function that sets up the nodes, from which we can pull neighbors, and remove when visited.
-        //return this.currentAlgorithm.init(this.canvas, this.startNode, this.endNode, []);
 
         return this.currentAlgorithm.start(this.canvas, this.canvas.startNode, this.canvas.endNode);
     }
