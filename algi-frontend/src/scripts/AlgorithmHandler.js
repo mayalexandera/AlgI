@@ -21,7 +21,7 @@ class AlgorithmHandler {
             default:
                 throw "Algorithm not found!"
         }
-        return this.currentAlgorithm.start(this.canvas, this.startNode, this.endNode, []);
+        return this.currentAlgorithm.init(this.canvas, this.startNode, this.endNode, []);
     }
 
     stop() {
