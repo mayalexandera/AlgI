@@ -3,12 +3,11 @@ import startNodeIcon from '../assets/images/male-solid.png';
 
 class Canvas {
     constructor() {
-        this.canvas = document.getElementById('canvas');
         this.layeredCanvas = document.getElementById('layered-canvas');
         this.layeredContext = this.layeredCanvas.getContext('2d');
+        this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
         this.size = Canvas.size;
-        this.nodes = [];
         this.colors = ['red', 'blue', 'pink', 'orange', 'yellow', 'green'];
         this.startIcon = new Image();
         this.startIcon.src = startNodeIcon;
@@ -28,22 +27,18 @@ class Canvas {
     getColor() {
         return this.colors[Math.floor(Math.random() * this.colors.length)];
     }
-    
-    getNode(x, y) {
-        return {x: x, y: y};
-    }
-    
+
     visitCell(node) {
         this.context.fillStyle = this.getColor();
-        this.context.fillRect(node.x, node.y, this.size, this.size);
+        this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
         //this.context.clearRect(node.x, node.y, this.size, this.size);
     }
 
     renderTowers() {
-        for (let i = 0; i < this.towers.length; i++) {
-            const height = this.towers[i];
-            this.context.fillStyle = 'red';
-            this.context.fillRect(i + this.size, this.canvas.height - height, this.size, height);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.fillStyle = 'red';
+        for (const tower of this.towers) {
+            this.context.fillRect(tower.x, tower.y, tower.width, tower.height);
         }
     }
 
@@ -83,12 +78,10 @@ class Canvas {
     }
 
     clear() {
-        this.context.clearRect(0, 0, this.width, this.height)
-        this.renderImage();
         this.context.fillStyle = 'white';
         this.context.fillRect(0, 0, this.width, this.height)
         this.renderTargets();
-        this.renderTowers();
+        //this.renderTowers();
     }
 
     handleMouseDown(event) {
@@ -108,7 +101,7 @@ class Canvas {
             }
         }
     }
-    handleMouseUp(event) {
+    handleMouseUp() {
         this.isDragging = false;
         this.draggingNode = null;
     }
@@ -129,14 +122,11 @@ class Canvas {
     get height() {
         return this.canvas.height;
     }
-
     static get size() {
         return 5;
     }
-
     static get canvas() {
         return document.getElementById('canvas');
     }
 }
-
 export default Canvas;

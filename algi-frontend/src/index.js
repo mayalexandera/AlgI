@@ -14,15 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const expandable = document.querySelector('.expandable');
   const nodeCountElement = document.getElementById('node-count');
   const algorithmTitleElement = document.getElementById('algorithm-title');
+  const timeCountElement = document.getElementById('time-count');
 
   runButton.addEventListener('click', startAlgorithm);
   clearResults.addEventListener('click', clearCanvas);
   expandable.addEventListener('click', showDropdown);
   expandable.querySelector('.dropdown').addEventListener('click', changeAlgorithm);
+  
 
   // Load the sample images
   carousel.loadImages();
   var currentAlgorithm = 'bfs';
+  var seconds = 0;
+  var minutes = 0;
 
   // Run the selected algorithm and when you're done change the run button look
   function startAlgorithm(event) {
@@ -39,13 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         clearCanvas();
 
-        // The algorithm finished, do stuff
+        // When the algorithm is done, reset the run button
+        const timer = setInterval(tick, 1000);
         algoHandler.start(currentAlgorithm)
-        //.then((finished) => {
-        //  event.target.classList.remove('warning');
-        //  icon.classList = 'fa fa-play';
-        //  algoHandler.running = false;
-        //})
+        .then(() => {
+          event.target.classList.remove('warning');
+          icon.classList = 'fa fa-play';
+          clearInterval(timer);
+          algoHandler.running = false;
+        })
       }
     }
   }
@@ -66,21 +72,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function changeAlgorithm(event) {
-    console.log("Depth-first search");
+    document.querySelectorAll('.active').forEach(element => {
+      element.classList.remove('active');
+    })
+    event.target.classList.add('active');
     switch (event.target.textContent) {
       case 'BFS':
-        runButton.innerHTML = 'Run Breadth-first <i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Breadth-first <span>(Low Performance)</span>'
+        runButton.innerHTML = 'Run Breadth-first<i class="fa fa-play" aria-hidden="true"></i>'
+        algorithmTitleElement.innerHTML = 'Breadth-first<span class = "slow-speed">(Low Performance)</span>'
         currentAlgorithm = 'bfs';
         break;
       case 'DFS':
-        runButton.innerHTML = 'Run Depth-first <i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Depth-first <span>(Low Performance)</span>'
+        runButton.innerHTML = 'Run Depth-first<i class="fa fa-play" aria-hidden="true"></i>'
+        algorithmTitleElement.innerHTML = 'Depth-first<span class = "medium-speed">(Medium Performance)</span>'
         currentAlgorithm = 'dfs';
         break;
     }
   }
 
+  function tick() {
+    seconds++;
+    if (seconds >= 60) {
+      seconds = 0;
+      minutes++;
+    }
+    timeCountElement.textContent = `${minutes}:${(seconds < 10) ? "0" + seconds : seconds}`;
+  }
 })
 
 

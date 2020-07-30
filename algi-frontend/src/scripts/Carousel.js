@@ -10,15 +10,12 @@ import picasoImage3 from '../assets/images/picaso-03.jpg';
 import picasoImage4 from '../assets/images/picaso-04.jpg';
 
 class Carousel {
-    constructor(canvas) {
-        this.images = [vincentImage0, vincentImage1, vincentImage2, vincentImage3, vincentImage4, 
-            picasoImage1, picasoImage2, picasoImage3, picasoImage4
+    constructor() {
+        this.images = [vincentImage1, vincentImage2, vincentImage3, vincentImage4, 
+            picasoImage1, picasoImage2, picasoImage3, picasoImage4, vincentImage0
         ];
-        this.canvas = canvas;
-        this.imageCount = this.images.length;
         this.imageContainer = document.getElementById('image-container');
         this.imageWrapper = document.getElementById('image-wrapper');
-
         this.imageWrapper.addEventListener('click', this.handleClick.bind(this));
 
         this.currentRange = 0;

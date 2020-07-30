@@ -13,6 +13,8 @@ a {
 $main-color: #1E1F26;
 $secondary-color: #1ABC9C;
 $warning-color: #ff1717;
+$goldish: gold;
+$greenish: green;
 
 @font-face {
   font-family: "Lato";
@@ -22,6 +24,17 @@ $warning-color: #ff1717;
 .hidden {
   max-height: 0;
 }
+
+.slow-speed {
+  color: $warning-color;
+}
+.good-speed {
+  color: $greenish;
+}
+.medium-speed {
+  color: $goldish;
+}
+
 // Everything else
 #canvas-wrapper {
   width: 800px;
@@ -49,7 +62,9 @@ $warning-color: #ff1717;
   }
 }
 .logo {
+  padding-left: 4em;
   font-size: 90%;
+  font-weight: lighter;
   font-family: 'Lato';
   display: inline-block;
 }
@@ -66,6 +81,9 @@ $warning-color: #ff1717;
 }
 
 .dropdown {
+  .active {
+    background-color: $secondary-color;
+  }
   position: absolute;
   background: $main-color;
   width: 7rem;
@@ -79,7 +97,7 @@ $warning-color: #ff1717;
     margin: .5em 0;
     margin-bottom: 1em;
     padding: .5em;
-    &:hover {
+    &:hover:not(.active) {
       background-color: lighten($main-color, $amount: 20%);
     }
   }
@@ -90,6 +108,7 @@ nav {
   color: white;
   padding: 1em;
   font-family: "Lato";
+  min-width: 55rem;
   ul{
     display: inline-block;
     margin-left: 2em;
@@ -125,7 +144,7 @@ nav {
     box-sizing: border-box;
     text-align: center;
     font-size: 200%;
-    margin-top: 3em;
+    margin-top: 2.5em;
     border: none;
     color: $secondary-color;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -140,9 +159,9 @@ nav {
   }
 }
 h2 {
+  margin-top: 4em;
   font-weight: lighter;
   font-family: 'Lato';
-  padding-top: 1em;
   text-align: center;
 }
 #image-container {
@@ -150,15 +169,17 @@ h2 {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  margin: 2em 0;
+  margin-bottom: 4em;
 
   .image-box {
+    border: 1px solid white;
     margin: 1em .5em 0 .5em;
     width: 10rem; height: 10rem;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-    transition: transform .2s;
+    transition: all .1s ease-in-out;
+    box-sizing: border-box;
     &:hover {
-      transform: scale(1.1);
+      border: 5px solid white;
       cursor: pointer;
     }
   }
@@ -181,11 +202,9 @@ h2 {
   p {
     margin-left: .5em;
     font-size: 100%;
-    font-family: 'Lato';
     span {
       margin-left: .5em;
       font-size: 90%;
-      color: $warning-color;
     }
     i {
       margin-left: .2em;
@@ -195,6 +214,34 @@ h2 {
     margin-left: 2em;
     p {
       margin-left: 1.5em;
+    }
+  }
+}
+
+#details {
+  max-width: 50%;
+  margin: 2em auto;
+  text-align: center;
+  background-color: $main-color;
+  color: white;
+  padding: 1em;
+
+  h3 {
+    font-family: 'Lato';
+    font-weight: lighter;
+  }
+
+  .algorithm-details {
+    margin: 2em 0;
+    padding: 1em;
+    p {
+      font-family: 'Helvetica';
+      font-size: 90%;
+      line-height: 1.5em;
+      text-align: left;
+      margin: 0 auto;
+      margin-top: 1em;
+      max-width: 50rem;
     }
   }
 }
