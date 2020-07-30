@@ -32,23 +32,8 @@ class AlgorithmHandler {
         if (this.sorting) {
             if (this.currentAlgorithmName === 'merge') { this.currentAlgorithm = new Merge(); }
             if (this.currentAlgorithmName === 'quicksort') {this.currentAlgorithm = new QuickSort(); }
-
-            return new Promise(async (resolve, reject)  => {
-                const sortedTowers = this.currentAlgorithm._sort(this.canvas.towers, this.canvas);
-
-                for (let i = 0; i < sortedTowers.length; i++) {
-                    this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
-                    if (this.currentAlgorithm.stop) {
-                        break;
-                    }
-                    sortedTowers[i].x = (i * Canvas.size);
-                    this.canvas.towers = sortedTowers;
-                    this.canvas.renderTowers();
-                    await this.sleep(10);
-                }
-                this.canvas.towers = sortedTowers;
-                this.canvas.renderTowers();
-                resolve("Done");
+            return new Promise(resolve => {
+                this.currentAlgorithm._sort(this.canvas.towers, this.canvas);
             })
         } else {
             if (this.currentAlgorithmName === 'bfs') { this.currentAlgorithm = new BFS(); }

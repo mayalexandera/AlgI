@@ -113,12 +113,7 @@ class DFS extends Algorithm{
     await dfsHelper(startNode);
 
     await this.sleep(1);
-    // this.start(
-    //   canvas,
-    //   neighbors[Math.floor(Math.random() * neighbors.length)],
-    //   targetNode,
-    //   stack
-    // );
+
 }}
 
 
