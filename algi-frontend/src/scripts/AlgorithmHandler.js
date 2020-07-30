@@ -3,6 +3,7 @@ import DFS from './DFS';
 import Merge from './MergeSort';
 import QuickSort from './QuickSort';
 import Canvas from './Canvas';
+import DFSV from './dfsTryAgain';
 
 class AlgorithmHandler {
     constructor(canvas) {
@@ -41,7 +42,7 @@ class AlgorithmHandler {
                 this.currentAlgorithm = new BFS();
                 break;
             case 'dfs':
-                this.currentAlgorithm = new DFS();
+                this.currentAlgorithm = new DFSV();
                 break;
             default:
                 throw "Algorithm not found!"
