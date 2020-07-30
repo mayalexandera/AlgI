@@ -30,7 +30,7 @@ class Canvas {
 
     visitCell(node) {
         this.context.fillStyle = this.getColor();
-        this.context.fillRect(node.x, node.y, this.size, this.size);
+        this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
         //this.context.clearRect(node.x, node.y, this.size, this.size);
     }
 

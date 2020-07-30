@@ -62,6 +62,7 @@ $greenish: green;
   }
 }
 .logo {
+  padding-left: 4em;
   font-size: 90%;
   font-weight: lighter;
   font-family: 'Lato';
@@ -213,6 +214,34 @@ h2 {
     margin-left: 2em;
     p {
       margin-left: 1.5em;
+    }
+  }
+}
+
+#details {
+  max-width: 50%;
+  margin: 2em auto;
+  text-align: center;
+  background-color: $main-color;
+  color: white;
+  padding: 1em;
+
+  h3 {
+    font-family: 'Lato';
+    font-weight: lighter;
+  }
+
+  .algorithm-details {
+    margin: 2em 0;
+    padding: 1em;
+    p {
+      font-family: 'Helvetica';
+      font-size: 90%;
+      line-height: 1.5em;
+      text-align: left;
+      margin: 0 auto;
+      margin-top: 1em;
+      max-width: 50rem;
     }
   }
 }

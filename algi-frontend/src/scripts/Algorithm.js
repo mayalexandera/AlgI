@@ -3,6 +3,7 @@ import Canvas from "./Canvas";
 class Algorithm {
     constructor() {
         this.nodeCountElement = document.getElementById('node-count');
+        this.timeCountElement = document.getElementById('time-count');
     }
 
     sleep(ms) {
