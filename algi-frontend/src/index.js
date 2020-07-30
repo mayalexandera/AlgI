@@ -46,11 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // When the algorithm is done, reset the run button
         const timer = setInterval(tick, 1000);
         algoHandler.start(currentAlgorithm)
-        .then(() => {
+        .then((nodes) => {
           event.target.classList.remove('warning');
           icon.classList = 'fa fa-play';
           clearInterval(timer);
           algoHandler.running = false;
+          console.log(nodes);
         })
       }
     }

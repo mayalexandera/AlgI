@@ -32,10 +32,6 @@ class AlgorithmHandler {
             towers.push(tower);
         }
         this.canvas.setTowers(towers);
-        await this.sleep(500);
-        const sorted_array = this.merger._sort(towers, this.canvas);
-
-        this.canvas.renderTowers();
     }
 
     start(name) {

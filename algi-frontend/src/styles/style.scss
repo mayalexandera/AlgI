@@ -35,6 +35,13 @@ $greenish: green;
   color: $goldish;
 }
 
+.help-msg {
+  font-family: 'Helvetica';
+  padding-bottom: 1em;
+  text-indent: 1em;
+  font-weight: bold;
+}
+
 // Everything else
 #canvas-wrapper {
   width: 800px;
