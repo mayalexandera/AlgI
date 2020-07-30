@@ -3,24 +3,24 @@ import Canvas from "./Canvas";
 //track visited through adjacencyList
 
 class DFS {
-  createNodeTree(canvas) {
+  createAdjacencyList(canvas) {
     //rows = canvas.height
     //cols = canvas.width
+    
     let adjacencyList = [];
-    const cols = canvas.width / canvas.size;
-    const rows = canvas.height / canvas.size;
-    for (let x = 0; x <= cols; x++) {
-      for (let y = 0; y <= rows; y++) {
+    const xCoords = canvas.width / canvas.size;
+    const yCoords = canvas.height / canvas.size;
+    console.log('canvas height', yCoords)
+    for (let x = 0; x <= xCoords; x++) {
+      for (let y = 0; y <= yCoords; y++) {
         let newPos = { x: x, y: y, visited: false, neighbors: [] };
         adjacencyList.push(newPos);
       }
     }
     //console.log(adjacencyList[0].visited); // this will set visited to true
     adjacencyList.forEach(node => {
-      this.addNeighbors(node, adjacencyList)
+      this.addNeighbors(node)
     })
-    //console.log(adjacencyList)
-
     return adjacencyList
   }
 
@@ -40,12 +40,9 @@ class DFS {
     MOVES.forEach((move) => {
       let newX = move[0];
       let newY = move[1];
-      let newPosition = { x: node.x + newX, y: node.y + newY, visited: false };
-      if (this.withinBounds(newPosition)) {
-        // Check if this new position is not already in neighbors
-        //this wasn't working
-         //&& (!node.neighbors.filter(pos => pos.x == newPosition.x && //pos.y == newPosition.y))
-        node.neighbors.push(newPosition);
+      let newNeighbor = { x: node.x + newX, y: node.y + newY };
+      if (this.withinBounds(newNeighbor)) {
+        node.neighbors.push(newNeighbor);
       }
     })
   }
@@ -54,111 +51,88 @@ class DFS {
     const canvas = Canvas.canvas;
     return (
       position.x >= 0 &&
-      position.x <= canvas.width &&
+      position.x <= (canvas.width/Canvas.size) &&
       position.y >= 0 &&
-      position.y <= canvas.height
+      position.y <= (canvas.height/Canvas.size)
     );
-  }
-
-  getNeighbors(node, stack) {
-    const neighbors = [];
-    const step = Canvas.size;
-    const MOVES = [
-      [step, step],
-      [step, -step],
-      [-step, step],
-      [-step, -step],
-      [step, 0],
-      [-step, 0],
-      [0, step],
-      [0, -step],
-    ];
-
-    if (!node) {
-      return stack.slice(0, 3);
-    }
-
-    MOVES.forEach((position) => {
-      let newX = position[0];
-      let newY = position[1];
-      let newPosition = { x: node.x + newX, y: node.y + newY };
-
-      if (this.withinBounds(newPosition)) {
-        // Check if this new position is not already in neighbors
-        let foundNode = false;
-        for (const visitedNode of stack) {
-          if (
-            visitedNode.x == newPosition.x &&
-            visitedNode.y == newPosition.y
-          ) {
-            foundNode = true;
-            break;
-          }
-        }
-        if (!foundNode) {
-          neighbors.push(newPosition);
-        }
-      }
-    });
-    return neighbors;
   }
 
   sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  async start(canvas, startPos, targetNode, stack = []) {
+  async start(canvas, startPos, targetNode) {
+    let targetX = 100
+    let targetY = 65
+    let stack =[{x: 100, y: 40}]
+
     let startNode, adjacencyList
-    if(!adjacencyList)adjacencyList = this.createNodeTree(canvas);
+    if(!adjacencyList) adjacencyList = this.createAdjacencyList(canvas);
     
-    let startX = startPos.x/canvas.size
-    let startY = startPos.y/canvas.size
-    adjacencyList.forEach(pos => {
-      if(pos.x === startX && pos.y === startY){
-        startNode = pos
-        //console.log('position:', pos, 'startPos:',startPos)
-      }
-    })
- 
-    function dfsHelper(pos){
-      console.log('pos',pos)
-      let targX, targY
-      targX = targetNode.x/canvas.size
-      targY = targetNode.y/canvas.size
+    //finding node with startPos values
+    console.log('stack', stack[0])
+    startNode = findNodeinAdjacencyList(stack[0])
 
-      if (pos.x == targX && pos.y == targY){
-        console.log('finished')
-        return pos
+    //    will find node of a cell, 
+    //    visitCell on canvas, 
+    //    push cell to stack
+    function findNodeinAdjacencyList(cell) {
+      for(const listNode of adjacencyList) {
+        if (cell.x == listNode.x && cell.y == listNode.y) {
+          canvas.visitCell(cell);
+          listNode.visited = true;
+          stack.push(listNode)
+          return listNode
+        }
       }
-      
-      if(pos.visited == true) return false
-      pos.visited = true
-      canvas.visitCell(pos)
-      pos.neighbors.forEach(neighbor => {
-        console.log('neighbor', neighbor)
-       if (neighbor.visited == false)return dfsHelper(neighbor)
-     })
     }
-    console.log('startNode', startNode);
-    dfsHelper(startNode);
+  
+    function dfsHelper(currentNode){
+      let nextNode, currentCell
+      console.log('currentNode', currentNode, 'target coordinate', 'x', targetX, 'y', targetY)
+      
+      isTarget(currentNode)
+      
+      function isTarget(currentNode){
+        if (currentNode.x == targetX && currentNode.y == targetY) {
+        console.log("finished");
+        return currentNode;
+        } else {
+          currentNode.neighbors.length > 0 ? getNextNeighbor(currentNode) : findNextNode();
+        }
+      }
 
+      function getNextNeighbor(currentNode) {
+        currentCell = currentNode.neighbors.pop();
+        console.log("currentCell", currentCell);
+        nextNode = findNodeinAdjacencyList(currentCell);
+        console.log("nextNode", nextNode);
+        return nextNode
+      }
 
-    // for (const node of neighbors) {
-    //   if (node.x == targetNode.x && node.y == targetNode.y) {
-    //     return node;
-    //   }
-    //   canvas.visitCell(node);
-    // }
+      function findNextNode(){
+        currentCell = stack.pop()
+        console.log(currentCell)
+        nextNode = findNodeinAdjacencyList(currentCell)
+        console.log('nextNode', nextNode)
+        return nextNode
+      }
 
-    // await this.sleep(1);
+      // setting currentNode to first neighbors
+        console.log('stack', stack, 'nextnod', nextNode, 'adjList', adjacencyList)
+        return dfsHelper(nextNode)
+           //stack set to true || neighbor needs to be }}located in the adjacency list
+    }
+    await dfsHelper(startNode);
+
+    await this.sleep(1);
     // this.start(
     //   canvas,
     //   neighbors[Math.floor(Math.random() * neighbors.length)],
     //   targetNode,
     //   stack
     // );
-  }
-}
+}}
 
 
 export default DFS;
