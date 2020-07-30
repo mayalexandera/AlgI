@@ -1,7 +1,7 @@
 import Algorithm from "./Algorithm";
 
 class Merge extends Algorithm{
-  _sort(array) {
+  _sort(array, canvas) {
     if (array.length <= 1) {
       return array;
     }

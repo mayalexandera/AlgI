@@ -1,8 +1,10 @@
 import BFS from './BFS';
-import DFS from './AStar';
+import DFS from './DFS';
 import Merge from './MergeSort';
 import QuickSort from './QuickSort';
+import AStar from './AStar';
 import Canvas from './Canvas';
+import DFSV from './dfsTryAgain';
 
 class AlgorithmHandler {
     constructor(canvas) {
@@ -42,7 +44,7 @@ class AlgorithmHandler {
                     sortedTowers[i].x = (i * Canvas.size);
                     this.canvas.towers = sortedTowers;
                     this.canvas.renderTowers();
-                    await this.sleep(20);
+                    await this.sleep(10);
                 }
                 this.canvas.towers = sortedTowers;
                 this.canvas.renderTowers();
@@ -50,7 +52,7 @@ class AlgorithmHandler {
             })
         } else {
             if (this.currentAlgorithmName === 'bfs') { this.currentAlgorithm = new BFS(); }
-            if (this.currentAlgorithmName === 'dfs') { this.currentAlgorithm = new DFS(); }
+            if (this.currentAlgorithmName === 'dfs') { this.currentAlgorithm = new DFSV(); }
 
             return this.currentAlgorithm.start(this.canvas, this.canvas.startNode, this.canvas.endNode);
 

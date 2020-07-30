@@ -1,7 +1,7 @@
 import Algorithm from "./Algorithm";
 
-class QuickSort extends Algorithm{
-  _sort(array) {
+class QuickSort extends Algorithm {
+  _sort(array, canvas) {
     if (array.length <= 1) {
       return array;
     }

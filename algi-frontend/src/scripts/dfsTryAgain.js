@@ -1,30 +1,80 @@
-import Algorithm from "./Algorithm";
 import Canvas from './Canvas';
+import Algorithm from './Algorithm';
 
 class DFSV extends Algorithm {
-    async start(canvas, startNode, endNode, visited=[]) {
-        startNode = {neighbors: [], ...startNode};
-        const stack = [startNode];
-        visited.push(startNode);
-        this.getNeighbors(stack[0], visited);
 
-        for (const node of stack[0].neighbors) {
-            canvas.visitCell(node);
-            await this.sleep(1);
-            this.start(canvas, node, endNode, visited);
-        }
+    async start(canvas, startNode, endNode) {
+        this.stack = [];
+        this.visited = new Set();
+        this.canvas = canvas;
+        this.endNode = endNode;
+
+        this.createAdjacencyList();
+        this.startNode = this.findNodeinAdjacencyList(startNode);
+        this.stack.push(this.startNode)
+        await this.dfsHelper(this.startNode).then(() => {
+            return "Finished."
+        });
     }
 
-    checkVisited(node, visited) {
-        for (const visitedNode of visited) {
-            if (node.x == visitedNode.x && node.y == visitedNode.y) {
-                return true;
+    createAdjacencyList() {
+        this.adjacencyList = [];
+        const xCoords = Canvas.width;
+        const yCoords = Canvas.height;
+
+        for (let i = 0; i < xCoords; i+=5) {
+            for (let j = 0; j < yCoords; j+=5) {
+                const newPos = { x: i, y: j, visited: false, neighbors: [] };
+                this.getNeighbors(newPos)
+                this.adjacencyList.push(newPos);
             }
         }
-        return false;
+      }
+
+    async dfsHelper(currentNode) {
+        // Check if we're done
+        if (currentNode.x == this.endNode.x && currentNode.y == this.endNode.y) {
+            console.log("Finished");
+            return currentNode;
+        }
+
+        let nextNode;
+        if (currentNode.neighbors.length > 0) {
+            nextNode = this.getNextNeighbor(currentNode);
+        } else {
+            nextNode = this.findNextNode();
+        }
+        this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
+        this.canvas.visitCell(currentNode)
+        await this.sleep(1);
+
+        this.dfsHelper(nextNode)
     }
 
-    getNeighbors(node, visited) {
+
+    getNextNeighbor(currentNode) {
+        const index = Math.floor(Math.random() * currentNode.neighbors.length);
+        const poppedNode = currentNode.neighbors.splice(index, 1)[0];
+        const nextNode = this.findNodeinAdjacencyList(poppedNode);
+        return nextNode
+    }
+
+    findNextNode(){
+        const nextNode = this.findNodeinAdjacencyList(this.stack.pop())
+        return nextNode
+      }
+
+    findNodeinAdjacencyList(cell) {
+        for(const node of this.adjacencyList) {
+          if (cell.x == node.x && cell.y == node.y) {
+            node.visited = true;
+            this.stack.push(node);
+            return node
+          }
+        }
+      }
+
+    getNeighbors(node) {
         const step = Canvas.size;
         const MOVES = [
         [step, step],
@@ -34,22 +84,17 @@ class DFSV extends Algorithm {
         [step, 0],
         [-step, 0],
         [0, step],
-        [0, -step]
+        [0, -step],
         ];
 
-        let add = true;
         MOVES.forEach((move) => {
-            const newX = move[0];
-            const newY = move[1];
-            const neighbor = { x: node.x + newX, y: node.y + newY };
-            if (!this.checkVisited(neighbor, visited) && add && neighbor.x > 0 && neighbor.y < 300 && neighbor.x < 700 && neighbor.y > 0) {
-                node.neighbors.push(neighbor);
-                visited.push(neighbor);
-                add = false;
-                return;
+            let newX = move[0];
+            let newY = move[1];
+            const newNeighbor = { x: node.x + newX, y: node.y + newY };
+            if (this.withinBounds(newNeighbor)) {
+                node.neighbors.push(newNeighbor);
             }
         })
-        
     }
 }
 

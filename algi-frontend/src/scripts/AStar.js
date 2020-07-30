@@ -1,27 +1,23 @@
 import Algorithm from "./Algorithm";
 
-
 class AStar extends Algorithm {
-  
-  init(canvas) {
-    for(let x = 0; x < canvas.length; x++){
-      for(let y = 0; y < canvas[0].length; y++){
-        canvas[x][y].f = 
-        canvas[x][y].g = 
-        canvas[x][y].h = 
-        canvas[x][y].debug = "";
-        canvas[x][y].parent = null;
+
+  init() {
+    this.grid = [[], []];
+    for (let i = 0; i < 400; i++) {
+      for (let j = 0; j < 800; j++) {
+        this.grid[i][j] = {x: i, y: j}
       }
     }
   }
 
-  search(start, target, canvas) {
-    this.init(canvas)
-
+  async start(canvas, startNode, target) {
     let closedSet = []
-    let openSet = [start]
 
-     neighbors = [
+    this.init();
+    let openSet = [startNode]
+
+     this.neighbors = [
       { x: 1, y: 0, c: 1 },
       { x: 1, y: 1, c: 1.4 },
       { x: 1, y: -1, c: 1.4 },
@@ -32,10 +28,10 @@ class AStar extends Algorithm {
       { x: 0, y: -1, c: 1 },
       ];
 
-      start = { x: 1, y: 1, f: 0, g: 0 }
+      startNode = { x: 1, y: 1, f: 0, g: 0 }
       target = { x: 8, y: 8, f: 0, g: 0 }
       let path = []
-      
+      findNeighbor(this.grid);      
 
     function findNeighbor( arr, n ) {
       let a;
@@ -46,20 +42,23 @@ class AStar extends Algorithm {
       return -1
     }
 
-    function addNeighbors( curr ) {
+    async function addNeighbors( curr ) {
       let p
-      for(let i = 0; i < neighbors.length; i++) {
+      for(let i = 0; i < this.neighbors.length; i++) {
         let n = {
-          x: curr.x + neighbors[i].x, 
-          y: curr.y + neighbors[i].y, 
+          x: curr.x + this.neighbors[i].x, 
+          y: curr.y + this.neighbors[i].y, 
           g: 0, 
           h: 0, 
           prt: {x:curr.x, y:curr.y}
         }
-        if(canvas[n.x][n.y] == 1 || findNeighbor( closedSet, n ) > -1 ) continue;
+        canvas.visitCell(n);
+        await this.sleep(50);
+
+        if(this.grid[n.x][n.y] == 1 || findNeighbor( closedSet, n ) > -1 ) continue;
 
         n.g = curr.g + neighbors[i].c; 
-        n.h = Math.abd(target.x - n.x) + Math.abs(target.x - n.y)
+        n.h = Math.abs(target.x - n.x) + Math.abs(target.x - n.y)
 
         p = findNeighbor(openSet, n)
         if(p > -1 && openSet[p].g + openSet[p].h <= n.g + n.h ) continue;
@@ -97,6 +96,7 @@ class AStar extends Algorithm {
 
 export default AStar;
 
+/*
 //NOTES///
     f(n) = g(n) + h(n)
     //where g(n) if the cost required to reach the current state from given initial state
@@ -121,5 +121,5 @@ export default AStar;
     //"f" value is the sum of values G and H.
     valueF = distanceG + distanceG
 
-
+*/
   

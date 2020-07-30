@@ -15,12 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const nodeCountElement = document.getElementById('node-count');
   const algorithmTitleElement = document.getElementById('algorithm-title');
   const timeCountElement = document.getElementById('time-count');
+  const navBar = document.querySelector('nav');
 
   runButton.addEventListener('click', startAlgorithm);
   clearResults.addEventListener('click', clearCanvas);
   expandable.addEventListener('click', showDropdown);
   expandable.querySelector('.dropdown').addEventListener('click', changeAlgorithm);
-  
+  navBar.addEventListener('mouseleave', hideDropDown);
 
   // Load the sample images
   carousel.loadImages();
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const timer = setInterval(tick, 1000);
         algoHandler.start()
         .then(() => {
+          console.log("Done");
           event.target.classList.remove('warning');
           icon.classList = 'fa fa-play';
           canvas.runningAlgorithm = false;
@@ -115,6 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
     }
     canvas.clear(algoHandler.sorting);
+  }
+
+  function hideDropDown() {
+    const dropDown = expandable.querySelector('.dropdown').classList.add('hidden');
   }
 
   function tick() {

@@ -18,6 +18,8 @@ class Canvas {
         this.draggingNode = null;
         this.runningAlgorithm = false;
         this.towers = [];
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
 
         // Event listeners
         this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
@@ -39,7 +41,15 @@ class Canvas {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (const tower of this.towers) {
             this.context.fillStyle = this.getColor();
-            this.context.fillRect(tower.x, tower.y, tower.width, tower.height);
+            this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
+        }
+    }
+
+    renderMutatedTowers(towers) {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        for (const tower of towers) {
+            this.context.fillStyle = this.getColor();
+            this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
         }
     }
 
@@ -95,7 +105,7 @@ class Canvas {
 
     handleMouseDown(event) {
         if (this.runningAlgorithm) { return; }
-        
+
         const mouseX = event.clientX - this.canvas.getBoundingClientRect().x;
         const mouseY = event.clientY - this.canvas.getBoundingClientRect().y;
         const padding = 20;
@@ -127,11 +137,11 @@ class Canvas {
         }
     }
 
-    get width() {
-        return this.canvas.width;
+    static get width() {
+        return Canvas.canvas.width;
     }
-    get height() {
-        return this.canvas.height;
+    static get height() {
+        return Canvas.canvas.height;
     }
     static get size() {
         return 5;
