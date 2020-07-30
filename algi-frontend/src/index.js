@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load the sample images
   carousel.loadImages();
-  var currentAlgorithm = 'bfs';
+  algoHandler.currentAlgorithmName = 'bfs';
   var seconds = 0;
   var minutes = 0;
 
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (icon.classList.contains('fa-stop')) {
         icon.classList = 'fa fa-play';
         event.target.classList.remove('warning');
+        canvas.runningAlgorithm = false;
         algoHandler.stop();
 
       } else {
@@ -44,19 +45,21 @@ document.addEventListener('DOMContentLoaded', () => {
         clearCanvas();
 
         // When the algorithm is done, reset the run button
+        timeCountElement.textContent = "0:00";
+        seconds = 0;
+        minutes = 0;
         const timer = setInterval(tick, 1000);
-        algoHandler.start(currentAlgorithm)
-        .then((nodes) => {
+        algoHandler.start()
+        .then(() => {
           event.target.classList.remove('warning');
           icon.classList = 'fa fa-play';
+          canvas.runningAlgorithm = false;
           clearInterval(timer);
           algoHandler.running = false;
-          console.log(nodes);
         })
       }
     }
   }
-
   // Handle dropdown events
   function showDropdown(event) {
     const dropdown = event.target.querySelector('.dropdown');
@@ -69,26 +72,49 @@ document.addEventListener('DOMContentLoaded', () => {
   function clearCanvas() {
     if (algoHandler.running) {return;}
     nodeCountElement.textContent = "0";
-    canvas.clear();
+    timeCountElement.textContent = "0:00"
+    seconds = 0;
+    minutes = 0;
+    canvas.clear(algoHandler.sorting);
   }
 
   function changeAlgorithm(event) {
-    document.querySelectorAll('.active').forEach(element => {
-      element.classList.remove('active');
-    })
-    event.target.classList.add('active');
+    // Changes the currently active algorithm on the navigation
+    if (event.target.nodeName === 'SPAN' && !event.target.matches('.active')) {
+      document.querySelectorAll('.active').forEach(element => {
+        element.classList.remove('active');
+      })
+      event.target.classList.add('active');
+    } else {return; }
+
     switch (event.target.textContent) {
       case 'BFS':
         runButton.innerHTML = 'Run Breadth-first<i class="fa fa-play" aria-hidden="true"></i>'
         algorithmTitleElement.innerHTML = 'Breadth-first<span class = "slow-speed">(Low Performance)</span>'
-        currentAlgorithm = 'bfs';
+        algoHandler.currentAlgorithmName = 'bfs';
+        algoHandler.sorting = false;
         break;
       case 'DFS':
         runButton.innerHTML = 'Run Depth-first<i class="fa fa-play" aria-hidden="true"></i>'
         algorithmTitleElement.innerHTML = 'Depth-first<span class = "medium-speed">(Medium Performance)</span>'
-        currentAlgorithm = 'dfs';
+        algoHandler.currentAlgorithmName = 'dfs';
+        algoHandler.sorting = false;
+        break;
+      case 'Merge Sort':
+        runButton.innerHTML = 'Run Merge Sort<i class="fa fa-play" aria-hidden="true"></i>'
+        algorithmTitleElement.innerHTML = 'Merge Sort<span class = "good-speed">(High Performance)</span>'
+        algoHandler.currentAlgorithmName = 'merge';
+        algoHandler.sorting = true;
+        break;
+      
+      case 'Quick Sort':
+        runButton.innerHTML = 'Run Quick Sort<i class="fa fa-play" aria-hidden="true"></i>'
+        algorithmTitleElement.innerHTML = 'Quick Sort<span class = "slow-speed">(Low Performance)</span>'
+        algoHandler.currentAlgorithmName = 'quicksort';
+        algoHandler.sorting = true;
         break;
     }
+    canvas.clear(algoHandler.sorting);
   }
 
   function tick() {

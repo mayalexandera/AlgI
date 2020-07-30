@@ -3,7 +3,7 @@ import Canvas from "./Canvas";
 class Algorithm {
     constructor() {
         this.nodeCountElement = document.getElementById('node-count');
-        this.timeCountElement = document.getElementById('time-count');
+        this.stop = false;
     }
 
     sleep(ms) {
@@ -14,9 +14,9 @@ class Algorithm {
         const canvas = Canvas.canvas;
         return (
           position.x >= 0 &&
-          position.x <= (canvas.width / Canvas.size) &&
+          position.x <= canvas.width &&
           position.y >= 0 &&
-          position.y <= (canvas.height / Canvas.size)
+          position.y <= canvas.height
         );
     }
 }

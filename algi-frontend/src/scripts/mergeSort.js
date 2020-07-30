@@ -1,18 +1,19 @@
 import Algorithm from "./Algorithm";
 
 class Merge extends Algorithm{
-  _sort(array, canvas) {
+  _sort(array) {
     if (array.length <= 1) {
       return array;
     }
+
     const middle = Math.floor(array.length / 2);
     const left = array.slice(0, middle);
     const right = array.slice(middle);
 
-    return this.merge(this._sort(left, canvas), this._sort(right, canvas), canvas);
+    return this.merge(this._sort(left), this._sort(right));
   }
 
-  merge(left, right, canvas) {
+  merge(left, right) {
     let result = [], leftIndex = 0, rightIndex = 0;
 
     while (leftIndex < left.length && rightIndex < right.length) {
