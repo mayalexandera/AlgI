@@ -12,9 +12,7 @@ class DFSV extends Algorithm {
         this.createAdjacencyList();
         this.startNode = this.findNodeinAdjacencyList(startNode);
         this.stack.push(this.startNode)
-        await this.dfsHelper(this.startNode).then(() => {
-            return "Finished."
-        });
+        return this.dfsHelper(this.startNode);
     }
 
     createAdjacencyList() {
@@ -32,7 +30,8 @@ class DFSV extends Algorithm {
       }
 
     async dfsHelper(currentNode) {
-        // Check if we're done
+        if (this.stop) {return;}
+
         if (currentNode.x == this.endNode.x && currentNode.y == this.endNode.y) {
             console.log("Finished");
             return currentNode;
@@ -45,10 +44,10 @@ class DFSV extends Algorithm {
             nextNode = this.findNextNode();
         }
         this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
-        this.canvas.visitCell(currentNode)
-        await this.sleep(1);
+        this.canvas.visitCell(nextNode)
+        await this.sleep(0.1);
 
-        this.dfsHelper(nextNode)
+        await this.dfsHelper(nextNode)
     }
 
 
@@ -62,7 +61,7 @@ class DFSV extends Algorithm {
     findNextNode(){
         const nextNode = this.findNodeinAdjacencyList(this.stack.pop())
         return nextNode
-      }
+    }
 
     findNodeinAdjacencyList(cell) {
         for(const node of this.adjacencyList) {
