@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const timer = setInterval(tick, 1000);
         algoHandler.start()
         .then(() => {
-          console.log("Done");
           event.target.classList.remove('warning');
           icon.classList = 'fa fa-play';
           canvas.runningAlgorithm = false;
