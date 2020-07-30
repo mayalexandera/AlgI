@@ -1,5 +1,5 @@
 import BFS from './BFS';
-import DFS from './DFS';
+import DFS from './AStar';
 import Merge from './MergeSort';
 import QuickSort from './QuickSort';
 import Canvas from './Canvas';
