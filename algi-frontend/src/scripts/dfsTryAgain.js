@@ -1,63 +1,56 @@
-class Graph{
-  constructor(){
-      this.adjacencyList = {}
-  }
-  addVertex(name){
-      if(!this.adjacencyList[name]) this.adjacencyList[name] = []
-  }
-  addEdge(vertex1, vertex2){
-      //if direction mattered you would only do one of the below steps
-      this.adjacencyList[vertex1].push(vertex2)
-      this.adjacencyList[vertex2].push(vertex1)
-  }
-  removeVertex(key){
-     while(this.adjacencyList[key].length){
-         this.removeEdge(key, this.adjacencyList[vertex].pop())
-     }
-     delete this.adjacencyList[key]
-  }
-  removeEdge(vertex1, vertex2){
-      this.adjacencyList[vertex1] = this.adjacencyList[vertex1].filter( v => v !== vertex2)
-      this.adjacencyList[vertex2] = this.adjacencyList[vertex2].filter( v => v !== vertex1)
-  }
-  //depth first recursive traversal
-  depthFirstRecursive(start){
-      let result = []
-      let visited = {}
-      const adjacencyList = this.adjacencyList
-          function dfsHelper(vertex){
-              if(vertex === null) return false
-              visited[vertex] = true;
-              result.push(vertex)
-              //why doesnt this work?
-              // for(const el of adjacencyList[vertex]){
-              //     console.log(visited[el])
-              //     if(!visited[el]) return dfsHelper(el)
-              // }
-              adjacencyList[vertex].forEach(el => {
-                  if (!visited[el])return dfsHelper(el)
-              })
-          } 
-      dfsHelper(start)
-      return result
-  }
-  //iterative depth first
-  depthFirstIterative(start){
-      let result = []
-      let stack = [start]
-      let visited = {}
-      let current
-      visited[start] = true
-      while(stack.length){
-         current = stack.pop()
-          result.push(current)
-          this.adjacencyList[current].forEach(el => {
-              if(!visited[el]){
-                  visited[el] = true
-                  stack.push(el)  
-              }
-          })
-      }
-      return result
-  }
+import Algorithm from "./Algorithm";
+import Canvas from './Canvas';
+
+class DFSV extends Algorithm {
+    async start(canvas, startNode, endNode, visited=[]) {
+        startNode = {neighbors: [], ...startNode};
+        const stack = [startNode];
+        visited.push(startNode);
+        this.getNeighbors(stack[0], visited);
+
+        for (const node of stack[0].neighbors) {
+            canvas.visitCell(node);
+            await this.sleep(1);
+            this.start(canvas, node, endNode, visited);
+        }
+    }
+
+    checkVisited(node, visited) {
+        for (const visitedNode of visited) {
+            if (node.x == visitedNode.x && node.y == visitedNode.y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    getNeighbors(node, visited) {
+        const step = Canvas.size;
+        const MOVES = [
+        [step, step],
+        [step, -step],
+        [-step, step],
+        [-step, -step],
+        [step, 0],
+        [-step, 0],
+        [0, step],
+        [0, -step]
+        ];
+
+        let add = true;
+        MOVES.forEach((move) => {
+            const newX = move[0];
+            const newY = move[1];
+            const neighbor = { x: node.x + newX, y: node.y + newY };
+            if (!this.checkVisited(neighbor, visited) && add && neighbor.x > 0 && neighbor.y < 300 && neighbor.x < 700 && neighbor.y > 0) {
+                node.neighbors.push(neighbor);
+                visited.push(neighbor);
+                add = false;
+                return;
+            }
+        })
+        
+    }
 }
+
+export default DFSV;

@@ -10,12 +10,11 @@ class AlgorithmHandler {
         this.endNode = {x: 60, y: 150};
         this.canvas = canvas;
         this.running = false;
+        this.sorting = false;
 
-        //this.merger = new Merge();
-        //this.setCanvasTowers();
+        this.nodeCountElement = document.getElementById('node-count');
 
-        //this.quickSort = new QuickSort;
-
+        // When page first loads automatically setup the canvas as bfs
         canvas.setTargets(this.startNode, this.endNode);
         canvas.renderTargets();
     }
@@ -24,34 +23,38 @@ class AlgorithmHandler {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    async setCanvasTowers() {
-        const towers = [];
-        for(let i = 0; i < this.canvas.width / Canvas.size; i++) {
-            const height = Math.floor(Math.random() * (this.canvas.height - 10));
-            const tower = {x: i * Canvas.size, y: this.canvas.height - height, width: Canvas.size, height: height};
-            towers.push(tower);
-        }
-        this.canvas.setTowers(towers);
-        await this.sleep(500);
-        const sorted_array = this.merger._sort(towers, this.canvas);
-
-        this.canvas.renderTowers();
-    }
-
-    start(name) {
+    start() {
         this.running = true;
-        switch(name) {
-            case 'bfs':
-                this.currentAlgorithm = new BFS();
-                break;
-            case 'dfs':
-                this.currentAlgorithm = new DFS();
-                break;
-            default:
-                throw "Algorithm not found!"
-        }
+        this.canvas.runningAlgorithm = true;
 
-        return this.currentAlgorithm.start(this.canvas, this.canvas.startNode, this.canvas.endNode);
+        if (this.sorting) {
+            if (this.currentAlgorithmName === 'merge') { this.currentAlgorithm = new Merge(); }
+            if (this.currentAlgorithmName === 'quicksort') {this.currentAlgorithm = new QuickSort(); }
+
+            return new Promise(async (resolve, reject)  => {
+                const sortedTowers = this.currentAlgorithm._sort(this.canvas.towers, this.canvas);
+
+                for (let i = 0; i < sortedTowers.length; i++) {
+                    this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
+                    if (this.currentAlgorithm.stop) {
+                        break;
+                    }
+                    sortedTowers[i].x = (i * Canvas.size);
+                    this.canvas.towers = sortedTowers;
+                    this.canvas.renderTowers();
+                    await this.sleep(20);
+                }
+                this.canvas.towers = sortedTowers;
+                this.canvas.renderTowers();
+                resolve("Done");
+            })
+        } else {
+            if (this.currentAlgorithmName === 'bfs') { this.currentAlgorithm = new BFS(); }
+            if (this.currentAlgorithmName === 'dfs') { this.currentAlgorithm = new DFS(); }
+
+            return this.currentAlgorithm.start(this.canvas, this.canvas.startNode, this.canvas.endNode);
+
+        }
     }
 
     stop() {

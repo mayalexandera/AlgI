@@ -8,7 +8,7 @@ class Canvas {
         this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
         this.size = Canvas.size;
-        this.colors = ['red', 'blue', 'pink', 'orange', 'yellow', 'green'];
+        this.colors = ['red'];
         this.startIcon = new Image();
         this.startIcon.src = startNodeIcon;
         this.endNodeIcon = new Image();
@@ -16,6 +16,7 @@ class Canvas {
         this.targetImage = null;
         this.isDragging = false;
         this.draggingNode = null;
+        this.runningAlgorithm = false;
         this.towers = [];
 
         // Event listeners
@@ -36,14 +37,19 @@ class Canvas {
 
     renderTowers() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle = 'red';
         for (const tower of this.towers) {
+            this.context.fillStyle = this.getColor();
             this.context.fillRect(tower.x, tower.y, tower.width, tower.height);
         }
     }
 
-    setTowers(newTowers) {
-        this.towers = newTowers;
+    async setTowers() {
+        this.towers = [];
+        for(let i = 0; i < this.canvas.width / Canvas.size; i++) {
+            const height = Math.floor(Math.random() * (this.canvas.height - 10));
+            const tower = {x: i * Canvas.size, y: this.canvas.height - height, width: Canvas.size, height: height};
+            this.towers.push(tower);
+        }
         this.renderTowers();
     }
 
@@ -77,14 +83,19 @@ class Canvas {
         }
     }
 
-    clear() {
+    clear(sorting=false) {
         this.context.fillStyle = 'white';
         this.context.fillRect(0, 0, this.width, this.height)
-        this.renderTargets();
-        //this.renderTowers();
+        if (sorting) {
+            this.setTowers();
+        } else {
+            this.renderTargets();
+        }
     }
 
     handleMouseDown(event) {
+        if (this.runningAlgorithm) { return; }
+        
         const mouseX = event.clientX - this.canvas.getBoundingClientRect().x;
         const mouseY = event.clientY - this.canvas.getBoundingClientRect().y;
         const padding = 20;

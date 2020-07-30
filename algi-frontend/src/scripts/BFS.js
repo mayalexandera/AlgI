@@ -37,7 +37,7 @@ class BFS extends Algorithm {
       let node = queue.shift();
       while (!this.visitedNode(node, visited)) {
         if (node.x == targetNode.x && node.y == targetNode.y) {
-          console.log("Finished", node);
+          console.log("Finished");
           return node;
         }
         await this.sleep(0);

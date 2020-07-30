@@ -10,7 +10,12 @@ class QuickSort extends Algorithm{
     const right = [];
 
     for (let i = 1; i < array.length; i++) {
-      array[i] < pivot ? left.push(array[i]) : right.push(array[i]);
+      const tower = array[i];
+      if (tower.height < pivot.height) {
+        left.push(tower);
+      } else {
+        right.push(tower);
+      }
     }
     // recurssion
     return this._sort(left).concat(pivot)
