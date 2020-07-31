@@ -41,7 +41,8 @@ class Merge extends Algorithm {
 
     await this.sortTowers(left, right, canvas);
     await this.sortTowers(result, result, canvas);
-    await this.sortTowers(right, left, canvas);
+    await this.sortTowers(right, right, canvas);
+    await this.sortTowers(left, left, canvas);
 
     return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
   }

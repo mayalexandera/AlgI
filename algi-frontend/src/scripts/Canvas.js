@@ -84,7 +84,7 @@ class Canvas {
     async setTowers() {
         this.towers = [];
         for(let i = 0; i < this.canvas.width / Canvas.size; i++) {
-            const height = Math.floor(Math.random() * (this.canvas.height - 10));
+            const height = Math.floor(Math.random() * (this.canvas.height - 50) + 50);
             const tower = {x: i * Canvas.size, y: this.canvas.height - height, width: Canvas.size, height: height};
             this.towers.push(tower);
         }
