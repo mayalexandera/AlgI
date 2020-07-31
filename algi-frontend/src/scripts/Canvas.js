@@ -7,8 +7,11 @@ class Canvas {
         this.layeredContext = this.layeredCanvas.getContext('2d');
         this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
+        this.redSlider = document.getElementById('red-slider')
+        this.greenSlider = document.getElementById('green-slider')
+        this.blueSlider = document.getElementById('blue-slider')
         this.size = Canvas.size;
-        this.colors = ['red'];
+        this.color = {r: 255, g: 0, b: 0};
         this.startIcon = new Image();
         this.startIcon.src = startNodeIcon;
         this.endNodeIcon = new Image();
@@ -25,10 +28,13 @@ class Canvas {
         this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
         this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
         this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+        document.querySelectorAll('.slidecontainer').forEach(slider => {
+            slider.addEventListener('change', this.handleColorChange.bind(this))
+        })
     }
 
     getColor() {
-        return this.colors[Math.floor(Math.random() * this.colors.length)];
+        return `rgb(${this.color.r},${this.color.g},${this.color.b})`
     }
 
     visitCell(node) {
@@ -55,6 +61,21 @@ class Canvas {
         for (const tower of towers) {
             this.context.fillStyle = color;
             this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
+        }
+    }
+
+    handleColorChange(event){
+        console.log(event.target.name)
+        switch (event.target.name) {
+          case "red-slider":
+            this.color.r = event.target.value;
+            break;
+          case "green-slider":
+            this.color.g = event.target.value;
+            break;
+          case "blue-slider":
+            this.color.b = event.target.value;
+            break;
         }
     }
 

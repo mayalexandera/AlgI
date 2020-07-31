@@ -9,47 +9,86 @@
   </head>
   <body>
     <nav>
-      <div class = "logo"><h1>Algorithm Imager</h1></div>
+      <div class="logo"><h1>Algorithm Imager</h1></div>
       <ul>
-        <li class = "expandable">
+        <li class="expandable">
           Algorithms<i class="fa fa-arrow-down" aria-hidden="true"></i>
-          <div class = "dropdown hidden">
-            <span class = "active">BFS</span>
+          <div class="dropdown hidden">
+            <span class="active">BFS</span>
             <span>DFS</span>
             <span>Merge Sort</span>
             <span>Quick Sort</span>
           </div>
         </li>
-        <li id = "run-button">Run Breadth-first<i class="fa fa-play" aria-hidden="true"></i></li>
-        <li id = "clear-results">Clear Results</li>
-        <li><input id="image-file" type="file" accept="image/png, image/jpeg" />
+        <li id="run-button">
+          Run Breadth-first<i class="fa fa-play" aria-hidden="true"></i>
+        </li>
+        <li id="clear-results">Clear Results</li>
+        <li>
+          <input id="image-file" type="file" accept="image/png, image/jpeg" />
           <button>Submit</button>
         </li>
       </ul>
     </nav>
 
-    
     <h2>Pick an Image</h2>
-    <div id = "image-wrapper">
-      <button class = "left"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-      <div id = "image-container">
-      </div>
-      <button class = "right"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+    <div id="image-wrapper">
+      <button class="left">
+        <i class="fa fa-angle-left" aria-hidden="true"></i>
+      </button>
+      <div id="image-container"></div>
+      <button class="right">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </button>
     </div>
-    <div id = "canvas-wrapper">
-      <p class = "help-msg">Tip: Drag the Icons to change start and target points.</p>
-      <div id = "tools-help">
-        <p id = "algorithm-title">Breadth-first<span class = "slow-speed">(Low Performance)</span></p>
-        <p class = "time">Time: <span id = "time-count">0:00</span></p>
-        <p class = "nodes">Nodes <span id = "node-count">0</span></p>
-        
-        <div class = 'help-icons'>
+    <div id="canvas-wrapper">
+      <p class="help-msg">
+        Tip: Drag the Icons to change start and target points.
+      </p>
+      <div id="tools-help">
+        <p id="algorithm-title">
+          Breadth-first<span class="slow-speed">(Low Performance)</span>
+        </p>
+        <p class="time">Time: <span id="time-count">0:00</span></p>
+        <p class="nodes">Nodes <span id="node-count">0</span></p>
+
+        <div class="help-icons">
           <p>Start <i class="fa fa-male"></i></p>
           <p>Target <i class="fa fa-bullseye"></i></p>
         </div>
+        <div class="slidecontainer">
+          <input
+            type="range"
+            min="0"
+            max="255"
+            value="255"
+            class="slider"
+            name="red-slider"
+          />
+        </div>
+        <div class="slidecontainer">
+          <input
+            type="range"
+            min="0"
+            max="255"
+            value="0"
+            class="slider"
+            name="green-slider"
+          />
+        </div>
+        <div class="slidecontainer">
+          <input
+            type="range"
+            min="0"
+            max="255"
+            value="0"
+            class="slider"
+            name="blue-slider"
+          />
+        </div>
       </div>
-      <canvas id="canvas" width = "800" height = "400"></canvas>
-      <canvas id="layered-canvas" width = "800" height = "400"></canvas>
+      <canvas id="canvas" width="800" height="400"></canvas>
+      <canvas id="layered-canvas" width="800" height="400"></canvas>
     </div>
 
     <!--
@@ -70,9 +109,11 @@
     </div>
     -->
 
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
   </body>
 </html>
