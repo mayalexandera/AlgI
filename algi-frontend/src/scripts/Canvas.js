@@ -42,7 +42,7 @@ class Canvas {
             this.context.fillStyle = this.getColor();
             this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
         } else {
-            this.context.clearRect(node.x, node.y, this.size, this.size);
+            this.context.clearRect(node.x, node.y, this.size - 1, this.size - 1);
         }
     }
 
@@ -54,7 +54,7 @@ class Canvas {
                 this.context.fillStyle = this.getColor();
                 this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
             } else {
-                this.context.clearRect(tower.x, tower.y, tower.width, tower.height);
+                this.context.clearRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
             }
         }
     }
