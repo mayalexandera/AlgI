@@ -11,7 +11,7 @@ class Canvas {
         this.greenSlider = document.getElementById('green-slider')
         this.blueSlider = document.getElementById('blue-slider')
         this.size = Canvas.size;
-        this.color = {r: 255, g: 0, b: 0};
+        this.color = {r: 255, g: 110, b: 0};
         this.startIcon = new Image();
         this.startIcon.src = startNodeIcon;
         this.endNodeIcon = new Image();
@@ -65,6 +65,9 @@ class Canvas {
     }
 
     handleColorChange(event){
+        if (this.sorting) {
+            this.renderTowers();
+        }
         switch (event.target.name) {
           case "red-slider":
             this.color.r = event.target.value;
