@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const algorithmTitleElement = document.getElementById('algorithm-title');
   const timeCountElement = document.getElementById('time-count');
   const navBar = document.querySelector('nav');
+  const finishedMsg = document.querySelector('.help-msg').querySelector('span');
 
   runButton.addEventListener('click', startAlgorithm);
   clearResults.addEventListener('click', clearCanvas);
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function cleanUp() {
           console.log("Cleaning up");
+          finishedMsg.style.display = 'inline-block';
           event.target.classList.remove('warning');
           icon.classList = 'fa fa-play';
           canvas.runningAlgorithm = false;
@@ -83,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     seconds = 0;
     minutes = 0;
     canvas.clear(algoHandler.sorting);
+    finishedMsg.style.display = "";
   }
 
   function changeAlgorithm(event) {
