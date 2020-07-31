@@ -52,14 +52,19 @@ class Carousel {
         }
 
         if (event.target.nodeName == 'IMG' && !this.canvas.runningAlgorithm) {
-            document.querySelectorAll('.selected').forEach(element => {
+            this.imageElements.forEach(element => {
+                element.classList.add('faded');
                 element.classList.remove('selected');
             })
             
             if (this.canvas.targetImage == event.target) {
+                this.imageElements.forEach(element => {
+                    element.classList.remove('faded');
+                })
                 this.canvas.setImage(null);
             } else {
                 this.canvas.setImage(event.target);
+                event.target.classList.remove('faded');
                 event.target.classList.add('selected')
             }
             this.canvas.clear(this.canvas.sorting);

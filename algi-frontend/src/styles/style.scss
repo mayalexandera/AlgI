@@ -38,10 +38,11 @@ $greenish: #36ffa8;
 .help-msg {
   font-family: 'Helvetica';
   padding-bottom: 1em;
-  text-indent: 1em;
-  font-weight: bold;
+  width: 100%;
+  text-align: center;;
   span{
     color: $warning-color;
+    font-weight: bold;
     display: none;
   }
 
@@ -215,6 +216,10 @@ h2 {
     border: 5px solid $secondary-color !important;
   }
 
+  .faded {
+    opacity: 0.4;
+  }
+
   .image-box {
     border: 1px solid white;
     margin: 1em .5em 0 .5em;
@@ -231,7 +236,14 @@ h2 {
 }
 
 #algorithm-title {
-  min-width: 15rem;
+  min-width: 13rem;
+}
+
+.help-tip {
+  text-align: center;
+  font-family: 'Helvetica';
+  font-size: 90%;
+  margin: 1em 0;
 }
 
 #tools-help {

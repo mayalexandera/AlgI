@@ -102,26 +102,26 @@ document.addEventListener('DOMContentLoaded', () => {
     switch (event.target.textContent) {
       case 'BFS':
         runButton.innerHTML = 'Run Breadth-first<i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Breadth-first<span class = "slow-speed">(Low Performance)</span>'
+        algorithmTitleElement.innerHTML = 'Breadth-first<span class = "slow-speed">O(|V| + |E|)</span>'
         algoHandler.currentAlgorithmName = 'bfs';
         algoHandler.sorting = false;
         break;
       case 'DFS':
         runButton.innerHTML = 'Run Depth-first<i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Depth-first<span class = "medium-speed">(Medium Performance)</span>'
+        algorithmTitleElement.innerHTML = 'Depth-first<span class = "medium-speed">O(|V| + |E|)</span>'
         algoHandler.currentAlgorithmName = 'dfs';
         algoHandler.sorting = false;
         break;
       case 'Merge Sort':
         runButton.innerHTML = 'Run Merge Sort<i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Merge Sort<span class = "slow-speed">(Low Performance)</span>'
+        algorithmTitleElement.innerHTML = 'Merge Sort<span class = "slow-speed">O(n log(n))</span>'
         algoHandler.currentAlgorithmName = 'merge';
         algoHandler.sorting = true;
         break;
       
       case 'Quick Sort':
         runButton.innerHTML = 'Run Quick Sort<i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Quick Sort<span class = "good-speed">(High Performance)</span>'
+        algorithmTitleElement.innerHTML = 'Quick Sort<span class = "good-speed">O(n<sup>2</sup>)</span>'
         algoHandler.currentAlgorithmName = 'quicksort';
         algoHandler.sorting = true;
         break;
