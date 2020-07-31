@@ -38,16 +38,24 @@ class Canvas {
     }
 
     visitCell(node) {
-        this.context.fillStyle = this.getColor();
-        this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
-        //this.context.clearRect(node.x, node.y, this.size, this.size);
+        if (!this.targetImage) {
+            this.context.fillStyle = this.getColor();
+            this.context.fillRect(node.x, node.y, this.size - 1, this.size - 1);
+        } else {
+            this.context.clearRect(node.x, node.y, this.size, this.size);
+        }
     }
 
     renderTowers() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.fillStyle = "white"
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         for (const tower of this.towers) {
-            this.context.fillStyle = this.getColor();
-            this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
+            if (!this.targetImage) {
+                this.context.fillStyle = this.getColor();
+                this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
+            } else {
+                this.context.clearRect(tower.x, tower.y, tower.width, tower.height);
+            }
         }
     }
 
@@ -56,16 +64,7 @@ class Canvas {
         this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
     }
 
-    renderMutatedTowers(towers, color="red") {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        for (const tower of towers) {
-            this.context.fillStyle = color;
-            this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
-        }
-    }
-
     handleColorChange(event){
-        console.log(event.target.name)
         switch (event.target.name) {
           case "red-slider":
             this.color.r = event.target.value;
@@ -96,6 +95,7 @@ class Canvas {
 
     setImage(image) {
         this.targetImage = image;
+        this.renderImage();
     }
 
     renderImage() {
@@ -108,18 +108,19 @@ class Canvas {
         // Make sure all the images are loaded before rendering
         if (this.startIcon.complete && this.endNodeIcon.complete) {
             this.context.drawImage(this.startIcon, this.startNode.x, this.startNode.y, 8, 16);
-            this.context.drawImage(this.endNodeIcon, this.endNode.x, this.endNode.y, 16, 16);
+            this.context.drawImage(this.endNodeIcon, this.endNode.x, this.endNode.y, this.size, this.size);
         } else {
             this.startIcon.onload = () => {
                 this.context.drawImage(this.startIcon, this.startNode.x, this.startNode.y, 8, 16);
             }
             this.endNodeIcon.onload = () => {
-                this.context.drawImage(this.endNodeIcon, this.endNode.x, this.endNode.y, 16, 16);
+                this.context.drawImage(this.endNodeIcon, this.endNode.x, this.endNode.y, this.size, this.size);
             }
         }
     }
 
     clear(sorting=false) {
+        this.sorting = sorting;
         this.context.fillStyle = 'white';
         this.context.fillRect(0, 0, this.width, this.height)
         if (sorting) {

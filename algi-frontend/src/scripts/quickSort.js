@@ -6,6 +6,9 @@ class QuickSort extends Algorithm {
     if (array.length <= 1) {
       return array;
     }
+
+    if (this.stop) {throw "Stopped";}
+
     const pivot = array[0];
     const left = [];
     const right = [];
@@ -20,7 +23,8 @@ class QuickSort extends Algorithm {
     }
     await this.sortTowers(left, right, canvas)
     await this.sortTowers(array, array, canvas);
-    
+
+    this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
 
     await this.sleep(25);
 
@@ -44,7 +48,7 @@ class QuickSort extends Algorithm {
       await this.sleep(1);
       canvas.renderTowers();
       for (const towerB of rightTowers) {
-        canvas.renderTower(towerA, "green");
+        canvas.renderTower(towerA, "yellow");
 
         if (towerA.height < towerB.height && towerA.x > towerB.x) {
           this.swapPositions(towerA, towerB);

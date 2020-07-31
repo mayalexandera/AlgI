@@ -1,7 +1,7 @@
 import Algorithm from "./Algorithm";
 
 class Merge extends Algorithm {
-  _sort(array, canvas) {
+  async _sort(array, canvas) {
     if (array.length <= 1) {
       return array;
     }
@@ -10,14 +10,18 @@ class Merge extends Algorithm {
     const left = array.slice(0, middle);
     const right = array.slice(middle);
 
+    return this.merge(await this._sort(left, canvas), await this._sort(right, canvas), canvas);
+
+    /*
     return this.merge(
       this._sort(left, canvas),
       this._sort(right, canvas),
       canvas
     );
+    */
   }
 
-  merge(left, right, canvas) {
+  async merge(left, right, canvas) {
     let result = [],
       leftIndex = 0,
       rightIndex = 0;
@@ -35,9 +39,10 @@ class Merge extends Algorithm {
       }
     }
 
-    this.sortTowers(left, right, canvas);
-    this.sortTowers(result, result, canvas);
-    this.sortTowers(right, left, canvas);
+    await this.sortTowers(left, right, canvas);
+    await this.sortTowers(result, result, canvas);
+    await this.sortTowers(right, left, canvas);
+
     return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
   }
 
@@ -49,10 +54,12 @@ class Merge extends Algorithm {
 
   async sortTowers(leftTowers, rightTowers, canvas) {
     for (const towerA of leftTowers) {
-      await this.sleep(40);
+      if (this.stop) {throw "Stopped"}
+      await this.sleep(0);
+      this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
       canvas.renderTowers();
       for (const towerB of rightTowers) {
-        canvas.renderTower(towerA, "green");
+        canvas.renderTower(towerA, "yellow");
 
         if (towerA.height < towerB.height && towerA.x > towerB.x) {
           this.swapPositions(towerA, towerB);

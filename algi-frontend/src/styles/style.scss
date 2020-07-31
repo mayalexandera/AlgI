@@ -65,7 +65,7 @@ $greenish: #36ffa8;
   }
   #layered-canvas {
     position: absolute;
-    left: 0; top: 0;
+    left: 1px; top: 7em;
     z-index: -1;
   }
 }
@@ -196,6 +196,10 @@ h2 {
   justify-content: center;
   margin-bottom: 4em;
 
+  .selected {
+    border: 5px solid $secondary-color !important;
+  }
+
   .image-box {
     border: 1px solid white;
     margin: 1em .5em 0 .5em;
@@ -207,6 +211,7 @@ h2 {
       border: 5px solid white;
       cursor: pointer;
     }
+ 
   }
 }
 
@@ -268,5 +273,28 @@ h2 {
       margin-top: 1em;
       max-width: 50rem;
     }
+  }
+}
+
+.slidecontainer {
+  display: block;
+  margin-left: 4em;
+  position: relative;
+  span {
+    position: absolute;
+    left: -1em;
+    &:nth-child(1) {
+      color: #ff3333;
+    }
+    &:nth-child(3) {
+      color: #61ff8b;
+    }
+    &:nth-child(5) {
+      color: #42aaff;
+    }
+  }
+  input {
+    display: block;
+    width: 4rem;
   }
 }

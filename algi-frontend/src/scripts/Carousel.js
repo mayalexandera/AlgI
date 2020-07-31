@@ -10,20 +10,32 @@ import picasoImage3 from '../assets/images/picaso-03.jpg';
 import picasoImage4 from '../assets/images/picaso-04.jpg';
 
 class Carousel {
-    constructor() {
+    constructor(canvas) {
         this.images = [vincentImage1, vincentImage2, vincentImage3, vincentImage4, 
             picasoImage1, picasoImage2, picasoImage3, picasoImage4, vincentImage0
         ];
         this.imageContainer = document.getElementById('image-container');
         this.imageWrapper = document.getElementById('image-wrapper');
         this.imageWrapper.addEventListener('click', this.handleClick.bind(this));
+        this.imageElements = [];
 
         this.currentRange = 0;
         this.maxRange = 4;
+        this.canvas = canvas;
+        this.createImages();
+    }
+
+    createImages() {
+        for(const image of this.images) {
+            const imageElement = document.createElement('img');
+            imageElement.classList.add('image-box');
+            imageElement.src = image;
+            this.imageElements.push(imageElement);
+        }
     }
 
     getCurrentImages() {
-        return this.images.slice(this.currentRange, this.currentRange + this.maxRange)
+        return this.imageElements.slice(this.currentRange, this.currentRange + this.maxRange)
     }
 
     handleClick(event) {
@@ -39,19 +51,25 @@ class Carousel {
             this.loadImages();
         }
 
-        if (event.target.nodeName == 'IMG') {
-            this.canvas.setImage(event.target);
-            this.canvas.clear();
+        if (event.target.nodeName == 'IMG' && !this.canvas.runningAlgorithm) {
+            document.querySelectorAll('.selected').forEach(element => {
+                element.classList.remove('selected');
+            })
+            
+            if (this.canvas.targetImage == event.target) {
+                this.canvas.setImage(null);
+            } else {
+                this.canvas.setImage(event.target);
+                event.target.classList.add('selected')
+            }
+            this.canvas.clear(this.canvas.sorting);
         }
     }
 
     loadImages() {
         this.imageContainer.innerHTML = "";
         for (const image of this.getCurrentImages()) {
-            const imageElement = document.createElement('img');
-            imageElement.classList.add('image-box');
-            imageElement.src = image;
-            this.imageContainer.appendChild(imageElement);
+            this.imageContainer.appendChild(image);
           }
     }
 }

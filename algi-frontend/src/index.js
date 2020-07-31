@@ -50,18 +50,23 @@ document.addEventListener('DOMContentLoaded', () => {
         seconds = 0;
         minutes = 0;
         const timer = setInterval(tick, 1000);
+
         algoHandler.start()
-        .then(() => {
-          console.log("Finished");
+        .then(cleanUp)
+        .catch(cleanUp)
+
+        function cleanUp() {
+          console.log("Cleaning up");
           event.target.classList.remove('warning');
           icon.classList = 'fa fa-play';
           canvas.runningAlgorithm = false;
           clearInterval(timer);
           algoHandler.running = false;
-        })
+        }
       }
     }
   }
+
   // Handle dropdown events
   function showDropdown(event) {
     const dropdown = event.target.querySelector('.dropdown');
@@ -82,6 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function changeAlgorithm(event) {
     // Changes the currently active algorithm on the navigation
+    if (algoHandler.running) {return;}
+
     if (event.target.nodeName === 'SPAN' && !event.target.matches('.active')) {
       document.querySelectorAll('.active').forEach(element => {
         element.classList.remove('active');
@@ -104,14 +111,14 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
       case 'Merge Sort':
         runButton.innerHTML = 'Run Merge Sort<i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Merge Sort<span class = "good-speed">(High Performance)</span>'
+        algorithmTitleElement.innerHTML = 'Merge Sort<span class = "slow-speed">(Low Performance)</span>'
         algoHandler.currentAlgorithmName = 'merge';
         algoHandler.sorting = true;
         break;
       
       case 'Quick Sort':
         runButton.innerHTML = 'Run Quick Sort<i class="fa fa-play" aria-hidden="true"></i>'
-        algorithmTitleElement.innerHTML = 'Quick Sort<span class = "slow-speed">(Low Performance)</span>'
+        algorithmTitleElement.innerHTML = 'Quick Sort<span class = "good-speed">(High Performance)</span>'
         algoHandler.currentAlgorithmName = 'quicksort';
         algoHandler.sorting = true;
         break;
@@ -120,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function hideDropDown() {
-    const dropDown = expandable.querySelector('.dropdown').classList.add('hidden');
+    expandable.querySelector('.dropdown').classList.add('hidden');
   }
 
   function tick() {
