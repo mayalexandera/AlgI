@@ -18,9 +18,8 @@ class QuickSort extends Algorithm {
         right.push(tower);
       }
     }
-    this.sortTowers(left, right, canvas).then(() => {
-      this.sortTowers(array, array, canvas);
-    })
+    await this.sortTowers(left, right, canvas)
+    await this.sortTowers(array, array, canvas);
     
 
     await this.sleep(25);
@@ -41,9 +40,9 @@ class QuickSort extends Algorithm {
   }
 
   async sortTowers(leftTowers, rightTowers, canvas) {
-    canvas.renderTowers();
     for(const towerA of leftTowers) {
-      //await this.sleep(1);
+      await this.sleep(1);
+      canvas.renderTowers();
       for (const towerB of rightTowers) {
         canvas.renderTower(towerA, "green");
 
