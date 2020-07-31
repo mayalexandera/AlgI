@@ -45,10 +45,15 @@ class Canvas {
         }
     }
 
-    renderMutatedTowers(towers) {
+    renderTower(tower, color='red') {
+        this.context.fillStyle = color;
+        this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
+    }
+
+    renderMutatedTowers(towers, color="red") {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (const tower of towers) {
-            this.context.fillStyle = this.getColor();
+            this.context.fillStyle = color;
             this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
         }
     }

@@ -25,16 +25,15 @@ class AlgorithmHandler {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    start() {
+    async start() {
         this.running = true;
         this.canvas.runningAlgorithm = true;
 
         if (this.sorting) {
             if (this.currentAlgorithmName === 'merge') { this.currentAlgorithm = new Merge(); }
             if (this.currentAlgorithmName === 'quicksort') {this.currentAlgorithm = new QuickSort(); }
-            return new Promise(resolve => {
-                this.currentAlgorithm._sort(this.canvas.towers, this.canvas);
-            })
+            this.currentAlgorithm._sort(this.canvas.towers, this.canvas)       
+
         } else {
             if (this.currentAlgorithmName === 'bfs') { this.currentAlgorithm = new BFS(); }
             if (this.currentAlgorithmName === 'dfs') { this.currentAlgorithm = new DFSV(); }

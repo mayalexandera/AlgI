@@ -2,6 +2,7 @@ import Canvas from "./Canvas";
 
 class Algorithm {
     constructor() {
+        this.dumps = [];
         this.nodeCountElement = document.getElementById('node-count');
         this.stop = false;
     }
