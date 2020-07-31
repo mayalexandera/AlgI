@@ -1,5 +1,5 @@
 import endIcon from '../assets/images/bullseye.png';
-import startNodeIcon from '../assets/images/male-solid.png';
+import startNodeIcon from '../assets/images/female-solid.png';
 
 class Canvas {
     constructor() {
