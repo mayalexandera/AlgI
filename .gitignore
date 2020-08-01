@@ -5,6 +5,4 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 
-
-/algi-frontend/node_modules
-/algi-frontend/node_modules
+/node_modules
