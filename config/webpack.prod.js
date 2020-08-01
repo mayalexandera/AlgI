@@ -10,6 +10,7 @@ const PurgecssPlugin = require('purgecss-webpack-plugin');
 const glob = require("glob");
 
 module.exports = {
+  target: 'node',
   entry: {
     main: "./src/index.js"
   },
@@ -45,6 +46,18 @@ module.exports = {
             options: {
               name: "[name].[ext]",
               outputPath: "assets/"
+            }
+          },
+        ]
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: "file-loader", // This will resolves import/require() on a file into a url and emits the file into the output directory.
+            options: {
+              name: "[name].[ext]",
+              outputPath: "fonts/"
             }
           },
         ]
