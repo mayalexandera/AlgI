@@ -43,7 +43,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
     "@glidejs/glide": "^3.4.1",
-    "core-js": "3"
+    "core-js": "^3.6.5"
   },
   "browserslist": [
     "> 1%",
