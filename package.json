@@ -1,19 +1,15 @@
 {
-  "homepage": "http://mayalexandera.github.io/AlgI",
+  "homepage": "http://mayalexandera.github.io/AlgI/",
   "name": "AlgI",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.16.1"
+  },
   "description": "",
-  "homepage": "http://mayalexandera.github.io/AlgI/",
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "^7.7.7",
-    "babel-core": "^6.26.3",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "@babel/preset-env": "^7.11.0",
     "brotli-webpack-plugin": "^1.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "compression-webpack-plugin": "^3.0.1",
@@ -33,7 +29,7 @@
     "sass-loader": "^9.0.2",
     "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^2.3.1",
-    "webpack": "^4.41.5",
+    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
   },
@@ -42,12 +38,10 @@
     "deploy": "gh-pages -d build",
     "start": "webpack-dev-server --open --config=config/webpack.dev.js",
     "build": "webpack --config=config/webpack.prod.js",
-    "deploy": "gh-pages -d build",
     "test": "jest"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.10.4",
-    "@glidejs/glide": "^3.4.1",
+    "babel-loader": "^8.1.0",
     "core-js": "3"
   },
   "development": [
