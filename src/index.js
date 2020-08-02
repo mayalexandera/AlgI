@@ -4,6 +4,7 @@ import AlgorithmHandler from './scripts/AlgorithmHandler';
 
 import './styles/style.scss';
 
+
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = new Canvas();
   const carousel = new Carousel(canvas);
