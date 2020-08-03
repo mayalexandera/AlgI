@@ -16,8 +16,12 @@ const Canvas = () => {
     const [minutes, setMinutes] = useState(0);
     const [nodes, setNodes] = useState(0);
     const [runningAlgorithm, setRunningAlgorithm] = useState(false);
-    const [startNode, setStartNode] = useState({ x:400, y:150 });
-    const [endNode, setEndNode] = useState({ x:300, y:150 });
+    const [startNode] = useState({ x:400, y:150 });
+    const [endNode] = useState({ x:300, y:150 });
+    const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
+    const [currentAlgorithmName, setCurrentAlgorithmName] = useState("Breadth-first");
+    const [sorting, setSorting] = useState(false);
+    const [timer, setTimer] = useState(null);
     
     // Other static properties
     const startNodeIcon = new Image();
@@ -31,10 +35,6 @@ const Canvas = () => {
     let targetImage = null;
     let isDragging = false;
     let draggingNode = null;
-    let sorting = false;
-    let currentAlgorithm = null;
-    let currentAlgorithmName = "Breadth-first";
-    let timer = null;
 
     const canvas = useRef();
     const context = useRef();
@@ -50,50 +50,61 @@ const Canvas = () => {
         layeredContext.current = layeredCanvas.current.getContext('2d');
         width.current = canvas.current.width;
         height.current = canvas.current.height;
-        console.log("Mounted Canvas");
+
+        renderTargets();
     }, []);
+
+    useEffect(() => {
+        if (sorting) {
+            setTowers();
+        } else {
+            renderTargets();
+        }
+    }, [sorting])
 
     const start = async () => {
         clear();
         setRunningAlgorithm(true);
-
         // Check which algorithm we're running
+        let targetAlgorithm = null;
         switch(currentAlgorithmName) {
             case 'Breadth-first':
-                currentAlgorithm = new BFS({width: width.current, height: height.current, visitCell: visitCell});
+                targetAlgorithm = new BFS({width: width.current, height: height.current, visitCell: visitCell});
                 break;
             case 'Depth-first':
-                currentAlgorithm = new DFS({width: width.current, height: height.current, visitCell: visitCell});
+                targetAlgorithm = new DFS({width: width.current, height: height.current, visitCell: visitCell});
                 break;
             case 'Merge Sort':
-                currentAlgorithm = new Merge()
+                targetAlgorithm = new Merge();
                 break;
             case 'Quick Sort':
-                currentAlgorithm = new QuickSort()
+                targetAlgorithm = new QuickSort();
                 break;
             default:
                 break;
         }
+        setCurrentAlgorithm(targetAlgorithm);
+        const newTimer = setInterval(tick, 1000);
+        setTimer(newTimer);
 
-        timer = setInterval(tick, 1000);
-        
         if (sorting) {
-            return currentAlgorithm._sort(towers, {renderTower: renderTower, renderTowers: renderTowers}).then((data) => {
-                clearInterval(timer);
-                setRunningAlgorithm(false);
+            return targetAlgorithm._sort(towers, {renderTower: renderTower, renderTowers: renderTowers}).then((data) => {
+                clearInterval(newTimer)
+                stop();
                 return data;
             })
         } else {
             // Return a promise indicating when the algorithm finishes
-            return currentAlgorithm.start(startNode, endNode).then((data) => {
-                clearInterval(timer);
-                setRunningAlgorithm(false);
+            return targetAlgorithm.start(startNode, endNode).then((data) => {
+                clearInterval(newTimer)
+                stop();
                 return data;
             })
         }
     }
 
     const stop = () => {
+        clearInterval(timer);
         setRunningAlgorithm(false);
         currentAlgorithm.stop = true;
     }
@@ -162,6 +173,7 @@ const Canvas = () => {
         setNodes(0);
         setSeconds(0);
         setMinutes(0);
+
         document.getElementById('node-count').innerHTML = 0;
 
         if (sorting) {
@@ -217,38 +229,30 @@ const Canvas = () => {
     }
     //----------------------------END OF Drag and Drop
     const updateAlgorithmName = (name) => {
-        currentAlgorithmName = name;
+        setCurrentAlgorithmName(name);
         switch (name) {
           case 'Breadth-first':
             algorithmTitleElement.current.innerHTML = 'Breadth-first<span class = "slow-speed">O(|V| + |E|)</span>'
-            sorting = false;
             break;
           case 'Depth-first':
             algorithmTitleElement.current.innerHTML = 'Depth-first<span class = "medium-speed">O(|V| + |E|)</span>'
-            sorting = false;
             break;
           case 'Merge Sort':
             algorithmTitleElement.current.innerHTML = 'Merge Sort<span class = "slow-speed">O(n log(n))</span>'
-            sorting = true;
             break;
   
           case 'Quick Sort':
             algorithmTitleElement.current.innerHTML = 'Quick Sort<span class = "good-speed">O(n<sup>2</sup>)</span>'
-            sorting = true;
             break;
 
           default:
         }
-        if (sorting) {
-            setTowers();
-        } else {
-            renderTargets();
-        }
+        setSorting(name === 'Quick Sort' || name === 'Merge Sort');
     }
 
     return(
         <div>
-        <Navigation canvas = {{updateAlgorithmName: updateAlgorithmName, clear: clear, stop: stop, start: start}}/>
+        <Navigation canvas = {{updateAlgorithmName: updateAlgorithmName, clear: clear, stop: stop, start: start, runningAlgorithm: runningAlgorithm}}/>
         <Carousel />
           <div id="canvas-wrapper">
             <p className="help-msg">

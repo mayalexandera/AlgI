@@ -1,13 +1,7 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 
 const Navigation = (props) => {
   const [currentAlgorithm, setCurrentAlgorithm] = useState("Breadth-first");
-  const [runningAlgorithm, setRunningAlgorithm] = useState(false);
-
-  useEffect(() => {
-    console.log("Effect", runningAlgorithm);
-    console.log("Mounted");
-  })
 
   // Toggles the dropdown element when clicked
   const showDropdown = (event) => {
@@ -19,7 +13,8 @@ const Navigation = (props) => {
 
   // When a user clicks on a new algorithm update the nav
   const switchAlgorithm = (event) => {
-    if (runningAlgorithm) { return; }
+    if (props.canvas.runningAlgorithm || event.target.nodeName === 'DIV') { return; }
+    clearCanvas();
     const algorithmName = event.target.dataset.name;
 
     if (algorithmName) {
@@ -41,15 +36,11 @@ const Navigation = (props) => {
   const startAlgorithm = (event) => {
     const target = event.target;
     toggleRunButton(target);
-
-    setRunningAlgorithm(true);
-    console.log(runningAlgorithm);
     props.canvas.clear();
 
-    if (runningAlgorithm) {
+    if (!props.canvas.runningAlgorithm) {
       props.canvas.start().finally(function() {
         toggleRunButton(target);
-        setRunningAlgorithm(false);
       }).catch(()=>{});
     } else {
       toggleRunButton(target);
