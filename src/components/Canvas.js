@@ -11,6 +11,7 @@ import QuickSort from './QuickSort';
 
 const Canvas = () => {
 
+    
     // Set our re-render properties
     const [seconds, setSeconds] = useState(0);
     const [minutes, setMinutes] = useState(0);
@@ -22,6 +23,7 @@ const Canvas = () => {
     const [currentAlgorithmName, setCurrentAlgorithmName] = useState("Breadth-first");
     const [sorting, setSorting] = useState(false);
     const [timer, setTimer] = useState(null);
+    const [targetImage, setTargetImage] = useState(null);
     
     // Other static properties
     const startNodeIcon = new Image();
@@ -32,7 +34,6 @@ const Canvas = () => {
     const towers = [];
     const size = 5;
 
-    let targetImage = null;
     let isDragging = false;
     let draggingNode = null;
 
@@ -43,6 +44,7 @@ const Canvas = () => {
     const width = useRef();
     const height = useRef();
     const algorithmTitleElement = useRef();
+    const finishedMessage = useRef(); 
 
     // Component Did Mount Once (Might need to fix this)
     useEffect(() => {
@@ -52,6 +54,7 @@ const Canvas = () => {
         height.current = canvas.current.height;
 
         renderTargets();
+        
     }, []);
 
     useEffect(() => {
@@ -61,6 +64,11 @@ const Canvas = () => {
             renderTargets();
         }
     }, [sorting])
+
+    useEffect(() => {
+        clear()
+        renderImage()
+    }, [targetImage])
 
     const start = async () => {
         clear();
@@ -90,6 +98,7 @@ const Canvas = () => {
         if (sorting) {
             return targetAlgorithm._sort(towers, {renderTower: renderTower, renderTowers: renderTowers}).then((data) => {
                 clearInterval(newTimer)
+                finishedMessage.current.style.display = "inline-block";
                 stop();
                 return data;
             })
@@ -97,10 +106,15 @@ const Canvas = () => {
             // Return a promise indicating when the algorithm finishes
             return targetAlgorithm.start(startNode, endNode).then((data) => {
                 clearInterval(newTimer)
+                finishedMessage.current.style.display = "inline-block";
                 stop();
                 return data;
             })
         }
+    }
+
+    const getRunningAlgorithm = () => {
+        return runningAlgorithm
     }
 
     const stop = () => {
@@ -152,6 +166,7 @@ const Canvas = () => {
 
     // Draws onto the canvas all the towers in the towers array
     const renderTowers = () => {
+        console.log(targetImage)
         context.current.fillStyle = "white"
         context.current.fillRect(0, 0, width.current, height.current);
         for (const tower of towers) {
@@ -175,6 +190,7 @@ const Canvas = () => {
         setMinutes(0);
 
         document.getElementById('node-count').innerHTML = 0;
+        finishedMessage.current.style.display = ''
 
         if (sorting) {
             setTowers();
@@ -250,47 +266,90 @@ const Canvas = () => {
         setSorting(name === 'Quick Sort' || name === 'Merge Sort');
     }
 
-    return(
-        <div>
-        <Navigation canvas = {{updateAlgorithmName: updateAlgorithmName, clear: clear, stop: stop, start: start, runningAlgorithm: runningAlgorithm}}/>
-        <Carousel />
-          <div id="canvas-wrapper">
-            <p className="help-msg">
-              Tip: Drag the Icons to change start and target points.
-              <span>Algorithm Finished.</span>
-            </p>
-            <div id="tools-help">
-              <p id="algorithm-title" ref = { algorithmTitleElement }>
-                Breadth-first<span className="slow-speed">O(|V| + |E|)</span>
-              </p>
-              <p className="time">Time: <span id="time-count">{`${minutes}:${(seconds < 10) ? "0" + seconds : seconds}`}</span></p>
-              <p className="nodes">Nodes <span id="node-count">{ nodes }</span></p>
+    const setImage = (image) => {
+        setTargetImage(image)
+    }
 
-              <div className="help-icons">
-                <p>Start <i className="fa fa-female"></i></p>
-                <p>Target <i className="fa fa-bullseye"></i></p>
-              </div>
-              <div className="slidecontainer" id = "slider-container">
-                <span>r</span>
-                <input type="range" min="0" max="225" name = "red"/>
-                <span>g</span>
-                <input type="range" min="0" max="200" name = "green"/>
-                <span>b</span>
-                <input type="range" min="0" max="225" name = "blue"/>
-              </div>
+    const renderImage = () => {
+        console.log(width, height)
+        if (targetImage) {
+            layeredContext.current.drawImage(targetImage, 0, 0, width.current, height.current) 
+        }
+    }
+
+    return (
+      <div>
+        <Navigation
+          canvas={{
+            updateAlgorithmName: updateAlgorithmName,
+            clear: clear,
+            stop: stop,
+            start: start,
+            runningAlgorithm: runningAlgorithm,
+          }}
+        />
+        <Carousel
+          canvas={{
+            setImage: setImage,
+            targetImage: targetImage,
+            clear: clear,
+            getRunningAlgorithm: getRunningAlgorithm,
+          }}
+        />
+        <div id='canvas-wrapper'>
+          <p className='help-msg'>
+            Tip: Drag the Icons to change start and target points.
+            <span ref={finishedMessage} > Algorithm Finished.</span>
+          </p>
+          <div id='tools-help'>
+            <p id='algorithm-title' ref={algorithmTitleElement}>
+              Breadth-first<span className='slow-speed'>O(|V| + |E|)</span>
+            </p>
+            <p className='time'>
+              Time:{" "}
+              <span id='time-count'>{`${minutes}:${
+                seconds < 10 ? "0" + seconds : seconds
+              }`}</span>
+            </p>
+            <p className='nodes'>
+              Nodes <span id='node-count'>{nodes}</span>
+            </p>
+
+            <div className='help-icons'>
+              <p>
+                Start <i className='fa fa-female'></i>
+              </p>
+              <p>
+                Target <i className='fa fa-bullseye'></i>
+              </p>
             </div>
-            <canvas id="canvas" ref = { canvas }
-            width="800"
-            height="400"
-            onMouseDown = { handleMouseDown }
-            onMouseMove = { handleMouseMove }
-            onMouseUp = { handleMouseUp }
-            >
-            </canvas>
-            <canvas ref = { layeredCanvas } id="layered-canvas" width="800" height="400"></canvas>
+            <div className='slidecontainer' id='slider-container'>
+              <span>r</span>
+              <input type='range' min='0' max='225' name='red' />
+              <span>g</span>
+              <input type='range' min='0' max='200' name='green' />
+              <span>b</span>
+              <input type='range' min='0' max='225' name='blue' />
+            </div>
           </div>
+          <canvas
+            id='canvas'
+            ref={canvas}
+            width='800'
+            height='400'
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+          ></canvas>
+          <canvas
+            ref={layeredCanvas}
+            id='layered-canvas'
+            width='800'
+            height='400'
+          ></canvas>
         </div>
-    )
+      </div>
+    );
 }
 
 export default Canvas;

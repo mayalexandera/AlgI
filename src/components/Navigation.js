@@ -1,8 +1,7 @@
-import React, { useState} from 'react';
+import React, { useState, useRef } from 'react';
 
 const Navigation = (props) => {
   const [currentAlgorithm, setCurrentAlgorithm] = useState("Breadth-first");
-
   // Toggles the dropdown element when clicked
   const showDropdown = (event) => {
     const dropdown = event.target.querySelector('.dropdown');

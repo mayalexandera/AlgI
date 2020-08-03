@@ -11,11 +11,11 @@ import picasoImage2 from '../images/picaso-02.jpg';
 import picasoImage3 from '../images/picaso-03.jpg';
 import picasoImage4 from '../images/picaso-04.jpg';
 
-const Carousel = () => {
+const Carousel = (props) => {
   const images = [vincentImage1, vincentImage2, vincentImage3, vincentImage4,
       picasoImage1, picasoImage2, picasoImage3, picasoImage4, vincentImage0
   ];
-  const imageElements = [];
+  const [imageElements] = useState([])
   const maxRange = 4;
   const imageContainer = useRef();
 
@@ -25,6 +25,7 @@ const Carousel = () => {
     createImages();
     loadImages();
   })
+  
 
   // Create an image element for every image src
   const createImages = () => {
@@ -52,7 +53,26 @@ const Carousel = () => {
         setCurrentRange(currentRange - 1);
         loadImages();
     }
+    if (event.target.nodeName == "IMG") {
+      imageElements.forEach((element) => {
+        element.classList.add("faded");
+        element.classList.remove("selected");
+      });
+      if (props.canvas.targetImage == event.target) {
+        imageElements.forEach((element) => {
+          element.classList.remove("faded");
+        });
+        props.canvas.setImage(null);
+      } else {
+        props.canvas.setImage(event.target);
+        event.target.classList.remove("faded");
+        event.target.classList.add("selected");
+      }
+      props.canvas.clear();
+    }
   }
+
+  
 
   const loadImages = () => {
     imageContainer.current.innerHTML = '';
