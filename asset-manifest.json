@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/AlgI/static/css/main.0b91ed50.chunk.css",
+    "main.js": "/AlgI/static/js/main.9cd3f5b1.chunk.js",
+    "main.js.map": "/AlgI/static/js/main.9cd3f5b1.chunk.js.map",
+    "runtime-main.js": "/AlgI/static/js/runtime-main.814a667e.js",
+    "runtime-main.js.map": "/AlgI/static/js/runtime-main.814a667e.js.map",
+    "static/js/2.878a54c9.chunk.js": "/AlgI/static/js/2.878a54c9.chunk.js",
+    "static/js/2.878a54c9.chunk.js.map": "/AlgI/static/js/2.878a54c9.chunk.js.map",
+    "index.html": "/AlgI/index.html",
+    "precache-manifest.3187585ae851c2f4386bda6e3eb08e92.js": "/AlgI/precache-manifest.3187585ae851c2f4386bda6e3eb08e92.js",
+    "service-worker.js": "/AlgI/service-worker.js",
+    "static/css/main.0b91ed50.chunk.css.map": "/AlgI/static/css/main.0b91ed50.chunk.css.map",
+    "static/js/2.878a54c9.chunk.js.LICENSE.txt": "/AlgI/static/js/2.878a54c9.chunk.js.LICENSE.txt",
+    "static/media/App.scss": "/AlgI/static/media/Lato-Regular.2d36b1a9.ttf",
+    "static/media/bullseye.png": "/AlgI/static/media/bullseye.edae1f8b.png",
+    "static/media/picaso-01.jpg": "/AlgI/static/media/picaso-01.879b9b29.jpg",
+    "static/media/picaso-02.jpg": "/AlgI/static/media/picaso-02.ea73172a.jpg",
+    "static/media/picaso-03.jpg": "/AlgI/static/media/picaso-03.d474668d.jpg",
+    "static/media/picaso-04.jpg": "/AlgI/static/media/picaso-04.8d042f93.jpg",
+    "static/media/vincent-01.jpg": "/AlgI/static/media/vincent-01.bcdd4e65.jpg",
+    "static/media/vincent-02.jpg": "/AlgI/static/media/vincent-02.a5d341c7.jpg",
+    "static/media/vincent-03.jpg": "/AlgI/static/media/vincent-03.8461ed95.jpg",
+    "static/media/vincent-04.jpg": "/AlgI/static/media/vincent-04.c8ba263b.jpg",
+    "static/media/vincent.jpg": "/AlgI/static/media/vincent.c25e623e.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.814a667e.js",
+    "static/js/2.878a54c9.chunk.js",
+    "static/css/main.0b91ed50.chunk.css",
+    "static/js/main.9cd3f5b1.chunk.js"
+  ]
+}
