@@ -53,12 +53,13 @@ const Carousel = (props) => {
         setCurrentRange(currentRange - 1);
         loadImages();
     }
-    if (event.target.nodeName == "IMG") {
+    // Updates the canvas current image
+    if (event.target.nodeName === "IMG" && !props.canvas.getRunningAlgorithm()) {
       imageElements.forEach((element) => {
         element.classList.add("faded");
         element.classList.remove("selected");
       });
-      if (props.canvas.targetImage == event.target) {
+      if (props.canvas.targetImage === event.target) {
         imageElements.forEach((element) => {
           element.classList.remove("faded");
         });

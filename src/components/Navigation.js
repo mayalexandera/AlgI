@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 const Navigation = (props) => {
   const [currentAlgorithm, setCurrentAlgorithm] = useState("Breadth-first");

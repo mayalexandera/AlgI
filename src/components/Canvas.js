@@ -66,7 +66,7 @@ const Canvas = () => {
     }, [sorting])
 
     useEffect(() => {
-        clear()
+        clear();
         renderImage()
     }, [targetImage])
 
@@ -166,7 +166,6 @@ const Canvas = () => {
 
     // Draws onto the canvas all the towers in the towers array
     const renderTowers = () => {
-        console.log(targetImage)
         context.current.fillStyle = "white"
         context.current.fillRect(0, 0, width.current, height.current);
         for (const tower of towers) {
@@ -271,7 +270,6 @@ const Canvas = () => {
     }
 
     const renderImage = () => {
-        console.log(width, height)
         if (targetImage) {
             layeredContext.current.drawImage(targetImage, 0, 0, width.current, height.current) 
         }
