@@ -18,8 +18,8 @@ class QuickSort extends Algorithm {
       tower.height < pivot.height ? left.push(tower) : right.push(tower);
     }
 
-    await this.sortTowers(left, right, canvas)
-    await this.sortTowers(array, array, canvas);
+    this.sortTowers(left, right, canvas)
+    this.sortTowers(array, array, canvas);
 
     this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
 
@@ -47,7 +47,7 @@ class QuickSort extends Algorithm {
       for (const towerB of rightTowers) {
         canvas.renderTower(towerA, "red");
 
-        if (towerA.height < towerB.height && towerA.x > towerB.x || towerA.height > towerB.height && towerA.x < towerB.x ) {
+        if ((towerA.height < towerB.height && towerA.x > towerB.x) || (towerA.height > towerB.height && towerA.x < towerB.x)) {
           this.swapPositions(towerA, towerB);
         }
       }

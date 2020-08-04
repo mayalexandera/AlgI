@@ -60,12 +60,15 @@ class Navigation extends React.Component {
 
     // If the algorithm is currently running stop it, else play it
     if (this.props.canvas.runningAlgorithm) {
+      this.toggleRunButton(target);
       this.props.canvas.stop();
 
     } else {
       // Start the algorithm and when you're done make the changes
       this.props.canvas.start().then(() => {
-        this.toggleRunButton();
+        this.toggleRunButton(target);
+      }).catch(() => {
+        this.toggleRunButton(target);
       })
     }
   }

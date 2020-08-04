@@ -54,7 +54,6 @@ const Canvas = () => {
         height.current = canvas.current.height;
 
         renderTargets();
-        
     }, []);
 
     useEffect(() => {
@@ -244,7 +243,6 @@ const Canvas = () => {
     }
     //----------------------------END OF Drag and Drop
     const updateAlgorithmName = (name) => {
-        console.log(name);
         setCurrentAlgorithmName(name);
         switch (name) {
           case 'Breadth-first':
