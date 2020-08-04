@@ -31,10 +31,10 @@ class Merge extends Algorithm {
       }
     }
 
-    await this.sortTowers(left, right, canvas);
-    await this.sortTowers(result, result, canvas);
-    await this.sortTowers(right, right, canvas);
     await this.sortTowers(left, left, canvas);
+    await this.sortTowers(left, right, canvas);
+    await this.sortTowers(right, right, canvas);
+    await this.sortTowers(result, result, canvas);
 
     return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
   }
@@ -54,7 +54,7 @@ class Merge extends Algorithm {
       for (const towerB of rightTowers) {
         canvas.renderTower(towerA, "red");
 
-        if (towerA.height < towerB.height && towerA.x > towerB.x || towerA.height > towerB.height && towerA.x < towerB.x) {
+        if (towerA.height < towerB.height && towerA.x > towerB.x || towerA.height >= towerB.height && towerA.x < towerB.x) {
           this.swapPositions(towerA, towerB);
         }
       }
