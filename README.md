@@ -5,7 +5,7 @@
 <h3>Tools</h3>
 <ul>
   <li>JavaScript</li>
-  <li>React Hooks</li>
+  <li>React</li>
   <li>SASS</li>
   <li>HTML</li>
 </ul>
