@@ -35,10 +35,6 @@ class Canvas extends React.Component {
     this.endNodeIcon = new Image();
     this.endNodeIcon.src = endIcon;
 
-    // Add the mouse down event listerners
-    this.startNodeIcon.addEventListener('click', this.handleMouseDown);
-    this.endNodeIcon.addEventListener('click', this.handleMouseDown);
-
     // Towers and node size
     this.towers = [];
     this.nodeSize = 5;
@@ -250,13 +246,29 @@ class Canvas extends React.Component {
     return `${ this.state.minutes } : ${ (this.state.seconds < 10) ? "0" + this.state.seconds : this.state.seconds}`
   }
 
+  getMousePosition(clientX, clientY) {
+    return {mouseX: clientX - this.canvas.current.getBoundingClientRect().x,
+    mouseY: clientY - this.canvas.current.getBoundingClientRect().y};
+  }
+
   handleMouseDown = (event) => {
     if (this.runningAlgorithm) return;
 
-    this.isDragging = true;
-    console.log(event.target); // WARNING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    this.draggingNode = event.target;
-  }
+    const { mouseX, mouseY } = this.getMousePosition(event.clientX, event.clientY);
+    const padding = 20;
+
+    if (mouseX >= this.startNode.x - padding && mouseX <= this.startNode.x + padding) {
+        if (mouseY >= this.startNode.y - padding && mouseY <= this.startNode.y + padding) {
+            this.isDragging = true;
+            this.draggingNode = this.startNode;
+        }
+    } else if (mouseX >= this.endNode.x - padding && mouseX <= this.endNode.x + padding) {
+        if (mouseY >= this.endNode.y - padding && mouseY <= this.endNode.y + padding) {
+            this.isDragging = true;
+            this.draggingNode = this.endNode;
+        }
+    }
+}
   // When the mouse moves and is draging move the icons
   handleMouseMove = (event) => {
     if (this.isDragging) {
@@ -271,8 +283,6 @@ class Canvas extends React.Component {
       this.isDragging = false;
       this.draggingNode = null;
   }
-  //----------------------------END OF Drag and Drop
-
 
   render() {
     return (
@@ -313,6 +323,7 @@ class Canvas extends React.Component {
             ref={ this.canvas }
             width= { this.width }
             height= { this.height }
+            onMouseDown = {this.handleMouseDown}
             onMouseMove={this.handleMouseMove}
             onMouseUp={this.handleMouseUp}
           ></canvas>

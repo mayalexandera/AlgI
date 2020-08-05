@@ -3,7 +3,7 @@ class Algorithm {
         this.nodeCountElement = document.getElementById('node-count');
         this.canvas = canvas;
         this.stop = false;
-        this.size = 5;
+        this.size = canvas.nodeSize;
     }
 
     sleep(ms) {
