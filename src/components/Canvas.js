@@ -4,10 +4,10 @@ import startIcon from '../images/female-solid.png';
 
 import Navigation from './Navigation';
 import Carousel from './Carousel';
-import BFS from './BFS';
-import DFS from './DFS';
-import Merge from './Merge';
-import QuickSort from './QuickSort';
+import BFS from './algorithms/BFS';
+import DFS from './algorithms/DFS';
+import Merge from './algorithms/Merge';
+import QuickSort from './algorithms/QuickSort';
 
 const Canvas = () => {
 

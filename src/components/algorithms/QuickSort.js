@@ -18,8 +18,8 @@ class QuickSort extends Algorithm {
       tower.height < pivot.height ? left.push(tower) : right.push(tower);
     }
 
-    this.sortTowers(left, right, canvas)
-    this.sortTowers(array, array, canvas);
+    await this.sortTowers(left, right, canvas)
+    await this.sortTowers(array, array, canvas);
 
     this.nodeCountElement.textContent = parseInt(this.nodeCountElement.textContent, 10) + 1;
 
