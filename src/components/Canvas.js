@@ -1,353 +1,399 @@
-import React, {  useState, useRef, useEffect } from 'react';
+import React from 'react';
 import endIcon from '../images/bullseye.png';
 import startIcon from '../images/female-solid.png';
+import algorithmData from '../data.json';
 
 import Navigation from './Navigation';
 import Carousel from './Carousel';
-import BFS from './BFS';
-import DFS from './DFS';
-import Merge from './Merge';
-import QuickSort from './QuickSort';
+import BFS from './algorithms/BFS';
+import DFS from './algorithms/DFS';
+import Merge from './algorithms/Merge';
+import QuickSort from './algorithms/QuickSort';
 
-const Canvas = () => {
+class Canvas extends React.Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      seconds: 0,
+      minutes: 0,
+      nodes: 0,
+    }
+
+    this.runningAlgorithm = false;
+    this.startNode = { x:400, y:150 };
+    this.endNode = { x:300, y:150 };
+    this.currentAlgorithm = null;
+    this.currentAlgorithmName = "Breadth-first";
+
+    this.sorting = false;
+    this.timer = null;
+    this.targetImage = null;
+
+    this.startNodeIcon = new Image();
+    this.startNodeIcon.src = startIcon;
+    this.endNodeIcon = new Image();
+    this.endNodeIcon.src = endIcon;
+
+    // Towers and node size
+    this.towers = [];
+    this.nodeSize = 5;
+    this.nodeColors = {r: 20, g: 100, b: 30};
+    this.isDragging = false;
+    this.draggedIcon = null;
+
+    // Canvas properties
+    this.canvas = React.createRef();
+    this.context = null;
+    this.layeredCanvas = React.createRef();
+    this.layeredContext = null;
+
+    this.width = 800;
+    this.height = 400;
+
+    this.algorithmTitleElement = React.createRef();
+    this.finishedMessage = React.createRef();
+    this.nodeCountElement = React.createRef();
+  }
+
+  // Render the targets as soon as the component loads
+  componentDidMount() {
+    this.context = this.canvas.current.getContext('2d');
+    this.layeredContext = this.layeredCanvas.current.getContext('2d');
+    this.renderTargets();
+  }
+
+  componentDidUpdate() {
+    this.context = this.canvas.current.getContext('2d');
+    this.layeredContext = this.layeredCanvas.current.getContext('2d');
+  }
+
+  async start() {
+    this.clear();
+    this.runningAlgorithm = true;
     
-    // Set our re-render properties
-    const [seconds, setSeconds] = useState(0);
-    const [minutes, setMinutes] = useState(0);
-    const [nodes, setNodes] = useState(0);
-    const [runningAlgorithm, setRunningAlgorithm] = useState(false);
-    const [startNode] = useState({ x:400, y:150 });
-    const [endNode] = useState({ x:300, y:150 });
-    const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
-    const [currentAlgorithmName, setCurrentAlgorithmName] = useState("Breadth-first");
-    const [sorting, setSorting] = useState(false);
-    const [timer, setTimer] = useState(null);
-    const [targetImage, setTargetImage] = useState(null);
-    
-    // Other static properties
-    const startNodeIcon = new Image();
-    startNodeIcon.src = startIcon;
-    const endNodeIcon = new Image();
-    endNodeIcon.src = endIcon;
-
-    const towers = [];
-    const size = 5;
-
-    let isDragging = false;
-    let draggingNode = null;
-
-    const canvas = useRef();
-    const context = useRef();
-    const layeredCanvas = useRef();
-    const layeredContext = useRef();
-    const width = useRef();
-    const height = useRef();
-    const algorithmTitleElement = useRef();
-    const finishedMessage = useRef(); 
-
-    // Component Did Mount Once (Might need to fix this)
-    useEffect(() => {
-        context.current = canvas.current.getContext('2d');
-        layeredContext.current = layeredCanvas.current.getContext('2d');
-        width.current = canvas.current.width;
-        height.current = canvas.current.height;
-
-        renderTargets();
-        
-    }, []);
-
-    useEffect(() => {
-        if (sorting) {
-            setTowers();
-        } else {
-            renderTargets();
-        }
-    }, [sorting])
-
-    useEffect(() => {
-        clear();
-        renderImage()
-    }, [targetImage])
-
-    const start = async () => {
-        clear();
-        setRunningAlgorithm(true);
-        // Check which algorithm we're running
-        let targetAlgorithm = null;
-        switch(currentAlgorithmName) {
-            case 'Breadth-first':
-                targetAlgorithm = new BFS({width: width.current, height: height.current, visitCell: visitCell});
-                break;
-            case 'Depth-first':
-                targetAlgorithm = new DFS({width: width.current, height: height.current, visitCell: visitCell});
-                break;
-            case 'Merge Sort':
-                targetAlgorithm = new Merge();
-                break;
-            case 'Quick Sort':
-                targetAlgorithm = new QuickSort();
-                break;
-            default:
-                break;
-        }
-        setCurrentAlgorithm(targetAlgorithm);
-        const newTimer = setInterval(tick, 1000);
-        setTimer(newTimer);
-
-        if (sorting) {
-            return targetAlgorithm._sort(towers, {renderTower: renderTower, renderTowers: renderTowers}).then((data) => {
-                clearInterval(newTimer)
-                finishedMessage.current.style.display = "inline-block";
-                stop();
-                return data;
-            })
-        } else {
-            // Return a promise indicating when the algorithm finishes
-            return targetAlgorithm.start(startNode, endNode).then((data) => {
-                clearInterval(newTimer)
-                finishedMessage.current.style.display = "inline-block";
-                stop();
-                return data;
-            })
-        }
+    // Set the current algorithm instance
+    switch(this.currentAlgorithmName) {
+        case 'Breadth-first':
+            this.currentAlgorithm = new BFS(this);
+            break;
+        case 'Depth-first':
+            this.currentAlgorithm  = new DFS(this);
+            break;
+        case 'Merge Sort':
+            this.currentAlgorithm  = new Merge(this);
+            break;
+        case 'Quick Sort':
+            this.currentAlgorithm  = new QuickSort(this);
+            break;
+        default:
+            break;
     }
+    // Start the timer
+    this.timer = setInterval(this.tick, 1000);
 
-    const getRunningAlgorithm = () => {
-        return runningAlgorithm
+    // Depending on which algorithm it is start it and return a promise to indicate its done
+    if (this.sorting) {
+        return this.currentAlgorithm._sort(this.towers, this).then((data) => {
+            this.stop();
+            return data;
+        })
+    } else {
+        return this.currentAlgorithm.start(this.startNode, this.endNode).then((data) => {
+            this.stop();
+            return data;
+        })
     }
+  }
 
-    const stop = () => {
-        clearInterval(timer);
-        setRunningAlgorithm(false);
-        currentAlgorithm.stop = true;
-    }
+  // Stops the current running algorithm
+  stop() {
+    clearInterval(this.timer);
+    this.runningAlgorithm = false;
+    this.currentAlgorithm.stop = true;
+    this.finishedMessage.current.style.display = "inline-block";
+  }
 
-    const getColor = () => {
-        // React drove me to this
-        const slider = document.getElementById('slider-container');
-        return `rgb(${slider.querySelector('input[name="red"]').value},${slider.querySelector('input[name="green"]').value},
-        ${slider.querySelector('input[name="blue"]').value})`
-    }
+  // Clear the canvas and reset the properties
+  clear() {
+    if (this.runningAlgorithm) return;
 
-    // Render the start and end node icons
-    const renderTargets = () => {
-        context.current.fillStyle = "white"
-        context.current.fillRect(0, 0, width.current, height.current);
-        context.current.drawImage(startNodeIcon, startNode.x, startNode.y, 8, 16);
-        context.current.drawImage(endNodeIcon, endNode.x, endNode.y, size, size);
-    }
+    this.context.fillStyle = 'white';
+    this.context.fillRect(0, 0, this.width, this.height);
 
-    const setTowers = () => {
-        towers.length = 0; // Empty current towers
-        for(let i = 0; i < width.current / size; i++) {
-            const maxHeight = Math.floor(Math.random() * (height.current - 50) + 50);
-            const tower = {x: i * size, y: height.current - maxHeight, width: size, height: maxHeight};
-            towers.push(tower);
-        }
-        renderTowers();
-    }
-    
-    // Highlights a single cell in the canvas
-    const visitCell = (node) => {
-        if (!targetImage) {
-            context.current.fillStyle = getColor();
-            context.current.fillRect(node.x, node.y, size - 1, size - 1);
-        } else {
-            context.current.clearRect(node.x, node.y, size - 1, size - 1);
-        }
-    }
-    
-    // Renders a single tower
-    const renderTower = (tower, newColor = "red") => {
-        context.current.fillStyle = newColor;
-        context.current.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
-    }
+    this.setState({
+      nodes: 0,
+      seconds: 0,
+      minutes: 0
+    });
 
-    // Draws onto the canvas all the towers in the towers array
-    const renderTowers = () => {
-        context.current.fillStyle = "white"
-        context.current.fillRect(0, 0, width.current, height.current);
-        for (const tower of towers) {
-            if (!targetImage) {
-                context.current.fillStyle = getColor();
-                context.current.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
-            } else {
-                context.current.clearRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
-            }
-        }
+    this.nodeCountElement.current.innerHTML = 0;
+    this.finishedMessage.current.style.display = "";
+
+    // If sorting reset the towers else the nodes
+    if (this.sorting) {
+      this.setTowers();
+    } else {this.renderTargets(); }
+  }
+
+  // Updates the current timer
+  tick = () => {
+    let minutes = this.state.minutes;
+    let seconds = this.state.seconds;
+
+    seconds += 1;
+    if (seconds >= 60) {
+      seconds = 0;
+      minutes += 1;
+    }
+    this.setState({
+      seconds: seconds,
+      minutes: minutes
+    })
+  }
+
+  // Clear the canvas and draw the startNode and endNode
+  renderTargets() {
+    this.context.fillStyle = 'white';
+    this.context.fillRect(0, 0, this.width, this.height);
+
+    this.context.drawImage(this.startNodeIcon, this.startNode.x, this.startNode.y, 8, 16);
+    this.context.drawImage(this.endNodeIcon, this.endNode.x, this.endNode.y, this.nodeSize, this.nodeSize);
+  }
+
+  // Clear the canvas and draw the towers
+  renderTowers() {
+    this.context.fillStyle = 'white';
+    this.context.fillRect(0, 0, this.width, this.height);
+    for (const tower of this.towers) {
+      if (this.targetImage) {
+        this.context.clearRect(tower.x, tower.y, tower.width-1, tower.height-1);
+      } else {
+        this.context.fillStyle = this.getColor();
+        this.context.fillRect(tower.x, tower.y, tower.width-1, tower.height-1);
       }
-
-    // Clean the canvas and reset visuals
-    const clear = () => {
-        if (runningAlgorithm) { return; }
-        context.current.fillStyle = 'white';
-        context.current.fillRect(0, 0, width.current, height.current);
-
-        setNodes(0);
-        setSeconds(0);
-        setMinutes(0);
-
-        document.getElementById('node-count').innerHTML = 0;
-        finishedMessage.current.style.display = ''
-
-        if (sorting) {
-            setTowers();
-        } else {
-            renderTargets();
-        }
     }
+  }
+  // Renders a single tower
+  renderTower = (tower, newColor = "red") => {
+    this.context.fillStyle = newColor;
+    this.context.fillRect(tower.x, tower.y, tower.width - 1, tower.height - 1);
+  }
 
-    // Keeps track of running time
-    const tick = () => {
-        setSeconds(prevSeconds => prevSeconds + 1);
-        if (seconds + 1 >= 60) {
-            setSeconds(0);
-            setMinutes(minutes + 1);
-        }
+  // Draw an image to the bottom canvas
+  renderImage() {
+    if (this.targetImage) {
+      this.layeredContext.drawImage(this.targetImage, 0, 0, this.width, this.height);
     }
+  }
 
-    // Creating drag and drop logic
-    const getMousePosition = (clientX, clientY) => {
-        return {mouseX: clientX - canvas.current.getBoundingClientRect().x,
-        mouseY: clientY - canvas.current.getBoundingClientRect().y};
+  // Empty the current towers and set a new array of towers
+  setTowers() {
+    this.towers = [];
+    for(let i = 0; i < this.width / this.nodeSize; i++) {
+      const maxHeight = Math.floor(Math.random() * (this.height - 50) + 50);
+      const tower = { x: i * this.nodeSize, y: this.height - maxHeight, width: this.nodeSize, height: maxHeight };
+      this.towers.push(tower);
+    }
+    this.renderTowers();
+  }
+
+  setImage(image) {
+    this.targetImage = image;
+    this.renderImage();
+  }
+
+  visitCell(node) {
+    if (this.targetImage) {
+      this.context.clearRect(node.x, node.y, this.nodeSize-1, this.nodeSize-1);
+    } else {
+      this.context.fillStyle = this.getColor();
+      this.context.fillRect(node.x, node.y, this.nodeSize-1, this.nodeSize-1);
+    }
+  }
+
+  // Update the component state algorithmName and the DOM element
+  updateAlgorithmName(name) {
+    let targetAlgorithm;
+    for (const algorithm of algorithmData) {
+      if (algorithm['name'] === name) {
+        targetAlgorithm = algorithm;
+        break;
       }
-    const handleMouseDown = (event) => {
-        if (runningAlgorithm) { return; }
+    }
+    this.currentAlgorithmName = name;
+    this.algorithmTitleElement.current.innerHTML = `${name} <span class = ${targetAlgorithm.speed}-speed>${targetAlgorithm.timeComplexity}</span>`
+    this.sorting = targetAlgorithm.sorting;
+  }
 
-        const { mouseX, mouseY } = getMousePosition(event.clientX, event.clientY);
-        const padding = 20;
+  // Returns the current color
+  getColor() {
+    return `rgb(${this.nodeColors.r}, ${this.nodeColors.g}, ${this.nodeColors.b})`
+  }
 
-        if (mouseX >= startNode.x - padding && mouseX <= startNode.x + padding) {
-            if (mouseY >= startNode.y - padding && mouseY <= startNode.y + padding) {
-                isDragging = true;
-                draggingNode = startNode;
-            }
-        } else if (mouseX >= endNode.x - padding && mouseX <= endNode.x + padding) {
-            if (mouseY >= endNode.y - padding && mouseY <= endNode.y + padding) {
-                isDragging = true;
-                draggingNode = endNode;
-            }
+  // Slider change event handler
+  updateColor = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.nodeColors[name] = value;
+    if (this.sorting) {
+      this.renderTowers();
+    }
+  }
+
+  // Formats the current timer correctly
+  formatTime() {
+    return `${ this.state.minutes } : ${ (this.state.seconds < 10) ? "0" + this.state.seconds : this.state.seconds}`
+  }
+
+  getMousePosition(clientX, clientY) {
+    return {mouseX: clientX - this.canvas.current.getBoundingClientRect().x,
+    mouseY: clientY - this.canvas.current.getBoundingClientRect().y};
+  }
+
+  handleMouseDown = (event) => {
+    if (this.runningAlgorithm) return;
+
+    const { mouseX, mouseY } = this.getMousePosition(event.clientX, event.clientY);
+    const padding = 20;
+
+    if (mouseX >= this.startNode.x - padding && mouseX <= this.startNode.x + padding) {
+        if (mouseY >= this.startNode.y - padding && mouseY <= this.startNode.y + padding) {
+            this.isDragging = true;
+            this.draggingNode = this.startNode;
+        }
+    } else if (mouseX >= this.endNode.x - padding && mouseX <= this.endNode.x + padding) {
+        if (mouseY >= this.endNode.y - padding && mouseY <= this.endNode.y + padding) {
+            this.isDragging = true;
+            this.draggingNode = this.endNode;
         }
     }
-    const handleMouseMove = (event) => {
-        if (!isDragging) { return; }
-        const { mouseX, mouseY } = getMousePosition(event.clientX, event.clientY);
+}
+  // When the mouse moves and is draging move the icons
+  handleMouseMove = (event) => {
+    if (this.isDragging) {
+      const { mouseX, mouseY } = this.getMousePosition(event.clientX, event.clientY);
 
-        draggingNode.x = mouseX - (mouseX % size);
-        draggingNode.y = mouseY - (mouseY % size);
-        clear();
+      this.draggingNode.x = mouseX - (mouseX % this.nodeSize);
+      this.draggingNode.y = mouseY - (mouseY % this.nodeSize);
+      this.clear();
     }
-    const handleMouseUp = () => {
-        isDragging = false;
-        draggingNode = null;
-    }
-    //----------------------------END OF Drag and Drop
-    const updateAlgorithmName = (name) => {
-        setCurrentAlgorithmName(name);
-        switch (name) {
-          case 'Breadth-first':
-            algorithmTitleElement.current.innerHTML = 'Breadth-first<span class = "slow-speed">O(|V| + |E|)</span>'
-            break;
-          case 'Depth-first':
-            algorithmTitleElement.current.innerHTML = 'Depth-first<span class = "medium-speed">O(|V| + |E|)</span>'
-            break;
-          case 'Merge Sort':
-            algorithmTitleElement.current.innerHTML = 'Merge Sort<span class = "slow-speed">O(n log(n))</span>'
-            break;
-  
-          case 'Quick Sort':
-            algorithmTitleElement.current.innerHTML = 'Quick Sort<span class = "good-speed">O(n<sup>2</sup>)</span>'
-            break;
+  }
+  handleMouseUp = () => {
+      this.isDragging = false;
+      this.draggingNode = null;
+  }
 
-          default:
-        }
-        setSorting(name === 'Quick Sort' || name === 'Merge Sort');
-    }
-
-    const setImage = (image) => {
-        setTargetImage(image)
-    }
-
-    const renderImage = () => {
-        if (targetImage) {
-            layeredContext.current.drawImage(targetImage, 0, 0, width.current, height.current) 
-        }
-    }
-
+  render() {
     return (
       <div>
-        <Navigation
-          canvas={{
-            updateAlgorithmName: updateAlgorithmName,
-            clear: clear,
-            stop: stop,
-            start: start,
-            runningAlgorithm: runningAlgorithm,
-          }}
-        />
-        <Carousel
-          canvas={{
-            setImage: setImage,
-            targetImage: targetImage,
-            clear: clear,
-            getRunningAlgorithm: getRunningAlgorithm,
-          }}
-        />
+        <Navigation canvas={this}/>
+        <Carousel canvas={this}/>
+
         <div id='canvas-wrapper'>
+
           <p className='help-msg'>
             Tip: Drag the Icons to change start and target points.
-            <span ref={finishedMessage} > Algorithm Finished.</span>
+            <span ref={  this.finishedMessage } > Algorithm Finished.</span>
           </p>
+
           <div id='tools-help'>
-            <p id='algorithm-title' ref={algorithmTitleElement}>
+            <p id='algorithm-title' ref={ this.algorithmTitleElement }>
               Breadth-first<span className='slow-speed'>O(|V| + |E|)</span>
             </p>
-            <p className='time'>
-              Time:{" "}
-              <span id='time-count'>{`${minutes}:${
-                seconds < 10 ? "0" + seconds : seconds
-              }`}</span>
-            </p>
-            <p className='nodes'>
-              Nodes <span id='node-count'>{nodes}</span>
-            </p>
+
+            <p className='time'>Time: <span id='time-count'>{ this.formatTime() }</span></p>
+
+            <p className='nodes'>Nodes <span id='node-count' ref = { this.nodeCountElement }>{ this.state.nodes }</span></p>
 
             <div className='help-icons'>
-              <p>
-                Start <i className='fa fa-female'></i>
-              </p>
-              <p>
-                Target <i className='fa fa-bullseye'></i>
-              </p>
+              <p>Start <i className='fa fa-female'></i></p>
+              <p>Target <i className='fa fa-bullseye'></i></p>
             </div>
+
             <div className='slidecontainer' id='slider-container'>
-              <span>r</span>
-              <input type='range' min='0' max='225' name='red' />
-              <span>g</span>
-              <input type='range' min='0' max='200' name='green' />
-              <span>b</span>
-              <input type='range' min='0' max='225' name='blue' />
+              <span>r</span><input type='range' min='0' max='225' name='r' onChange = { this.updateColor }/>
+              <span>g</span><input type='range' min='0' max='200' name='g' onChange = { this.updateColor }/>
+              <span>b</span><input type='range' min='0' max='225' name='b' onChange = { this.updateColor }/>
             </div>
           </div>
+
           <canvas
             id='canvas'
-            ref={canvas}
-            width='800'
-            height='400'
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
+            ref={ this.canvas }
+            width= { this.width }
+            height= { this.height }
+            onMouseDown = {this.handleMouseDown}
+            onMouseMove={this.handleMouseMove}
+            onMouseUp={this.handleMouseUp}
           ></canvas>
+
           <canvas
-            ref={layeredCanvas}
+            ref={ this.layeredCanvas }
             id='layered-canvas'
-            width='800'
-            height='400'
+            width= { this.width }
+            height= { this.height }
           ></canvas>
+
         </div>
       </div>
     );
+  }
 }
-
 export default Canvas;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

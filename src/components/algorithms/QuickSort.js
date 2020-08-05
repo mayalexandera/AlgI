@@ -47,7 +47,7 @@ class QuickSort extends Algorithm {
       for (const towerB of rightTowers) {
         canvas.renderTower(towerA, "red");
 
-        if (towerA.height < towerB.height && towerA.x > towerB.x || towerA.height > towerB.height && towerA.x < towerB.x ) {
+        if ((towerA.height < towerB.height && towerA.x > towerB.x) || (towerA.height > towerB.height && towerA.x < towerB.x)) {
           this.swapPositions(towerA, towerB);
         }
       }

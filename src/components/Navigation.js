@@ -1,86 +1,102 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Navigation = (props) => {
-  const [currentAlgorithm, setCurrentAlgorithm] = useState("Breadth-first");
-  // Toggles the dropdown element when clicked
-  const showDropdown = (event) => {
-    const dropdown = event.target.querySelector('.dropdown');
-    if (dropdown) {
-      dropdown.classList.toggle('hidden');
-    }
+class Navigation extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // Sets the initial component state
+    this.state = { currentAlgorithm: "Breadth-first" };
+    this.dropDownElement = React.createRef();
   }
 
-  // When a user clicks on a new algorithm update the nav
-  const switchAlgorithm = (event) => {
-    if (props.canvas.runningAlgorithm || event.target.nodeName === 'DIV') { return; }
-    clearCanvas();
-    const algorithmName = event.target.dataset.name;
-
-    if (algorithmName) {
-      setCurrentAlgorithm(algorithmName);
-      props.canvas.updateAlgorithmName(algorithmName);
-
-      // Remove all other active algorithms classes
-      document.querySelectorAll('.active').forEach(element => {
-        element.classList.remove('active');
-      });
-      event.target.classList.add('active');
-    }
+  // Toggle the dropdown element
+  showDropdown = () => {
+    this.dropDownElement.current.classList.remove('hidden');
+  }
+  hideDropDown = () => {
+    this.dropDownElement.current.classList.add('hidden');
   }
 
-  const hideDropDown = () => {
-    document.querySelector('.dropdown').classList.add('hidden');
-  }
-
-  const startAlgorithm = (event) => {
+  // Switch the currently selected algorihtm
+  switchAlgorithm = (event) => {
     const target = event.target;
-    toggleRunButton(target);
-    props.canvas.clear();
+    const algorithmName = target.dataset.name;
 
-    if (!props.canvas.runningAlgorithm) {
-      props.canvas.start().finally(function() {
-        toggleRunButton(target);
-      }).catch(()=>{});
-    } else {
-      toggleRunButton(target);
-      props.canvas.stop();
-    }
+    if (!target || !algorithmName || this.props.canvas.runningAlgorithm) return;
+
+    // Update current algorithm name
+    this.setState({ currentAlgorithm: algorithmName });
+
+    // Clear the canvas
+    this.props.canvas.updateAlgorithmName(algorithmName);
+    this.props.canvas.clear();
+    
+    // Clear all active links
+    document.querySelectorAll('.active').forEach(element => {
+      element.classList.remove('active');
+    });
+    target.classList.add('active');
   }
 
-  const toggleRunButton = (target) => {
-    const child = (target.nodeName !== 'I') ? target.children[0] : target;
-    child.classList = child.matches('.fa-stop') ? 'fa fa-play' : 'fa fa-stop';
+  // Handles the styling of the run button and the play icon
+  toggleRunButton(target) {
+    let playIcon, button;
+
     if (target.nodeName === 'I') {
-      target.parentNode.classList.toggle('warning');
+      playIcon = target;
+      button = target.parentNode;
     } else {
-      target.classList.toggle('warning');
+      playIcon = target.children[0];
+      button = target;
+    }
+    // Update their styling
+    playIcon.classList = (playIcon.matches('.fa-stop') ? 'fa fa-play' : 'fa fa-stop');
+    button.classList.toggle('warning');
+  }
+
+  startAlgorithm = (event) => {
+    const target = event.target;
+    this.toggleRunButton(target);
+
+    // If the algorithm is currently running stop it, else play it
+    if (this.props.canvas.runningAlgorithm) {
+      this.toggleRunButton(target);
+      this.props.canvas.stop();
+
+    } else {
+      // Start the algorithm and when you're done make the changes
+      this.props.canvas.start().then(() => {
+        this.toggleRunButton(target);
+      }).catch(() => {
+        this.toggleRunButton(target);
+      })
     }
   }
 
-  const clearCanvas = () => {
-    props.canvas.clear();
-  }
+  render() {
+    return (
+      <nav onMouseLeave = { this.hideDropDown }>
+        <div className = "logo"><h1>Algorithm Imager</h1></div>
+        <ul>
+          <li className ="expandable" onClick = { this.showDropdown }>
+            Algorithms<i className ="fa fa-arrow-down" aria-hidden="true"></i>
 
-  return (
-    <nav onMouseLeave = { hideDropDown }>
-      <div className = "logo"><h1>Algorithm Imager</h1></div>
-      <ul>
-        <li className ="expandable" onClick = { showDropdown }>
-          Algorithms<i className ="fa fa-arrow-down" aria-hidden="true"></i>
-          <div className = "dropdown hidden" onClick = { switchAlgorithm }>
-            <span className ="active" data-name = "Breadth-first">BFS</span>
-            <span data-name = "Depth-first" >DFS</span>
-            <span data-name = "Merge Sort">Merge Sort</span>
-            <span data-name = "Quick Sort">Quick Sort</span>
-          </div>
-        </li>
-        <li id="run-button" onClick = {(event) => {startAlgorithm(event)} }>
-          Run { currentAlgorithm }<i className ="fa fa-play" aria-hidden="true"></i>
-        </li>
-        <li id="clear-results" onClick = { clearCanvas }>Clear Results</li>
-      </ul>
-    </nav>
-  )
+            <div className = "dropdown hidden" onClick = { this.switchAlgorithm } ref = {this.dropDownElement} >
+              <span className ="active" data-name = "Breadth-first">BFS</span>
+              <span data-name = "Depth-first" >DFS</span>
+              <span data-name = "Merge Sort">Merge Sort</span>
+              <span data-name = "Quick Sort">Quick Sort</span>
+            </div>
+
+          </li>
+          <li id="run-button" onClick = { this.startAlgorithm }>
+            Run { this.state.currentAlgorithm }<i className ="fa fa-play" aria-hidden="true"></i>
+          </li>
+          <li id="clear-results" onClick = {() => {this.props.canvas.clear()} }>Clear Results</li>
+        </ul>
+      </nav>
+    )
+  }
 }
 
 export default Navigation;
