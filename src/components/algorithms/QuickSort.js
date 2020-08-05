@@ -29,6 +29,7 @@ class QuickSort extends Algorithm {
       arr = arr.concat(pivot);
       return this._sort(right, canvas).then((newArray) => {
         arr = arr.concat(newArray);
+        console.log(arr)
         return arr;
       })
     })
@@ -47,7 +48,9 @@ class QuickSort extends Algorithm {
       for (const towerB of rightTowers) {
         canvas.renderTower(towerA, "red");
 
-        if ((towerA.height < towerB.height && towerA.x > towerB.x) || (towerA.height > towerB.height && towerA.x < towerB.x)) {
+        if ((towerA.height < towerB.height && towerA.x > towerB.x) ) {
+          this.swapPositions(towerA, towerB);
+        } else if (towerA.height >= towerB.height && towerA.x < towerB.x) {
           this.swapPositions(towerA, towerB);
         }
       }
