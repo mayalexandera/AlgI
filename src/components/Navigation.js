@@ -22,7 +22,7 @@ class Navigation extends React.Component {
     const target = event.target;
     const algorithmName = target.dataset.name;
 
-    if (!target || !algorithmName) return;
+    if (!target || !algorithmName || this.props.canvas.runningAlgorithm) return;
 
     // Update current algorithm name
     this.setState({ currentAlgorithm: algorithmName });

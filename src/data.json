@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Breadth-first",
+        "timeComplexity": "O(|V| + |E|)",
+        "speed": "slow",
+        "sorting": false
+    },
+    {
+        "name": "Depth-first",
+        "timeComplexity": "O(|V| + |E|)",
+        "speed": "medium",
+        "sorting": false
+    },
+    {
+        "name": "Merge Sort",
+        "timeComplexity": "O(n log(n))",
+        "speed": "slow",
+        "sorting": true
+    },
+    {
+        "name": "Quick Sort",
+        "timeComplexity": "O(n2)",
+        "speed": "good",
+        "sorting": true
+    }
+]
