@@ -1,11 +1,13 @@
 # Algorithm Imager
 
-<p>A fun way of seeing how some common algorithms work.</p>
-<img src="https://i.ibb.co/5YXKNnX/chrome-capture-3.gif" alt="chrome-capture-3" border="0" />
-<h3>Tools</h3>
+<p>A fun way of visualizing algorithms :art:</p>
+<p>Hosted at https://mayalexandera.github.io/AlgI/ </p>
+<img src="https://i.ibb.co/8cXkcZv/preview.png" alt="preview" border="0">
+
+## Tools
 <ul>
-  <li>JavaScript</li>
   <li>React</li>
+  <li>Javascript</li>
   <li>SASS</li>
-  <li>HTML</li>
+  <li>HTML5</li>
 </ul>
