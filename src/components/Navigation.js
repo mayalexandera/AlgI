@@ -66,6 +66,7 @@ class Navigation extends React.Component {
     } else {
       // Start the algorithm and when you're done make the changes
       this.props.canvas.start().then(() => {
+        console.log("Done");
         this.toggleRunButton(target);
       }).catch(() => {
         this.toggleRunButton(target);
@@ -86,6 +87,7 @@ class Navigation extends React.Component {
               <span data-name = "Depth-first" >DFS</span>
               <span data-name = "Merge Sort">Merge Sort</span>
               <span data-name = "Quick Sort">Quick Sort</span>
+              <span data-name = "Selection Sort">Selection Sort</span>
             </div>
 
           </li>

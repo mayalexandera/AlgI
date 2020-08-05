@@ -9,6 +9,7 @@ import BFS from './algorithms/BFS';
 import DFS from './algorithms/DFS';
 import Merge from './algorithms/Merge';
 import QuickSort from './algorithms/QuickSort';
+import SelectionSort from './algorithms/SelectionSort';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class Canvas extends React.Component {
     // Towers and node size
     this.towers = [];
     this.nodeSize = 5;
-    this.nodeColors = {r: 20, g: 100, b: 30};
+    this.nodeColors = {r: 220, g: 220, b: 30};
     this.isDragging = false;
     this.draggedIcon = null;
 
@@ -86,6 +87,9 @@ class Canvas extends React.Component {
         case 'Quick Sort':
             this.currentAlgorithm  = new QuickSort(this);
             break;
+        case 'Selection Sort':
+          this.currentAlgorithm  = new SelectionSort(this);
+          break;
         default:
             break;
     }
@@ -191,8 +195,9 @@ class Canvas extends React.Component {
   setTowers() {
     this.towers = [];
     for(let i = 0; i < this.width / this.nodeSize; i++) {
-      const maxHeight = Math.floor(Math.random() * (this.height - 50) + 50);
-      const tower = { x: i * this.nodeSize, y: this.height - maxHeight, width: this.nodeSize, height: maxHeight };
+      const maxHeight = Math.floor(Math.random() * this.height - 50) + 50;
+      const x = i * this.nodeSize;
+      const tower = { x: x, y: this.height - maxHeight, width: this.nodeSize, height: maxHeight, priority: x * maxHeight};
       this.towers.push(tower);
     }
     this.renderTowers();

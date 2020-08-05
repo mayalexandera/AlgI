@@ -19,7 +19,13 @@
     },
     {
         "name": "Quick Sort",
-        "timeComplexity": "O(n2)",
+        "timeComplexity": "O(n^2)",
+        "speed": "good",
+        "sorting": true
+    },
+    {
+        "name": "Selection Sort",
+        "timeComplexity": "O(n^2)",
         "speed": "good",
         "sorting": true
     }
