@@ -74,24 +74,27 @@ class Canvas extends React.Component {
     this.runningAlgorithm = true;
     
     // Set the current algorithm instance
-    switch(this.currentAlgorithmName) {
-        case 'Breadth-first':
-            this.currentAlgorithm = new BFS(this);
-            break;
-        case 'Depth-first':
-            this.currentAlgorithm  = new DFS(this);
-            break;
-        case 'Merge Sort':
-            this.currentAlgorithm  = new Merge(this);
-            break;
-        case 'Quick Sort':
-            this.currentAlgorithm  = new QuickSort(this);
-            break;
-        case 'Selection Sort':
-          this.currentAlgorithm  = new SelectionSort(this);
-          break;
-        default:
-            break;
+    switch (this.currentAlgorithmName) {
+      case "Breadth-first":
+        this.currentAlgorithm = new BFS(this);
+        break;
+      case "Depth-first":
+        this.currentAlgorithm = new DFS(this);
+        break;
+      case "Merge Sort":
+        this.currentAlgorithm = new Merge(this);
+        break;
+      case "Quick Sort":
+        this.currentAlgorithm = new QuickSort(this);
+        break;
+      case "Selection Sort":
+        this.currentAlgorithm = new SelectionSort(this);
+        break;
+      case "Bubble Sort":
+        this.currentAlgorithm = new Bubblesort(this);
+        break;
+      default:
+        break;
     }
     // Start the timer
     this.timer = setInterval(this.tick, 1000);

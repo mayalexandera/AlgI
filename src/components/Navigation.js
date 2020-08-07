@@ -76,28 +76,43 @@ class Navigation extends React.Component {
 
   render() {
     return (
-      <nav onMouseLeave = { this.hideDropDown }>
-        <div className = "logo"><h1>Algorithm Imager</h1></div>
+      <nav onMouseLeave={this.hideDropDown}>
+        <div className='logo'>
+          <h1>Algorithm Imager</h1>
+        </div>
         <ul>
-          <li className ="expandable" onClick = { this.showDropdown }>
-            Algorithms<i className ="fa fa-arrow-down" aria-hidden="true"></i>
-
-            <div className = "dropdown hidden" onClick = { this.switchAlgorithm } ref = {this.dropDownElement} >
-              <span className ="active" data-name = "Breadth-first">BFS</span>
-              <span data-name = "Depth-first" >DFS</span>
-              <span data-name = "Merge Sort">Merge Sort</span>
-              <span data-name = "Quick Sort">Quick Sort</span>
-              <span data-name = "Selection Sort">Selection Sort</span>
+          <li className='expandable' onClick={this.showDropdown}>
+            Algorithms<i className='fa fa-arrow-down' aria-hidden='true'></i>
+            <div
+              className='dropdown hidden'
+              onClick={this.switchAlgorithm}
+              ref={this.dropDownElement}
+            >
+              <span className='active' data-name='Breadth-first'>
+                BFS
+              </span>
+              <span data-name='Depth-first'>DFS</span>
+              <span data-name='Merge Sort'>Merge Sort</span>
+              <span data-name='Quick Sort'>Quick Sort</span>
+              <span data-name='Selection Sort'>Selection Sort</span>
+              <span data-name='Bubble Sort'>Bubble Sort</span>
             </div>
-
           </li>
-          <li id="run-button" onClick = { this.startAlgorithm }>
-            Run { this.state.currentAlgorithm }<i className ="fa fa-play" aria-hidden="true"></i>
+          <li id='run-button' onClick={this.startAlgorithm}>
+            Run {this.state.currentAlgorithm}
+            <i className='fa fa-play' aria-hidden='true'></i>
           </li>
-          <li id="clear-results" onClick = {() => {this.props.canvas.clear()} }>Clear Results</li>
+          <li
+            id='clear-results'
+            onClick={() => {
+              this.props.canvas.clear();
+            }}
+          >
+            Clear Results
+          </li>
         </ul>
       </nav>
-    )
+    );
   }
 }
 
