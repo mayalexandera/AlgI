@@ -10,10 +10,11 @@ import DFS from './algorithms/DFS';
 import Merge from './algorithms/Merge';
 import QuickSort from './algorithms/QuickSort';
 import SelectionSort from './algorithms/SelectionSort';
+import Bubblesort from './algorithms/Bubblesort';
 
 class Canvas extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       seconds: 0,

@@ -28,5 +28,11 @@
         "timeComplexity": "O(n^2)",
         "speed": "good",
         "sorting": true
+    },
+    {
+        "name": "Bubble Sort",
+        "timeComplexity": "O(n^2)",
+        "speed": "slow",
+        "sorting": true
     }
 ]

@@ -14,6 +14,7 @@ class Bubblesort extends Algorithm {
           towers[i].x = j;
         }
       }
+      this.sortTowers(towers, towers)
     }
   }
 }
